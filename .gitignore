@@ -4,3 +4,12 @@
 *.jar
 *.war
 *.ear
+
+solaria-dao/.classpath
+solaria-dao/.project
+solaria-dao/.settings/*
+solaria-dao/target/*
+solaria-servicios/.classpath
+solaria-servicios/.project
+solaria-servicios/.settings/*
+solaria-servicios/target/*
