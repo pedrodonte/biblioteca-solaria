@@ -286,7 +286,7 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="1112" ColName="generolibro_cod_generolibro" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(3)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="1087" ColName="libcat_cod_libcat" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(3)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
@@ -354,7 +354,7 @@
 <RELATION_START ID="1089" />
 </RELATIONS_START>
 <RELATIONS_END>
-<RELATION_END ID="1111" />
+<RELATION_END ID="1086" />
 </RELATIONS_END>
 <INDICES>
 <INDEX ID="1024" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
@@ -362,9 +362,9 @@
 <INDEXCOLUMN idColumn="1023" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1113" IndexName="sola_tab_libro_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1111">
+<INDEX ID="1088" IndexName="sola_tab_libro_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1086">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1112" LengthParam="0" />
+<INDEXCOLUMN idColumn="1087" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -458,21 +458,21 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1019" Tablename="sola_tab_generolibro" PrevTableName="Table_05" XPos="80" YPos="500" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="6" >
+<TABLE ID="1019" Tablename="sola_tab_libro_categoria" PrevTableName="Table_05" XPos="80" YPos="500" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="6" >
 <COLUMNS>
-<COLUMN ID="1073" ColName="generolibro_cod_generolibro" PrevColName="libcat_cod_libcat" Pos="0" idDatatype="13" DatatypeParams="(3)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="nextval(\asola_seq_generolibro\a)" Comments="">
+<COLUMN ID="1073" ColName="libcat_cod_libcat" PrevColName="" Pos="0" idDatatype="13" DatatypeParams="(3)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="nextval(\asola_seq_libro_categoria\a)" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="1076" ColName="generolibro_nombre" PrevColName="libcat_nombre" Pos="1" idDatatype="20" DatatypeParams="(50)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<COLUMN ID="1076" ColName="libcat_nombre" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(50)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
 </COLUMNS>
 <RELATIONS_START>
-<RELATION_START ID="1111" />
+<RELATION_START ID="1086" />
 </RELATIONS_START>
 <INDICES>
 <INDEX ID="1074" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
@@ -553,10 +553,10 @@
 </TABLE>
 </TABLES>
 <RELATIONS>
+<RELATION ID="1086" RelationName="Rel_02" Kind="2" SrcTable="1019" DestTable="1012" FKFields="libcat_cod_libcat=libcat_cod_libcat\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="2" CaptionOffsetY="-18" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1088" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="8" />
 <RELATION ID="1089" RelationName="Rel_03" Kind="2" SrcTable="1012" DestTable="1016" FKFields="libro_cod_libro=libro_cod_libro\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1091" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="9" />
 <RELATION ID="1092" RelationName="Rel_04" Kind="2" SrcTable="1057" DestTable="1016" FKFields="cliente_cod_cliente=cliente_cod_cliente\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1094" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="10" />
 <RELATION ID="1106" RelationName="Rel_05" Kind="2" SrcTable="1014" DestTable="1057" FKFields="grupocliente_cod_grupocliente=grupocliente_cod_grupocliente\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1108" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="12" />
-<RELATION ID="1111" RelationName="Rel_06" Kind="2" SrcTable="1019" DestTable="1012" FKFields="generolibro_cod_generolibro=generolibro_cod_generolibro\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1113" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="12" />
 </RELATIONS>
 <NOTES>
 <NOTE ID="1097" NoteName="Note_01" XPos="0" YPos="0" NoteText="Modelo de datos araucaria 08.11.2012   -   v1.0\n" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="11" />
