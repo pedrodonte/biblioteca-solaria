@@ -13,3 +13,7 @@ solaria-servicios/.classpath
 solaria-servicios/.project
 solaria-servicios/.settings/*
 solaria-servicios/target/*
+solaria-portal/.classpath
+solaria-portal/.project
+solaria-portal/.settings/*
+solaria-portal/target/*

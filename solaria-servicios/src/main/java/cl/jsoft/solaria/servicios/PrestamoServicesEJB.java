@@ -2,20 +2,25 @@ package cl.jsoft.solaria.servicios;
 
 import java.util.List;
 
+import javax.ejb.Remote;
+
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoPrestamo;
+import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
+import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
 
+@Remote
 public interface PrestamoServicesEJB {
 		
-	public List<VoPrestamo> buscarPrestamosHistoricos(VoCliente voCliente);
+	public List<VoPrestamo> buscarPrestamosHistoricos(VoCliente voCliente) throws ErrorDelSistemaException;
 	
-	public List<VoPrestamo> buscarPrestamosPendientes(VoCliente voCliente);
+	public List<VoPrestamo> buscarPrestamosPendientes(VoCliente voCliente) throws ErrorDelSistemaException;
 	
-	public List<VoPrestamo> buscarTodosPrestamosHistoricos();
+	public List<VoPrestamo> buscarTodosPrestamosHistoricos() throws ErrorDelSistemaException;
 	
-	public List<VoPrestamo> buscarTodosPrestamosPendientes();
+	public List<VoPrestamo> buscarTodosPrestamosPendientes() throws ErrorDelSistemaException;
 	
-	public VoPrestamo nuevoPrestamo(VoPrestamo voPrestamo);
+	public VoPrestamo nuevoPrestamo(VoPrestamo voPrestamo) throws PrestamoNoValidoException, ErrorDelSistemaException;
 	
 	public boolean validarPrestamo(VoPrestamo voPrestamo);
 
