@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+
+<body>
+<ui:composition>
+<h:form>
+           <div class="navbar navbar-inverse navbar-fixed-top">
+		      <div class="navbar-inner">
+		        <div class="container-fluid">
+		          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		          </a>
+		          <a class="brand" href="./">TheMatrix</a>
+						<div class="nav-collapse collapse">
+							<ul class="nav pull-right">
+		                      <li class="divider-vertical"></li>
+		                      <li class="dropdown">
+		                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> Bienvenido Pedrodonte <b class="caret"></b></a>
+		                        <ul class="dropdown-menu">
+		                          	<li><p:commandLink tabindex="-1"><i class="icon-cog"></i> Cambiar Contraseña</p:commandLink></li>
+									<li><p:commandLink tabindex="-1"><i class="icon-edit"></i> Modificar Datos Personales</p:commandLink></li>
+									<li><p:commandLink tabindex="-1"><i class="icon-comment"></i> Realizar una Observación</p:commandLink></li>
+									<li class="divider"></li>
+									<li><p:commandLink action="#{moduloBean.forwardSelectorModulos}" immediate="true" tabindex="-1"><i class="icon-home"></i> Selector de Modulo</p:commandLink></li>
+									<li><p:commandLink tabindex="-1"><i class="icon-question-sign"></i> Ayuda</p:commandLink></li>
+									<li class="divider"></li>
+									<li><p:commandLink tabindex="-1"><i class="icon-off"></i> Cerrar Sesión</p:commandLink></li>
+		                        </ul>
+		                      </li>
+		                    </ul>
+							
+						</div>
+						<!--/.nav-collapse -->
+		        </div>
+		      </div>
+		    </div>
+</h:form>
+</ui:composition>
+</body>
+</html>

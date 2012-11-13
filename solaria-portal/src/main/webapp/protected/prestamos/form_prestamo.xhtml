@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/template/tmpl_alpha.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Nuevo Prestamo</small>
+			</h1>
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+		<div class="container">
+
+			<h:form id="form_prestamo" styleClass="form-horizontal">
+
+				<fieldset>
+					<legend>Paso 1 : ¿Quien Pide?</legend>
+					<p:messages id="msgCliente" />
+					<div class="control-group">
+						<label class="control-label" for="inputRUN">RUN</label>
+						<div class="controls">
+							<div class="input-append">
+								<h:inputText id="inputRUN" value="#{prestamoBean.cpoIdentificadorCliente}" styleClass="span2" />
+								<p:commandButton actionListener="#{prestamoBean.doBuscarClienteIdentificador}" 
+									update="cpoIdentCliente,cpoNombreCliente,msgCliente" styleClass="btn" value="Buscar" />
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">Nombre Alumno</label>
+						<div class="controls">
+							<h:inputText value="#{prestamoBean.voCliente.nombreCompleto}" id="cpoNombreCliente" styleClass="span6" />
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">RUN Alumno</label>
+						<div class="controls">
+							<h:inputText value="#{prestamoBean.voCliente.clienteIdentificador}" id="cpoIdentCliente" styleClass="span2" />
+						</div>
+					</div>
+
+				</fieldset>
+				
+				<fieldset>
+					<legend>Paso 2 : ¿Cual Libro?</legend>
+					<p:messages id="msgLibro" />
+					<div class="control-group">
+						<label class="control-label" >Código Libro</label>
+						<div class="controls">
+							<div class="input-append">
+								<h:inputText value="#{prestamoBean.cpoCodigoInterno}"  styleClass="span2" />
+								<p:commandButton actionListener="#{prestamoBean.doBuscarLibroCodigoInterno}" 
+									update="cpoTitulo,cpoCodigoLibro,msgLibro" styleClass="btn" value="Buscar" />
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">Titulo</label>
+						<div class="controls">
+							<h:inputText id="cpoTitulo" value="#{prestamoBean.voLibroEncontrado.libroTitulo}" styleClass="span6" />
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">Código</label>
+						<div class="controls">
+							<h:inputText id="cpoCodigoLibro" value="#{prestamoBean.voLibroEncontrado.libroIdInterno}" styleClass="span2" />
+						</div>
+					</div>
+
+				</fieldset>
+				
+				<fieldset>
+					<legend>Paso 3 : ¿Por cuanto tiempo?</legend>
+
+
+					<div class="control-group">
+						<label class="control-label">Desde</label>
+						<div class="controls">
+							<p:calendar />
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">Hasta</label>
+						<div class="controls">
+							<p:calendar />
+						</div>
+					</div>
+
+				</fieldset>
+
+				<p:messages id="msgLogin" />
+
+				<p:commandButton styleClass="btn btn-info" value="Guardar" />
+
+			</h:form>
+
+		</div>
+		<!-- /container -->
+	</ui:define>
+
+</ui:composition>

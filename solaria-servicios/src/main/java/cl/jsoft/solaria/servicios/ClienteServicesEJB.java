@@ -1,14 +1,20 @@
 package cl.jsoft.solaria.servicios;
 
+import java.util.List;
+
+import javax.ejb.Local;
+
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoGrupocliente;
+import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 
+@Local
 public interface ClienteServicesEJB {
 	
-	public VoCliente buscarClientePorNumeroRun(String nroRun);
+	public VoCliente buscarClientePorIdentificador(String nroRun) throws RegistrosNoEncontradosException;
 	
-	public VoCliente buscarClientesPorGrupo(VoGrupocliente grupo);
+	public List<VoCliente> buscarClientesPorGrupo(VoGrupocliente grupo) throws RegistrosNoEncontradosException;
 	
-	public VoCliente buscarTodosLosClientes(VoGrupocliente grupo);
+	public List<VoCliente> buscarTodosLosClientes(VoGrupocliente grupo) throws RegistrosNoEncontradosException;
 
 }

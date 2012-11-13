@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+    version="2.1">
+	<navigation-rule>
+		<display-name>template/login.xhtml</display-name>
+		<from-view-id>/template/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/protected/dashboard.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>protected/dashboard.xhtml</display-name>
+		<from-view-id>/protected/dashboard.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>pres_form_prestamo</from-outcome>
+			<to-view-id>/protected/prestamos/form_prestamo.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	
+	<lifecycle>
+		<phase-listener>cl.jsoft.solaria.web.jsf.JSFLifeCycleListener</phase-listener>
+	</lifecycle>
+
+</faces-config>

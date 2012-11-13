@@ -20,6 +20,8 @@ public class VoCliente implements Serializable{
 	private String clienteImg;
 	private String clienteNombres;
 	private VoGrupocliente voGrupocliente;
+	
+	private String nombreCompleto;
 
 	public VoCliente(){
 	}
@@ -83,6 +85,9 @@ public class VoCliente implements Serializable{
 	public VoGrupocliente getVoGrupocliente(){
 		return this.voGrupocliente;
 	}
+	
+	
+	
 	@Override
 	public String toString(){
 		 return "VoCliente[clienteCodCliente="+clienteCodCliente
@@ -95,6 +100,12 @@ public class VoCliente implements Serializable{
 		 +",clienteImg="+clienteImg
 		 +",clienteNombres="+clienteNombres
 		 +",voGrupocliente="+voGrupocliente+"]";
+	}
+	public String getNombreCompleto() {
+		return nombreCompleto;
+	}
+	public void setNombreCompleto(String nombreCompleto) {
+		this.nombreCompleto = nombreCompleto;
 	}
 
 }

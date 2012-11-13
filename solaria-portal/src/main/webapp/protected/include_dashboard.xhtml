@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+
+			});
+		</script>
+
+		<style type="text/css">
+.actividades {
+	background-color: #bdbdbd;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+.actividades .actividad {
+	background-color: white;
+	/* 	width: 120px; */
+	height: 130px;
+	line-height: 130px;
+	border-radius: 5px;
+	text-align: center;
+}
+
+.btn-actividad {
+	
+}
+</style>
+		<h:form>
+			<div class="container-fluid actividades">
+				<div class="row-fluid">
+					<div class="span4 actividad">
+						<h:commandLink value="Nuevo Prestamo" action="#{solariaBean.fwdPresFormPrestamo}" />
+					</div>
+					<div class="span4 actividad">Ver Inventario Libros</div>
+					<div class="span4 actividad">Clientes Registrados</div>
+				</div>
+			</div>
+		</h:form>
+
+	</ui:composition>
+</body>
+</html>

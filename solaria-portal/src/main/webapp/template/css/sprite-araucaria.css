@@ -1,0 +1,29 @@
+.ara-sprite{background: url(../img/sprite-araucaria.png) no-repeat top left;}
+
+.ara-cata128-bn{ background-position: 0 0; width: 128px; height: 128px; } 
+.ara-cata128{ background-position: -178px 0; width: 128px; height: 128px; } 
+.ara-cata32-bn{ background-position: -356px 0; width: 32px; height: 32px; } 
+.ara-cata32{ background-position: -438px 0; width: 32px; height: 32px; } 
+.ara-cata64-bn{ background-position: -520px 0; width: 64px; height: 64px; } 
+.ara-cata64{ background-position: -634px 0; width: 64px; height: 64px; } 
+.ara-gene128-bn{ background-position: -748px 0; width: 128px; height: 128px; } 
+.ara-gene128{ background-position: -926px 0; width: 128px; height: 128px; } 
+.ara-gene32-bn{ background-position: -1104px 0; width: 32px; height: 32px; } 
+.ara-gene32{ background-position: -1186px 0; width: 32px; height: 32px; } 
+.ara-gene64-bn{ background-position: -1268px 0; width: 64px; height: 64px; } 
+.ara-gene64{ background-position: -1382px 0; width: 64px; height: 64px; } 
+.ara-segu128-bn{ background-position: -1496px 0; width: 128px; height: 128px; } 
+.ara-segu128{ background-position: -1674px 0; width: 128px; height: 128px; } 
+.ara-segu32-bn{ background-position: -1852px 0; width: 32px; height: 32px; } 
+.ara-segu32{ background-position: -1934px 0; width: 32px; height: 32px; } 
+.ara-segu64-bn{ background-position: 0 -178px; width: 64px; height: 64px; } 
+.ara-segu64{ background-position: -114px -178px; width: 64px; height: 64px; }
+
+
+
+
+
+
+/*   #container li { 																				*/
+/*       background: url(sprite-araucaria.png) no-repeat top left;					 */
+/*   } 																				*/
