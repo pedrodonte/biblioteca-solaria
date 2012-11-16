@@ -5,9 +5,8 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core" 
     xmlns:p="http://primefaces.org/ui">
-    <meta charset="UTF-8" />
 <h:head>
-
+<meta charset="UTF-8" />
 <title>Login de Usuario</title>
 
 <link href="#{request.contextPath}/bootstrap/css/bootstrap.min.css"	rel="stylesheet" />
@@ -49,10 +48,15 @@ body {
 </style>
 
  <script>
+	 $(document).ready(function () {
+	 	$(".btn").removeClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only");
+	 	$(".btn span").removeClass("ui-button-text");
+	 }); 
+ 
         function handleLoginRequest(xhr, status, args) {
             if(args.validationFailed || !args.isUsuarioValido) {
             	
-                jQuery('#form_login').effect("shake", { times:3 }, 100);
+                jQuery('#form_login').effect("bounce", { times:3 }, 200);
                 document.form_login["form_login:cpoPassword"].value = "";
                 
             } else {
@@ -76,14 +80,16 @@ body {
 
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<label>User Name</label>
-			<h:inputText id="cpoUserName" styleClass="input-block-level" value="#{loginBean.username}"  />
+			<h:inputText id="cpoUserName" styleClass="input-block-level" value="#{loginBean.username}"
+			 required="true" requiredMessage="#{msgs['empty.username']}" />
 			<label>Password</label>
-			<h:inputSecret id="cpoPassword" styleClass="input-block-level" value="#{loginBean.password}"  />
+			<h:inputSecret id="cpoPassword" styleClass="input-block-level" value="#{loginBean.password}" 
+			 required="true" requiredMessage="#{msgs['empty.password']}" />
 			
-			<label
-				class="checkbox"> <input type="checkbox"
-				value="remember-me" /> Remember me
-			</label>
+<!-- 			<label -->
+<!-- 				class="checkbox"> <input type="checkbox" -->
+<!-- 				value="remember-me" /> Remember me -->
+<!-- 			</label> -->
 			
 			<p:commandButton styleClass="btn btn-info"
 			 oncomplete="handleLoginRequest(xhr, status, args)" 
