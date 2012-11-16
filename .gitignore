@@ -17,3 +17,4 @@ solaria-portal/.classpath
 solaria-portal/.project
 solaria-portal/.settings/*
 solaria-portal/target/*
+*/target/*
