@@ -1,5 +1,6 @@
 package cl.jsoft.solaria.servicios;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -11,6 +12,10 @@ import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
 
 @Local
 public interface PrestamoServicesEJB {
+	
+	public static final BigDecimal PRESTAMO_VIGENTE = BigDecimal.ONE;
+	public static final BigDecimal PRESTAMO_ATRASADO = BigDecimal.TEN;
+	public static final BigDecimal PRESTAMO_DEVUELTO = BigDecimal.ZERO;
 		
 	public List<VoPrestamo> buscarPrestamosHistoricos(VoCliente voCliente) throws ErrorDelSistemaException;
 	
@@ -22,6 +27,6 @@ public interface PrestamoServicesEJB {
 	
 	public VoPrestamo nuevoPrestamo(VoPrestamo voPrestamo) throws PrestamoNoValidoException, ErrorDelSistemaException;
 	
-	public boolean validarPrestamo(VoPrestamo voPrestamo);
+	public boolean validarPrestamo(VoPrestamo voPrestamo) throws PrestamoNoValidoException;
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.log4j.Logger;
+
 import cl.jsoft.solaria.daos.SolaTabClienteDAO;
 import cl.jsoft.solaria.dominio.vos.HelperVoEntity;
 import cl.jsoft.solaria.dominio.vos.VoCliente;
@@ -15,6 +17,8 @@ import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 
 @Stateless
 public class ClienteServicesEJBImpl implements ClienteServicesEJB {
+	
+	Logger logger = Logger.getLogger(getClass());
 	
 	HelperVoEntity helperVoEntity = new HelperVoEntity();
 
@@ -27,6 +31,7 @@ public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 		try {
 			BigDecimal runCliente = getRUNChileno(nroRun);
 			SolaTabCliente eCliente = clienteDAO.buscaRegistroPorIdentificador(runCliente);
+			System.out.println(eCliente);
 			if (eCliente != null) {
 				respCliente = helperVoEntity.toVO(eCliente);
 			}else{
@@ -36,6 +41,7 @@ public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 			e.printStackTrace();
 			throw new RegistrosNoEncontradosException("El registro no pudo ser encontrado debido a un error.");
 		}
+		logger.debug(respCliente);
 		return respCliente;
 	}
 
