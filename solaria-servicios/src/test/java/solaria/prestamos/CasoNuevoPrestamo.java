@@ -32,12 +32,13 @@ public class CasoNuevoPrestamo {
 	@Before
 	public void setUp() throws Exception {
 		daoResp = DataTest.getSTPrestamoOK();
-		when(prestamoDAO.save(helperVoEntity.toEntity(DataTest.getPrestamoValido()))).thenReturn(daoResp);
+		//when(prestamoDAO.save(helperVoEntity.toEntity(DataTest.getPrestamoValido()))).thenReturn(daoResp);
+		when( prestamoDAO.save( (SolaTabPrestamo) anyObject() ) ).thenReturn(daoResp);
 		servicio.setPrestamoDAO(prestamoDAO);
 	}
 
 	@Test
-	public void nuevoPrestamoValido() {
+	public void nuevoPrestamoValidoOK() {
 		try {
 			
 			ArgumentCaptor<SolaTabPrestamo> argumentCaptor = ArgumentCaptor.forClass(SolaTabPrestamo.class);
@@ -48,16 +49,17 @@ public class CasoNuevoPrestamo {
 			prestamo = servicio.nuevoPrestamo(prestamo);
 			verify(prestamoDAO).save(argumentCaptor.capture());
 			logger.info("<<<< "+prestamo);
-			assertNotNull(prestamo);
+			assertTrue(prestamo.getPrestamoCodPrestamo() > 0);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			assertTrue(false);
 		}
+		logger.info(" \n - \n ");
 	}
 	
 	@Test
-	public void nuevoPrestamoFechasIgual() {
+	public void nuevoPrestamoFechasIgualOK() {
 		try {
 			
 			VoPrestamo prestamo = DataTest.getPrestamoFechasIgual();
@@ -67,15 +69,16 @@ public class CasoNuevoPrestamo {
 			verify(prestamoDAO).save(any(SolaTabPrestamo.class));
 			logger.info("<<<< "+prestamo);
 			
-			assertNotNull(prestamo);
+			assertTrue(prestamo.getPrestamoCodPrestamo() > 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			assertTrue(false);
 		}
+		logger.info(" \n - \n ");
 	}
 	
 	@Test
-	public void nuevoPrestamoFecIniMayorQueFecFinal() {
+	public void nuevoPrestamoFecIniMayorQueFecFinalFAIL() {
 		try {
 			
 			VoPrestamo prestamo = DataTest.getPrestamoFechasIniDespuesQueFinal();
@@ -89,10 +92,11 @@ public class CasoNuevoPrestamo {
 			logger.error(e.getMessage());
 			assertTrue(e instanceof PrestamoNoValidoException );
 		}
+		logger.info(" \n - \n ");
 	}
 	
 	@Test
-	public void nuevoPrestamoClienteNulo() {
+	public void nuevoPrestamoClienteNuloFAIL() {
 		try {
 			
 			VoPrestamo prestamo = DataTest.getPrestamoClienteNull();
@@ -107,10 +111,11 @@ public class CasoNuevoPrestamo {
 			logger.error(e.getMessage());
 			assertTrue(e instanceof PrestamoNoValidoException );
 		}
+		logger.info(" \n - \n ");
 	}
 	
 	@Test
-	public void nuevoPrestamoClienteVacio() {
+	public void nuevoPrestamoClienteVacioFAIL() {
 		try {
 			
 			VoPrestamo prestamo = DataTest.getPrestamoClienteVacio();
@@ -125,10 +130,11 @@ public class CasoNuevoPrestamo {
 			logger.error(e.getMessage());
 			assertTrue(e instanceof PrestamoNoValidoException );
 		}
+		logger.info(" \n - \n ");
 	}
 	
 	@Test
-	public void nuevoPrestamoLibroNulo() {
+	public void nuevoPrestamoLibroNuloFAIL() {
 		try {
 			
 			VoPrestamo prestamo = DataTest.getPrestamoLibroNull();
@@ -144,10 +150,11 @@ public class CasoNuevoPrestamo {
 			logger.error(e.getMessage());
 			assertTrue(e instanceof PrestamoNoValidoException );
 		}
+		logger.info(" \n - \n ");
 	}
 	
 	@Test
-	public void nuevoPrestamoLibroVacio() {
+	public void nuevoPrestamoLibroVacioFAIL() {
 		try {
 			
 			VoPrestamo prestamo = DataTest.getPrestamoLibroVacio();
@@ -163,6 +170,7 @@ public class CasoNuevoPrestamo {
 			logger.error(e.getMessage());
 			assertTrue(e instanceof PrestamoNoValidoException );
 		}
+		logger.info(" \n - \n ");
 	}
 
 
