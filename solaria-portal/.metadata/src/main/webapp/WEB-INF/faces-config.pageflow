@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13518901514550" configfile="/solaria-portal/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="template/login.xhtml" id="pf13528976425740" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13528976425751" path="/template/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="protected/dashboard.xhtml" x="336" y="24" id="pf13528976425752" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf13528976425753" inlinks="pf13528976425751 pf13535484074130" path="/protected/dashboard.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="protected/prestamos/form_prestamo.xhtml" x="408" y="216" id="pf13528976425754" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" outlinks="pf13535484074130" inlinks="pf13528976425753" path="/protected/prestamos/form_prestamo.xhtml"/>
+  <links id="pf13528976425751" target="pf13528976425752" source="pf13528976425740" outcome="dashboard" redirect="true"/>
+  <links id="pf13528976425753" target="pf13528976425754" source="pf13528976425752" outcome="pres_form_prestamo" redirect="true">
+    <bendPoints d1Width="-39" d1Height="160" d2Width="-154" d2Height="-32"/>
+  </links>
+  <links id="pf13535484074130" target="pf13528976425752" source="pf13528976425754" outcome="dashboard" redirect="true">
+    <bendPoints d1Width="32" d1Height="-129" d2Width="147" d2Height="63"/>
+  </links>
+</pageflow:Pageflow>

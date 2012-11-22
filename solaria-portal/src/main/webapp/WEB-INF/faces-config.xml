@@ -39,6 +39,15 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<display-name>protected/prestamos/form_prestamo.xhtml</display-name>
+		<from-view-id>/protected/prestamos/form_prestamo.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/protected/dashboard.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 
 
 	<lifecycle>

@@ -35,14 +35,14 @@
 					<div class="control-group">
 						<label class="control-label">Nombre Alumno</label>
 						<div class="controls">
-							<h:inputText value="#{prestamoBean.voCliente.nombreCompleto}" id="cpoNombreCliente" styleClass="span6" />
+							<h:inputText value="#{prestamoSessionBean.clienteEncontrado.nombreCompleto}" id="cpoNombreCliente" styleClass="span6" />
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">RUN Alumno</label>
 						<div class="controls">
-							<h:inputText value="#{prestamoBean.voCliente.clienteIdentificador}" id="cpoIdentCliente" styleClass="span2" />
+							<h:inputText value="#{prestamoSessionBean.clienteEncontrado.clienteIdentificador}" id="cpoIdentCliente" styleClass="span2" />
 						</div>
 					</div>
 
@@ -65,14 +65,14 @@
 					<div class="control-group">
 						<label class="control-label">Titulo</label>
 						<div class="controls">
-							<h:inputText id="cpoTitulo" value="#{prestamoBean.voLibroEncontrado.libroTitulo}" styleClass="span6" />
+							<h:inputText id="cpoTitulo" value="#{prestamoSessionBean.libroEncontrado.libroTitulo}" styleClass="span6" />
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">Código</label>
 						<div class="controls">
-							<h:inputText id="cpoCodigoLibro" value="#{prestamoBean.voLibroEncontrado.libroIdInterno}" styleClass="span2" />
+							<h:inputText id="cpoCodigoLibro" value="#{prestamoSessionBean.libroEncontrado.libroIdInterno}" styleClass="span2" />
 						</div>
 					</div>
 
@@ -85,22 +85,25 @@
 					<div class="control-group">
 						<label class="control-label">Desde</label>
 						<div class="controls">
-							<p:calendar language="ES" pattern="dd-MM-yyyy"/>
+							<p:calendar value="#{prestamoBean.cpoFechaInicio}" language="ES" pattern="dd-MM-yyyy">
+								 <p:ajax update="fecFinal" event="dateSelect" 
+                    				listener="#{prestamoBean.actualizaFechaFinal}"/>  
+							</p:calendar>
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">Hasta</label>
 						<div class="controls">
-							<p:calendar pattern="dd-MM-yyyy" />
+							<p:calendar id="fecFinal" value="#{prestamoBean.cpoFechaFinal}" mindate="#{prestamoBean.cpoFechaInicio}" pattern="dd-MM-yyyy" />
 						</div>
 					</div>
 
 				</fieldset>
 
-				<p:messages id="msgLogin" />
+				<p:messages id="msgPrestamo" />
 
-				<p:commandButton styleClass="btn btn-info" value="Guardar" />
+				<p:commandButton actionListener="#{prestamoBean.doGuardarNuevoPrestamo}" styleClass="btn btn-info" value="Guardar" update="msgPrestamo" />
 
 			</h:form>
 
