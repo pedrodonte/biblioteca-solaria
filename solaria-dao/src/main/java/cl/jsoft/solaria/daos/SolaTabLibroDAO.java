@@ -30,35 +30,78 @@ public class SolaTabLibroDAO extends GenericDAO<SolaTabLibro, Long> {
 
 	public static final String SQL_FILTRAR_POR_ID_INTERNO_LIKE = "select model from SolaTabLibro model where model.libroIdInterno like :libroIdInterno";
 	public static final String SQL_FILTRAR_POR_ID_INTERNO_ONE = "select model from SolaTabLibro model where model.libroIdInterno = :libroIdInterno";
+	
+	public static final String SQL_FILTRAR_POR_TITULO_LIKE = "select model from SolaTabLibro model where lower(model.libroTitulo) like :libroTitulo";
+	public static final String SQL_FILTRAR_POR_AUTOR_LIKE = "select model from SolaTabLibro model where lower(model.libroNombreAutor) like :libroNombreAutor";
 
 	public SolaTabLibroDAO() {
 		super(SolaTabLibro.class);
 	}
+	
+	private Map<String, Object> parameters = new HashMap<String, Object>();
 
 	public List<SolaTabLibro> buscaRegistrosPorIdInterno(String codigoInterno) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put(LIBRO_ID_INTERNO, "%" + codigoInterno);
-		return super.findManyResult(SQL_FILTRAR_POR_ID_INTERNO_LIKE, parameters);
+		try {
+			parameters.put(LIBRO_ID_INTERNO, "%" + codigoInterno);
+			return super.findManyResult(SQL_FILTRAR_POR_ID_INTERNO_LIKE, parameters);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<SolaTabLibro> buscaRegistrosPorTitulo(String titulo) {
+		try {
+			parameters.put(LIBRO_TITULO, "%" + titulo + "%");
+			return super.findManyResult(SQL_FILTRAR_POR_TITULO_LIKE, parameters);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<SolaTabLibro> buscaRegistrosPorAutor(String autor) {
+		try {
+			parameters.put(LIBRO_NOMBRE_AUTOR, "%" + autor + "%");
+			return super.findManyResult(SQL_FILTRAR_POR_AUTOR_LIKE, parameters);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public SolaTabLibro buscaRegistroPorIdInterno(String codigoInterno) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put(LIBRO_ID_INTERNO, codigoInterno);
-		return super.findOneResult(SQL_FILTRAR_POR_ID_INTERNO_ONE, parameters);
+		try {
+			parameters.put(LIBRO_ID_INTERNO, codigoInterno);
+			return super.findOneResult(SQL_FILTRAR_POR_ID_INTERNO_ONE, parameters);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public SolaTabLibro save(SolaTabLibro entity) {
-		Timestamp libroFecInsert = new Timestamp(new Date().getTime());
-		entity.setLibroFecInsert(libroFecInsert);
-		return super.save(entity);
+		try {
+			Timestamp libroFecInsert = new Timestamp(new Date().getTime());
+			entity.setLibroFecInsert(libroFecInsert);
+			return super.save(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public SolaTabLibro update(SolaTabLibro entity) {
-		Timestamp libroFecUpdate = new Timestamp(new Date().getTime());
-		entity.setLibroFecUpdate(libroFecUpdate);
-		return super.update(entity);
+		try {
+			Timestamp libroFecUpdate = new Timestamp(new Date().getTime());
+			entity.setLibroFecUpdate(libroFecUpdate);
+			return super.update(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	

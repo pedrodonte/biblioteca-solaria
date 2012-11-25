@@ -48,6 +48,42 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<display-name>protected/dashboard.xhtml</display-name>
+		<from-view-id>/protected/dashboard.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>form_foto</from-outcome>
+			<to-view-id>/protected/fotografia/form_fotografia.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>protected/fotografia/form_fotografia.xhtml</display-name>
+		<from-view-id>/protected/fotografia/form_fotografia.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/protected/dashboard.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>protected/dashboard.xhtml</display-name>
+		<from-view-id>/protected/dashboard.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>catalogo</from-outcome>
+			<to-view-id>/protected/catalogo/libros.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>protected/catalogo/libros.xhtml</display-name>
+		<from-view-id>/protected/catalogo/libros.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/protected/dashboard.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 
 
 	<lifecycle>

@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:p="http://primefaces.org/ui"
+	template="/template/tmpl_alpha.xhtml">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Tomar Fotografía</small>
+			</h1>
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+
+
+
+<style>
+	#formFotografia img{
+		max-width: none !important;
+	}
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    	$(".btn").removeClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only");
+    	$(".btn span").removeClass("ui-button-text");
+    	
+    }); 
+</script>
+
+<h:form id="formFotografia">
+		
+		<p:messages id="msgImagenes" showDetail="true" autoUpdate="true" closable="true" />
+		
+		<div class="row-fluid">
+			<div class="span12">
+				<h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login" style="margin-bottom:20px;" class="btn btn-success btn-large">     
+		    		Paso 1.- Tomar Fotografía
+				</h:outputLink>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+		  
+			  <div class="span6">
+			    <div class="thumbnail">
+			      <p:imageCropper id="imageCropper" value="#{fotoBean.croppedImage}" image="#{fotoBean.imgDefault}"	/>
+			      <h3>Fotografía Capturada</h3>
+			      <p:commandButton styleClass="btn btn-success" value="Paso 2.- Cortar Fotografía" action="#{fotoBean.crop}" update="localCroppedImage,msgImagenes"/>
+			    </div>
+			  </div>
+			  
+			  <div class="span6">
+			    <div class="thumbnail">
+			      <p:graphicImage id="localCroppedImage" value="/FotoServlet?filename=#{fotoBean.newImageName}" />
+			      <h3>Fotografía Recortada</h3>
+			      <p>Se recomienda usar un numero identificador único por ejemplo RUT ó DNI</p>
+					<h:inputText id="cpoNuevoNombreArchivo" value="#{fotoBean.nombreFinalArchivo}" styleClass="span8" />
+					<p:commandButton actionListener="#{fotoBean.doCambiarNombreArchivo}" 
+						styleClass="btn btn-success" update="cpoNuevoNombreArchivo, msgImagenes" value="Paso 3.- Nombre de Fotografía" />
+				   
+			    </div>
+			  </div>
+		  
+		</div>
+				
+			
+
+			<p:dialog id="dialog" header="Login" widgetVar="dlg">
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:photoCam widgetVar="pc" listener="#{fotoBean.oncapture}" update="imageCropper ,msgImagenes, formFotografia" />
+					<f:facet name="footer">
+						<p:commandButton type="button" value="Hacer Foto" onclick="pc.capture()" />
+					</f:facet>
+				</h:panelGrid>
+			</p:dialog>
+
+		</h:form>
+    	
+	</ui:define>
+
+</ui:composition>

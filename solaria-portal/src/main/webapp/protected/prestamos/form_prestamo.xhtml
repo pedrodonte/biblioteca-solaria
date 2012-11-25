@@ -14,13 +14,26 @@
 	</ui:define>
 
 	<ui:define name="contenido">
+		<script>
+
+			function handleActionRequest(xhr, status, args) {
+				if (args.isActionSuccess) {
+
+					jQuery('fieldset, .pre-accion').fadeOut();
+					jQuery('.pos-accion').fadeIn();
+					
+				}
+			}
+			
+		</script>
+
 		<div class="container">
 
 			<h:form id="form_prestamo" styleClass="form-horizontal">
 
 				<fieldset>
 					<legend>Paso 1 : ¿Quien Pide?</legend>
-					<p:messages id="msgCliente" />
+					<p:messages id="msgCliente" showDetail="true"  closable="true" />
 					<div class="control-group">
 						<label class="control-label" for="inputRUN">RUN</label>
 						<div class="controls">
@@ -35,14 +48,18 @@
 					<div class="control-group">
 						<label class="control-label">Nombre Alumno</label>
 						<div class="controls">
-							<h:inputText value="#{prestamoSessionBean.clienteEncontrado.nombreCompleto}" id="cpoNombreCliente" styleClass="span6" />
+							<span class="input-xlarge uneditable-input span6"> 
+								<h:outputText value="#{prestamoSessionBean.clienteEncontrado.nombreCompleto}" id="cpoNombreCliente" />
+							</span>
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">RUN Alumno</label>
 						<div class="controls">
-							<h:inputText value="#{prestamoSessionBean.clienteEncontrado.clienteIdentificador}" id="cpoIdentCliente" styleClass="span2" />
+							<span class="input-xlarge uneditable-input span2"> 
+								<h:outputText value="#{prestamoSessionBean.clienteEncontrado.clienteIdentificador}" id="cpoIdentCliente" />
+							</span>
 						</div>
 					</div>
 
@@ -50,7 +67,7 @@
 				
 				<fieldset>
 					<legend>Paso 2 : ¿Cual Libro?</legend>
-					<p:messages id="msgLibro" />
+					<p:messages id="msgLibro" showDetail="true"  closable="true" />
 					<div class="control-group">
 						<label class="control-label" >Código Libro</label>
 						<div class="controls">
@@ -65,14 +82,18 @@
 					<div class="control-group">
 						<label class="control-label">Titulo</label>
 						<div class="controls">
-							<h:inputText id="cpoTitulo" value="#{prestamoSessionBean.libroEncontrado.libroTitulo}" styleClass="span6" />
+							<span class="input-xlarge uneditable-input span6"> 
+								<h:outputText id="cpoTitulo" value="#{prestamoSessionBean.libroEncontrado.libroTitulo}" />
+							</span>
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">Código</label>
 						<div class="controls">
-							<h:inputText id="cpoCodigoLibro" value="#{prestamoSessionBean.libroEncontrado.libroIdInterno}" styleClass="span2" />
+							<span class="input-xlarge uneditable-input span2"> 
+								<h:outputText id="cpoCodigoLibro" value="#{prestamoSessionBean.libroEncontrado.libroIdInterno}"/>
+							</span>
 						</div>
 					</div>
 
@@ -101,14 +122,35 @@
 
 				</fieldset>
 
-				<p:messages id="msgPrestamo" />
+				<p:messages id="msgPrestamo" severity="warn, error" showDetail="true"  closable="true" />
 
-				<p:commandButton actionListener="#{prestamoBean.doGuardarNuevoPrestamo}" styleClass="btn btn-info" value="Guardar" update="msgPrestamo" />
+				<div class="form-actions pre-accion">
+
+					<p:commandButton 
+						actionListener="#{prestamoBean.doGuardarNuevoPrestamo}"
+						styleClass="btn btn-info" value="Guardar" update="msgPrestamo, msgExitoOperacion"
+						oncomplete="handleActionRequest(xhr, status, args)" /> 
+					
+					<p:commandButton action="#{solariaBean.forwardDashboard}"
+						immediate="true" styleClass="btn" value="Cancelar" />
+						
+				</div>
+				
+					
+					
+						
+						<div class="alert alert-success pos-accion" style="display:none;">
+						  <h4>Acción Ejecutada con Éxito</h4>
+						  <p><h:outputText id="msgExitoOperacion" value="#{prestamoBean.msgResultadoPrestamo}" /></p>
+						  <p:commandButton action="#{solariaBean.forwardDashboard}" 
+							immediate="true" styleClass="btn btn-success " value="Aceptar" />
+						</div>
 
 			</h:form>
 
 		</div>
-		<!-- /container -->
+
+		
 	</ui:define>
 
 </ui:composition>

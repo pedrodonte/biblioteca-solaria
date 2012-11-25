@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:p="http://primefaces.org/ui"
+	template="/template/tmpl_alpha.xhtml">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Catalogo de Libros</small>
+			</h1>
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+
+		<div class="container">
+		
+			 <h:form>
+		
+	        <div class="control-group">
+				<label class="control-label">Buscar Libro</label>
+				<div class="controls">
+					<div class="input-append">
+						<h:inputText value="#{catalogoBean.textoBusqueda}" styleClass="span4" required="true" />
+						<p:commandButton actionListener="#{catalogoBean.doBuscarLibro}" 
+							 styleClass="btn btn-primary" value="Buscar" update="tablaLibros" />
+					</div>
+				</div>
+			</div>
+			
+			<p:selectOneRadio value="#{catalogoBean.buscarLibroPor}" >
+	        	<f:selectItem itemLabel="Autor" itemValue="1" />  
+	            <f:selectItem itemLabel="Titulo" itemValue="2" />  
+	            <f:selectItem itemLabel="Código" itemValue="3" /> 
+	        </p:selectOneRadio>
+			
+			<p:messages id="msgCliente" showDetail="true" autoUpdate="true"  closable="true" />
+			 
+    		<h:dataTable id="tablaLibros" value="#{catalogoBean.libros}" var="o" styleClass="table"	>
+ 
+    		<h:column>
+    			<f:facet name="header">
+<!--     			   <h:commandLink action="#{order.sortByOrderNo}"> -->
+    				Código
+<!--     			   </h:commandLink> -->
+    			</f:facet>
+    			#{o.libroCodLibro}
+    		</h:column>
+ 
+    		<h:column>
+    			<f:facet name="header">Titulo</f:facet>
+    			#{o.libroTitulo}
+    		</h:column>
+    		
+    		<h:column>
+    			<f:facet name="header">Autor</f:facet>
+    			#{o.libroNombreAutor}
+    		</h:column>
+  
+    	    </h:dataTable>
+    	  </h:form>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

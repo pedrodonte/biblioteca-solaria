@@ -12,11 +12,11 @@ public interface LibroServicesEJB {
 
 	public VoLibro buscarLibroCodigoInterno(String codigoInterno) throws RegistrosNoEncontradosException;
 	
-	public List<VoLibro> buscarLibrosPorAutor(String codigoInterno) throws RegistrosNoEncontradosException;
+	public List<VoLibro> buscarLibrosPorAutor(String strAutor) throws RegistrosNoEncontradosException;
 	
 	public List<VoLibro> buscarLibrosPorCodigoInterno(String codigoInterno) throws RegistrosNoEncontradosException;
 	
-	public List<VoLibro> buscarLibrosPorTitulo(String codigoInterno) throws RegistrosNoEncontradosException;
+	public List<VoLibro> buscarLibrosPorTitulo(String srtTitulo) throws RegistrosNoEncontradosException;
 	
 	public boolean validarDisponibilidadLibro(VoLibro voLibro);
 

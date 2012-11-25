@@ -9,19 +9,6 @@
 <meta charset="UTF-8" />
 
 
-<link href="#{request.contextPath}/bootstrap/css/bootstrap.css"	rel="stylesheet" />
-<!-- <link href="#{request.contextPath}/bootstrap/css/bootstrap-responsive.css"	rel="stylesheet" /> -->
-<link href="#{request.contextPath}/template/css/sprite-araucaria.css" rel="stylesheet" />
-
-
-<script type="text/javascript">
-    $(document).ready(function () {
-    	$(".dropdown-toggle").dropdown();
-    	$(".btn").removeClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only");
-    	$(".btn span").removeClass("ui-button-text");
-    	
-    }); 
-</script>
 
 	<ui:insert name="elemento-head">
 		<title>#{msgs['titulo.aplicacion']}</title>
@@ -64,9 +51,6 @@
 		<!-- Begin page content -->
 		<div class="container">
 			
-			<div id="div-menu-header" style="margin-bottom: 55px;">
-				<ui:include src="/template/include_header.xhtml" />
-			</div>
 			
 			<ui:insert name="titulo-pagina">
 				<div class="page-header">
@@ -98,8 +82,6 @@
 	        <h:outputText value="" />  
 	    </f:facet>  
 	</p:ajaxStatus>  
-
-	<script src="#{request.contextPath}/bootstrap/js/bootstrap.js"></script>
 
 </h:body>
 </html>

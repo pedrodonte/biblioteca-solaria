@@ -7,6 +7,8 @@ public class SolariaController {
 
 	public static final String DASHBOARD= "dashboard";
 	public static final String LOGIN_FORM= "login";
+	public static final String FORM_FOTOGRAFIA = "form_foto";
+	public static final String CATALOGO = "catalogo";
 	
 	public static final String PRES_FORM_PRESTAMO= "pres_form_prestamo";
 	
@@ -17,6 +19,14 @@ public class SolariaController {
 	
 	public String fwdPresFormPrestamo(){
 		return PRES_FORM_PRESTAMO;
+	}
+	
+	public String fwdFormFotografia(){
+		return FORM_FOTOGRAFIA;
+	}
+	
+	public String fwdCatalogo(){
+		return CATALOGO;
 	}
 
 }

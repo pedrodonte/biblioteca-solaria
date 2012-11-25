@@ -56,10 +56,25 @@ public class LibroServicesEJBImpl implements LibroServicesEJB {
 	}
 
 	@Override
-	public List<VoLibro> buscarLibrosPorAutor(String codigoInterno)
+	public List<VoLibro> buscarLibrosPorAutor(String autor)
 			throws RegistrosNoEncontradosException {
-		// TODO Auto-generated method stub
-				return null;
+		List<VoLibro> respLibros = new ArrayList<VoLibro>();
+		try {
+			List<SolaTabLibro> eLibros = libroDAO.buscaRegistrosPorAutor(autor);
+			if (eLibros.size() > 0) {
+				for (SolaTabLibro eLibro : eLibros) {
+					respLibros.add( helperVoEntity.toVO(eLibro) );
+				}
+			}else{
+				throw new RegistrosNoEncontradosException("No existen registros para el parametro:[ "+autor+" ]");
+			}
+		}catch(NullPointerException npe){
+			throw new RegistrosNoEncontradosException("El registro no pudo ser encontrado debido a un error, NullPointerException");
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new RegistrosNoEncontradosException("El registro no pudo ser encontrado debido a un error.");
+		}
+		return respLibros;
 	}
 
 	@Override
@@ -83,11 +98,25 @@ public class LibroServicesEJBImpl implements LibroServicesEJB {
 	}
 
 	@Override
-	public List<VoLibro> buscarLibrosPorTitulo(String codigoInterno)
+	public List<VoLibro> buscarLibrosPorTitulo(String titulo)
 			throws RegistrosNoEncontradosException {
-		// TODO Auto-generated method stub
-				return null;
+		List<VoLibro> respLibros = new ArrayList<VoLibro>();
+		try {
+			List<SolaTabLibro> eLibros = libroDAO.buscaRegistrosPorTitulo(titulo);
+			if (eLibros.size() > 0) {
+				for (SolaTabLibro eLibro : eLibros) {
+					respLibros.add( helperVoEntity.toVO(eLibro) );
+				}
+			}else{
+				throw new RegistrosNoEncontradosException("No existen registros para el parametro:[ "+titulo+" ]");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RegistrosNoEncontradosException("El registro no pudo ser encontrado debido a un error.");
+		}
+		return respLibros;
 	}
+	
 
 	@Override
 	public boolean validarDisponibilidadLibro(VoLibro voLibro) {
