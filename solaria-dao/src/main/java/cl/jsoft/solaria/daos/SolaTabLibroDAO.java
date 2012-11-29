@@ -38,10 +38,11 @@ public class SolaTabLibroDAO extends GenericDAO<SolaTabLibro, Long> {
 		super(SolaTabLibro.class);
 	}
 	
-	private Map<String, Object> parameters = new HashMap<String, Object>();
+	private Map<String, Object> parameters;
 
 	public List<SolaTabLibro> buscaRegistrosPorIdInterno(String codigoInterno) {
 		try {
+			parameters = new HashMap<String, Object>();
 			parameters.put(LIBRO_ID_INTERNO, "%" + codigoInterno);
 			return super.findManyResult(SQL_FILTRAR_POR_ID_INTERNO_LIKE, parameters);
 		} catch (Exception e) {
@@ -52,6 +53,7 @@ public class SolaTabLibroDAO extends GenericDAO<SolaTabLibro, Long> {
 	
 	public List<SolaTabLibro> buscaRegistrosPorTitulo(String titulo) {
 		try {
+			parameters = new HashMap<String, Object>();
 			parameters.put(LIBRO_TITULO, "%" + titulo + "%");
 			return super.findManyResult(SQL_FILTRAR_POR_TITULO_LIKE, parameters);
 		} catch (Exception e) {
@@ -62,6 +64,7 @@ public class SolaTabLibroDAO extends GenericDAO<SolaTabLibro, Long> {
 	
 	public List<SolaTabLibro> buscaRegistrosPorAutor(String autor) {
 		try {
+			parameters = new HashMap<String, Object>();
 			parameters.put(LIBRO_NOMBRE_AUTOR, "%" + autor + "%");
 			return super.findManyResult(SQL_FILTRAR_POR_AUTOR_LIKE, parameters);
 		} catch (Exception e) {
@@ -72,6 +75,7 @@ public class SolaTabLibroDAO extends GenericDAO<SolaTabLibro, Long> {
 	
 	public SolaTabLibro buscaRegistroPorIdInterno(String codigoInterno) {
 		try {
+			parameters = new HashMap<String, Object>();
 			parameters.put(LIBRO_ID_INTERNO, codigoInterno);
 			return super.findOneResult(SQL_FILTRAR_POR_ID_INTERNO_ONE, parameters);
 		} catch (Exception e) {

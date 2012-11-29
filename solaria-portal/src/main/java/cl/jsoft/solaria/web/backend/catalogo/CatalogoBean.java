@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.BeforeCompletion;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.apache.log4j.Logger;
@@ -18,6 +18,7 @@ import cl.jsoft.solaria.servicios.LibroServicesEJB;
 import cl.jsoft.solaria.web.controllers.MensajesBean;
 
 @ManagedBean
+@ViewScoped
 public class CatalogoBean {
 	
 	private Logger logger = Logger.getLogger(getClass());
@@ -37,8 +38,11 @@ public class CatalogoBean {
 	private String textoBusqueda;
 	
 	private List<VoLibro> libros = new ArrayList<VoLibro>();
+	private VoLibro libroSeleccionado = new VoLibro(); // #{catalogoBean.libroSeleccionado}
 	
 	public void doBuscarLibro(ActionEvent actionEvent) {
+		
+		logger.debug("Buscando por "+buscarLibroPor+", "+textoBusqueda);
 		
 		try {
 			
@@ -56,7 +60,8 @@ public class CatalogoBean {
 				mensajesBean.msgWarn("Revice los datos ingresados para la búsqueda e intente nuevamente.");
 				break;
 			}
-			
+			logger.debug(libros.size()+" registros encontrados");
+			mensajesBean.msgInfo(libros.size()+" registros encontrados");
 		} catch (RegistrosNoEncontradosException e) {
 			mensajesBean.msgWarn("Búsqueda sin resultados.");
 		}
@@ -102,6 +107,15 @@ public class CatalogoBean {
 
 	public void setMensajesBean(MensajesBean mensajesBean) {
 		this.mensajesBean = mensajesBean;
+	}
+
+	public VoLibro getLibroSeleccionado() {
+		return libroSeleccionado;
+	}
+
+	public void setLibroSeleccionado(VoLibro libroSeleccionado) {
+		logger.debug("Selección :"+libroSeleccionado);
+		this.libroSeleccionado = libroSeleccionado;
 	}
 	
 	

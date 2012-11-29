@@ -14,10 +14,23 @@
 	</ui:define>
 
 	<ui:define name="contenido">
+	
+	<style>
+		.ui-paginator-top{
+			display: none !important;
+		}
+		
+		.ui-widget-header a { color: #333333 !important; }
+		
+		
+	</style>
+	
+	
+	
 
 		<div class="container">
 		
-			 <h:form>
+			 <h:form id="formCatalogo">
 		
 	        <div class="control-group">
 				<label class="control-label">Buscar Libro</label>
@@ -25,7 +38,7 @@
 					<div class="input-append">
 						<h:inputText value="#{catalogoBean.textoBusqueda}" styleClass="span4" required="true" />
 						<p:commandButton actionListener="#{catalogoBean.doBuscarLibro}" 
-							 styleClass="btn btn-primary" value="Buscar" update="tablaLibros" />
+							 styleClass="btn btn-primary" value="Buscar" update="tablaLibros"/>
 					</div>
 				</div>
 			</div>
@@ -37,29 +50,75 @@
 	        </p:selectOneRadio>
 			
 			<p:messages id="msgCliente" showDetail="true" autoUpdate="true"  closable="true" />
-			 
-    		<h:dataTable id="tablaLibros" value="#{catalogoBean.libros}" var="o" styleClass="table"	>
+			
+			
+			
+		 
+    		<p:dataTable id="tablaLibros" value="#{catalogoBean.libros}" 
+    		var="item" styleClass="table" selectionMode="single"
+    		rowKey="#{item.libroCodLibro}" selection="#{catalogoBean.libroSeleccionado}"
+    		paginator="true" rows="10"	>
+    		
+    		<f:facet name="header">
+				<div class="btn-group">
+					<p:commandLink update=":formCatalogo:display" oncomplete="carDialog.show()"
+					styleClass="btn "><i class="icon-eye-open "></i>Ver</p:commandLink>
+				  <button class="btn "><i class="icon-pencil "></i>Editar</button>
+				  <button class="btn "><i class="icon-share-alt "></i>Prestar</button>
+				</div>
+			</f:facet>
  
-    		<h:column>
+    		<p:column>
     			<f:facet name="header">
 <!--     			   <h:commandLink action="#{order.sortByOrderNo}"> -->
     				Código
 <!--     			   </h:commandLink> -->
     			</f:facet>
-    			#{o.libroCodLibro}
-    		</h:column>
+    			#{item.libroCodLibro}
+    		</p:column>
  
-    		<h:column>
+    		<p:column>
     			<f:facet name="header">Titulo</f:facet>
-    			#{o.libroTitulo}
-    		</h:column>
+    			#{item.libroTitulo}
+    		</p:column>
     		
-    		<h:column>
+    		<p:column>
     			<f:facet name="header">Autor</f:facet>
-    			#{o.libroNombreAutor}
-    		</h:column>
+    			#{item.libroNombreAutor}
+    		</p:column>
+ 
   
-    	    </h:dataTable>
+    	    </p:dataTable>
+    	    
+<!--     	    dialogo detalle -->
+<p:dialog id="dialog" header="Detalle del Libro" widgetVar="carDialog" resizable="false"  
+              width="600" showEffect="clip" hideEffect="fold">  
+  
+        <h:panelGrid id="display" columns="2" cellpadding="4">
+          
+  			<h:outputText value="Código" />  
+            <h:outputText value="#{catalogoBean.libroSeleccionado.libroCodLibro}" />  
+  
+            <h:outputText value="Titulo" />  
+            <h:outputText value="#{catalogoBean.libroSeleccionado.libroTitulo}" />
+            
+            <h:outputText value="Autor" />  
+            <h:outputText value="#{catalogoBean.libroSeleccionado.libroNombreAutor}" />
+            
+            <h:outputText value="Editorial" />  
+            <h:outputText value="#{catalogoBean.libroSeleccionado.libroNombreEditorial}" /> 
+            
+            <h:outputText value="Nro Edición" />  
+            <h:outputText value="#{catalogoBean.libroSeleccionado.libroNroEdicion}" />  
+            
+            <h:outputText value="Año Edición" />  
+            <h:outputText value="#{catalogoBean.libroSeleccionado.libroAnioEdicion}" />   
+
+        </h:panelGrid>  
+    </p:dialog>  
+
+    	    
+    	    
     	  </h:form>
 
 		</div>

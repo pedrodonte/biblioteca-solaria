@@ -35,7 +35,7 @@
 		
 		<dependency>
             <groupId>org.primefaces.themes</groupId>
-            <artifactId>bootstrap</artifactId>
+            <artifactId>humanity</artifactId>
             <version>1.0.8</version>
         </dependency>
 
