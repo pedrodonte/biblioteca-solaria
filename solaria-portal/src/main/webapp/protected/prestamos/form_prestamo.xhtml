@@ -2,6 +2,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
 	template="/template/tmpl_alpha.xhtml"
 	xmlns:p="http://primefaces.org/ui">
 
@@ -14,8 +15,9 @@
 	</ui:define>
 
 	<ui:define name="contenido">
-		<script>
-
+	
+		<script type="text/javascript">
+		
 			function handleActionRequest(xhr, status, args) {
 				if (args.isActionSuccess) {
 
@@ -26,7 +28,8 @@
 			}
 			
 		</script>
-
+		
+		
 		<div class="container">
 
 			<h:form id="form_prestamo" styleClass="form-horizontal">
@@ -39,11 +42,25 @@
 						<div class="controls">
 							<div class="input-append">
 								<h:inputText id="inputRUN" value="#{prestamoBean.cpoIdentificadorCliente}" styleClass="span2" />
-								<p:commandButton actionListener="#{prestamoBean.doBuscarClienteIdentificador}" 
-									update="cpoIdentCliente,cpoNombreCliente,msgCliente" styleClass="btn btn-primary" value="Buscar" />
+								<p:commandLink actionListener="#{prestamoBean.doBuscarClienteIdentificador}" 
+									update="cpoIdentCliente,cpoNombreCliente,msgCliente" 
+									styleClass="btn btn-primary" ><i class="icon-search icon-white"></i> Buscar por RUN</p:commandLink>
 							</div>
 						</div>
 					</div>
+					
+					
+					<div class="control-group">
+						<div class="controls">
+							<p:commandLink id="btnBuscaxNombre" oncomplete="buscadorNombreApellido.show()" value="Buscar por nombre y apellido" styleClass="btn btn-link" />
+							<p:tooltip for="btnBuscaxNombre" showEffect="slide" hideEffect="slide"
+								value="Búsqueda alternativa, busca por combinación de nombre y apellido."  /> 
+						</div>
+					</div>
+					
+					
+					
+							
 
 					<div class="control-group">
 						<label class="control-label">Nombre Alumno</label>
@@ -73,8 +90,9 @@
 						<div class="controls">
 							<div class="input-append">
 								<h:inputText value="#{prestamoBean.cpoCodigoInterno}"  styleClass="span2" />
-								<p:commandButton actionListener="#{prestamoBean.doBuscarLibroCodigoInterno}" 
-									update="cpoTitulo,cpoCodigoLibro,msgLibro" styleClass="btn btn-primary" value="Buscar" />
+								<p:commandLink actionListener="#{prestamoBean.doBuscarLibroCodigoInterno}" 
+									update="cpoTitulo,cpoCodigoLibro,msgLibro"
+									styleClass="btn btn-primary"><i class="icon-search icon-white"></i> Buscar Libro</p:commandLink>
 							</div>
 						</div>
 					</div>
@@ -135,16 +153,62 @@
 						immediate="true" styleClass="btn" value="Cancelar" />
 						
 				</div>
-				
-					
-					
 						
-						<div class="alert alert-success pos-accion" style="display:none;">
-						  <h4>Acción Ejecutada con Éxito</h4>
-						  <p><h:outputText id="msgExitoOperacion" value="#{prestamoBean.msgResultadoPrestamo}" /></p>
-						  <p:commandButton action="#{solariaBean.forwardDashboard}" 
-							immediate="true" styleClass="btn btn-success " value="Aceptar" />
-						</div>
+				<div class="alert alert-success pos-accion" style="display:none;">
+				  <h4>Acción Ejecutada con Éxito</h4>
+				  <p><h:outputText id="msgExitoOperacion" value="#{prestamoBean.msgResultadoPrestamo}" /></p>
+				  <p:commandButton action="#{solariaBean.forwardDashboard}" 
+					immediate="true" styleClass="btn btn-success " value="Aceptar" />
+				</div>
+
+
+				<p:dialog id="buscadorNombreApellido"  widgetVar="buscadorNombreApellido" width="600"
+					 header="Buscador por Nombre y Apellido" modal="true" closable="true" showEffect="slide">
+					 
+				 	<p:messages autoUpdate="true" showDetail="true" closable="true" />
+					
+					<div class="control-group">
+					    <label class="control-label" >Nombres</label>
+					    <div class="controls">
+					      <p:inputText value="#{prestamoBean.nombres}" />
+					    </div>
+					</div>
+					
+					<div class="control-group">
+					    <label class="control-label" >Apellidos</label>
+					    <div class="controls">
+					      <p:inputText value="#{prestamoBean.apellidos}" />
+					    </div>
+					</div>
+					
+					<div class="control-group">
+					    <div class="controls">
+					      <p:commandLink 
+					      		actionListener="#{prestamoBean.doBuscaXNombreApellido}" styleClass="btn"
+						    	update="comboClientesEncontrados"><i class="icon-search"></i> Buscar</p:commandLink>
+					    </div>
+					</div>
+					
+					<div class="control-group">
+					    <label class="control-label" >Coinsidencias de Búsquedas</label>
+					    <div class="controls">
+					       <p:selectOneMenu id="comboClientesEncontrados" style="width:100%;"
+						    	value="#{prestamoSessionBean.clienteEncontrado}" 
+						    	valueChangeListener="#{prestamoBean.doSeleccionaCliente}"
+						    	converter="clienteConverter" >
+						    		
+	 					    		<f:ajax render=":form_prestamo:cpoNombreCliente :form_prestamo:cpoIdentCliente" />
+						    	
+						            <f:selectItem itemLabel="Seleccione un Registro" itemValue="" />  
+						            <f:selectItems value="#{prestamoBean.clientesEncontrados}" var="item" itemLabel="#{item.selectOneMenu}" itemValue="#{item}"/>  
+						            
+							</p:selectOneMenu>
+					    </div>
+					</div>
+					
+					<p:commandLink oncomplete="buscadorNombreApellido.hide()" value="Cerrar Dialogo" styleClass="btn" />
+					
+				</p:dialog>
 
 			</h:form>
 

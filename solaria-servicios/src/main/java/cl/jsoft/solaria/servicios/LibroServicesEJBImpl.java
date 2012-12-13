@@ -47,11 +47,13 @@ public class LibroServicesEJBImpl implements LibroServicesEJB {
 	}
 
 	private String normalizarCodigoLibro(String codigoInterno) {
+		logger.debug("normalizarCodigoLibro "+codigoInterno);
+		
 		codigoInterno = codigoInterno.replace(" ", "");
 		codigoInterno = codigoInterno.replace("\\.", "");
 		NumberFormat nf = new DecimalFormat(FORMATO_NRO_REGISTRO);
 		codigoInterno = nf.format(Integer.parseInt(codigoInterno));
-		logger.debug("normalizarCodigoLibro "+codigoInterno);
+		
 		return codigoInterno;
 	}
 

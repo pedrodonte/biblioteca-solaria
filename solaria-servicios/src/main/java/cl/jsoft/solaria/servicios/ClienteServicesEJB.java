@@ -6,15 +6,21 @@ import javax.ejb.Local;
 
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoGrupocliente;
+import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 
 @Local
 public interface ClienteServicesEJB {
 	
-	public VoCliente buscarClientePorIdentificador(String nroRun) throws RegistrosNoEncontradosException;
+	public VoCliente buscarClientePorIdentificador(String nroRun) throws RegistrosNoEncontradosException, ErrorDelSistemaException;
 	
-	public List<VoCliente> buscarClientesPorGrupo(VoGrupocliente grupo) throws RegistrosNoEncontradosException;
+	public List<VoCliente> buscarClientesPorGrupo(VoGrupocliente grupo) throws RegistrosNoEncontradosException, ErrorDelSistemaException;
 	
-	public List<VoCliente> buscarTodosLosClientes(VoGrupocliente grupo) throws RegistrosNoEncontradosException;
+	public List<VoCliente> buscarTodosLosClientes() throws RegistrosNoEncontradosException, ErrorDelSistemaException;
+	
+	public List<VoCliente> buscarClientesPorNombresApellidos(String nombres, String apellidos) throws RegistrosNoEncontradosException, ErrorDelSistemaException;
+	
+	
+	public List<VoGrupocliente> buscarTodosGruposCliente() throws RegistrosNoEncontradosException, ErrorDelSistemaException;
 
 }

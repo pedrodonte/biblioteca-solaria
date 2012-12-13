@@ -32,6 +32,15 @@ public class ClienteDAO {
 		SolaTabCliente cliente = servicio.buscaRegistroPorIdentificador(runCliente);
 		System.out.println(cliente);
 	}
+	
+	@Test
+	public void buscarClientesPorNombresApellidos(){
+		
+		List<SolaTabCliente> items = servicio.buscaRegistroPorNombreApellido("pedro", "");
+		for(SolaTabCliente solaTabCliente : items){
+			System.out.println(solaTabCliente.getClienteNombres()+" "+solaTabCliente.getClienteApellidos());
+		}
+	}
 
 	/* *********************************************** *
 	 * METODOS DE CONFIGURACION DE LA CLASE DE PRUEBAS *

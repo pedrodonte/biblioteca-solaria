@@ -49,7 +49,8 @@ public class JSFLifeCycleListener implements PhaseListener {
 				NavigationHandler nh = facesContext.getApplication()
 						.getNavigationHandler();
 				nh.handleNavigation(facesContext, null, FORWARD_TO_LOGIN_FORM);
-				throw new ViewExpiredException();
+				log.debug("Redireccionando a LOGIN");
+				//throw new ViewExpiredException();
 			}
 			
 		}

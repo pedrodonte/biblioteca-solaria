@@ -16,8 +16,8 @@ import org.primefaces.context.RequestContext;
 @ManagedBean
 public class LoginBean {
 
-	private String username = "";
-	private String password = "";
+	private String username = "admin";
+	private String password = "admin";
 	
 	private FacesContext facesContext;
 	private RequestContext requestContext;
@@ -36,7 +36,9 @@ public class LoginBean {
 		
 		boolean isUsuarioValido = false;
 		
-		if(username.equals("admin") && password.equals("admin")){
+		boolean loginValido = true;//username.equals("admin") && password.equals("admin");
+		
+		if(loginValido){
 			isUsuarioValido  = true;
 			mostrarMensaje(FacesMessage.SEVERITY_INFO, "Login Exitoso.");
 		}else{

@@ -1,11 +1,15 @@
 package cl.jsoft.solaria.web.backend.prestamos;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
@@ -13,6 +17,7 @@ import org.primefaces.context.RequestContext;
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoLibro;
 import cl.jsoft.solaria.dominio.vos.VoPrestamo;
+import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 import cl.jsoft.solaria.servicios.ClienteServicesEJB;
 import cl.jsoft.solaria.servicios.LibroServicesEJB;
@@ -20,6 +25,7 @@ import cl.jsoft.solaria.servicios.PrestamoServicesEJB;
 import cl.jsoft.solaria.web.controllers.MensajesBean;
 
 @ManagedBean(name="prestamoBean")
+@ViewScoped
 public class FormPrestamoBean {
 	
 	private Logger logger = Logger.getLogger(getClass());
@@ -46,6 +52,24 @@ public class FormPrestamoBean {
 	private Date cpoFechaFinal = new Date();
 	
 	private String msgResultadoPrestamo="";	
+	
+	private String nombres = "";
+	private String apellidos = "";
+	private List<VoCliente> clientesEncontrados = new ArrayList<VoCliente>();
+	private VoCliente clienteBuscadoSeleccionado = new VoCliente();
+	
+	public void doBuscaXNombreApellido(ActionEvent actionEvent) {
+		logger.debug("nombre: "+nombres+", apellido: "+apellidos);
+		mensajesBean.msgInfo("nombre: "+nombres+", apellido: "+apellidos);
+		try {
+			setClientesEncontrados(clienteServicesEJB.buscarClientesPorNombresApellidos(nombres, apellidos));
+			
+		} catch (RegistrosNoEncontradosException e) {
+			logger.error(e.getMessage());
+		} catch (ErrorDelSistemaException e) {
+			logger.error(e.getMessage());
+		}
+	}
 
 
 	public void doBuscarLibroCodigoInterno(ActionEvent actionEvent) {
@@ -70,8 +94,14 @@ public class FormPrestamoBean {
 		} catch (RegistrosNoEncontradosException e) {
 			voCliente = new VoCliente();
 			mensajesBean.msgWarn("Registro no encontrado");
+		} catch (ErrorDelSistemaException e) {
+			mensajesBean.msgError("Error al ejecutar la operación");
 		}
 		
+	}
+	
+	public void doSeleccionaCliente(ValueChangeEvent changeEvent){
+		 prestamoSessionBean.setClienteEncontrado((VoCliente) changeEvent.getNewValue());
 	}
 	
 	public void doGuardarNuevoPrestamo(ActionEvent actionEvent) {
@@ -173,6 +203,46 @@ public class FormPrestamoBean {
 
 	public void setMensajesBean(MensajesBean mensajesBean) {
 		this.mensajesBean = mensajesBean;
+	}
+
+
+	public String getNombres() {
+		return nombres;
+	}
+
+
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
+	}
+
+
+	public String getApellidos() {
+		return apellidos;
+	}
+
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
+
+
+	public List<VoCliente> getClientesEncontrados() {
+		return clientesEncontrados;
+	}
+
+
+	public void setClientesEncontrados(List<VoCliente> clientesEncontrados) {
+		this.clientesEncontrados = clientesEncontrados;
+	}
+
+
+	public VoCliente getClienteBuscadoSeleccionado() {
+		return clienteBuscadoSeleccionado;
+	}
+
+
+	public void setClienteBuscadoSeleccionado(VoCliente clienteBuscadoSeleccionado) {
+		this.clienteBuscadoSeleccionado = clienteBuscadoSeleccionado;
 	}
 	
 	

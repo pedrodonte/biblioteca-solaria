@@ -30,5 +30,38 @@ public class VoGrupocliente implements Serializable{
 		 return "VoGrupocliente[grupoclienteCodGrupocliente="+grupoclienteCodGrupocliente
 		 +",grupoclienteNombre="+grupoclienteNombre+"]";
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ (int) (grupoclienteCodGrupocliente ^ (grupoclienteCodGrupocliente >>> 32));
+		result = prime
+				* result
+				+ ((grupoclienteNombre == null) ? 0 : grupoclienteNombre
+						.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VoGrupocliente other = (VoGrupocliente) obj;
+		if (grupoclienteCodGrupocliente != other.grupoclienteCodGrupocliente)
+			return false;
+		if (grupoclienteNombre == null) {
+			if (other.grupoclienteNombre != null)
+				return false;
+		} else if (!grupoclienteNombre.equals(other.grupoclienteNombre))
+			return false;
+		return true;
+	}
+	
+	
 
 }

@@ -3,6 +3,7 @@ package cl.jsoft.solaria.daos;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
@@ -25,6 +26,8 @@ public class SolaTabClienteDAO extends GenericDAO<SolaTabCliente, Long> {
 	
 	
 	private static final String SQL_FILTRAR_POR_IDENTIFICADOR_ONE = "select model from SolaTabCliente model where model.clienteIdentificador = :clienteIdentificador";
+	private static final String SQL_FILTRAR_POR_NOMBRE_APELLIDO = "select m from SolaTabCliente as m " +
+			" where lower( concat(m.clienteNombres,' ',m.clienteApellidos) ) like :nombre_apellido order by m.clienteNombres";
 	
 	public SolaTabClienteDAO() {
 		super(SolaTabCliente.class);
@@ -34,6 +37,12 @@ public class SolaTabClienteDAO extends GenericDAO<SolaTabCliente, Long> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put(CLIENTE_IDENTIFICADOR, runCliente);
 		return super.findOneResult(SQL_FILTRAR_POR_IDENTIFICADOR_ONE, parameters);
+	}
+	
+	public List<SolaTabCliente> buscaRegistroPorNombreApellido(String nombres, String apellidos) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("nombre_apellido", "%"+nombres+"%"+apellidos+"%");
+		return super.findManyResult(SQL_FILTRAR_POR_NOMBRE_APELLIDO, parameters);
 	}
 
 	@Override

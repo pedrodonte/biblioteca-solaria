@@ -29,6 +29,10 @@ public class HelperVoEntity{
 			voCliente.setClienteImg(solaTabCliente.getClienteImg());
 			voCliente.setClienteNombres(solaTabCliente.getClienteNombres());
 			voCliente.setVoGrupocliente( toVO(solaTabCliente.getSolaTabGrupocliente()) );
+			
+			voCliente.setNombreCompleto(solaTabCliente.getClienteNombres()+" "+solaTabCliente.getClienteApellidos());
+			voCliente.setSelectOneMenu();
+			
 		}catch(java.lang.NullPointerException e){/*seteando valores nulos, es normal.*/} 
 		return voCliente;
 	}

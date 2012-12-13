@@ -1,6 +1,7 @@
 package cl.jsoft.solaria.servicios;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -9,10 +10,13 @@ import javax.ejb.Stateless;
 import org.apache.log4j.Logger;
 
 import cl.jsoft.solaria.daos.SolaTabClienteDAO;
+import cl.jsoft.solaria.daos.SolaTabGrupoclienteDAO;
 import cl.jsoft.solaria.dominio.vos.HelperVoEntity;
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoGrupocliente;
 import cl.jsoft.solaria.entities.SolaTabCliente;
+import cl.jsoft.solaria.entities.SolaTabGrupocliente;
+import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 
 @Stateless
@@ -23,10 +27,13 @@ public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 	HelperVoEntity helperVoEntity = new HelperVoEntity();
 
 	@EJB SolaTabClienteDAO clienteDAO;
+	
+	@EJB SolaTabGrupoclienteDAO grupoclienteDAO;
 
 	@Override
 	public VoCliente buscarClientePorIdentificador(String nroRun)
-			throws RegistrosNoEncontradosException {
+			throws RegistrosNoEncontradosException,
+			ErrorDelSistemaException {
 		VoCliente respCliente = null;
 		try {
 			BigDecimal runCliente = getRUNChileno(nroRun);
@@ -51,15 +58,76 @@ public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 	}
 
 	@Override
-	public List<VoCliente> buscarClientesPorGrupo(VoGrupocliente grupo)
-			throws RegistrosNoEncontradosException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<VoCliente> buscarTodosLosClientes()	throws RegistrosNoEncontradosException, ErrorDelSistemaException {
+		List<VoCliente> voItems = new ArrayList<VoCliente>();
+		
+		List<SolaTabCliente> resultadoBusqueda = clienteDAO.findAll();
+		
+		if(resultadoBusqueda.size() <= 0){
+			throw new RegistrosNoEncontradosException("Sin resultados.");
+		}
+		
+		logger.debug(resultadoBusqueda.size()+" Registros encontrados");
+		
+		for(SolaTabCliente entity : resultadoBusqueda){
+			voItems.add(helperVoEntity.toVO(entity));
+		}
+		
+		return voItems;
 	}
 
 	@Override
-	public List<VoCliente> buscarTodosLosClientes(VoGrupocliente grupo)
-			throws RegistrosNoEncontradosException {
+	public List<VoCliente> buscarClientesPorNombresApellidos(String nombres,
+			String apellidos) throws RegistrosNoEncontradosException,
+			ErrorDelSistemaException {
+		List<VoCliente> voItems = new ArrayList<VoCliente>();
+		 
+		try {
+			List<SolaTabCliente> resultadoBusqueda = clienteDAO.buscaRegistroPorNombreApellido(nombres, apellidos);
+			
+			if(resultadoBusqueda.size() <= 0){
+				throw new RegistrosNoEncontradosException("Sin resultados para los parametros [ "+nombres+" , "+apellidos+" ]");
+			}
+			
+			for(SolaTabCliente solaTabCliente : resultadoBusqueda){
+				voItems.add(helperVoEntity.toVO(solaTabCliente));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ErrorDelSistemaException("Ocurrio un error al ejecutar el servicio buscarClientesPorNombresApellidos[ "+nombres+" , "+apellidos+" ]" );
+		}
+		return voItems;
+	}
+
+	@Override
+	public List<VoGrupocliente> buscarTodosGruposCliente()	throws RegistrosNoEncontradosException, ErrorDelSistemaException {
+		try {
+			List<VoGrupocliente> voItems = new ArrayList<VoGrupocliente>();
+			
+			List<SolaTabGrupocliente> resultadoBusqueda = grupoclienteDAO.findAll();
+			
+			if(resultadoBusqueda.size() <= 0){
+				throw new RegistrosNoEncontradosException("Sin resultados.");
+			}
+			
+			logger.debug(resultadoBusqueda.size()+" Registros encontrados");
+			
+			for(SolaTabGrupocliente entity : resultadoBusqueda){
+				voItems.add(helperVoEntity.toVO(entity));
+			}
+			
+			return voItems;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ErrorDelSistemaException("Ocurrio un Error al ejecutar el servicio buscarTodosGruposCliente()");
+		}
+	}
+
+	@Override
+	public List<VoCliente> buscarClientesPorGrupo(VoGrupocliente grupo)
+			throws RegistrosNoEncontradosException, ErrorDelSistemaException {
 		// TODO Auto-generated method stub
 		return null;
 	}
