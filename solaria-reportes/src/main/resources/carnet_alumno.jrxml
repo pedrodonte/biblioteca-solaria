@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="carnet-biblioteca" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e6170ff0-7786-4588-9fc5-f9f8cc1411ea">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COD_CURSO" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     sola_tab_cliente."cliente_nombres" AS nombres,
+     sola_tab_cliente."cliente_apellidos" AS apellidos,
+     sola_tab_cliente."cliente_identificador" AS nro_rut,
+     sola_tab_cliente."cliente_img" AS foto,
+     sola_tab_grupocliente."grupocliente_nombre" AS curso_nombre,
+     sola_tab_cliente."grupocliente_cod_grupocliente" AS cod_curso
+FROM
+     "sola"."sola_tab_grupocliente" sola_tab_grupocliente INNER JOIN "sola"."sola_tab_cliente" sola_tab_cliente
+ ON   sola_tab_grupocliente."grupocliente_cod_grupocliente" = sola_tab_cliente."grupocliente_cod_grupocliente"
+WHERE
+sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
+	</queryString>
+	<field name="nombres" class="java.lang.String"/>
+	<field name="apellidos" class="java.lang.String"/>
+	<field name="nro_rut" class="java.math.BigDecimal"/>
+	<field name="foto" class="java.lang.String"/>
+	<field name="curso_nombre" class="java.lang.String"/>
+	<field name="cod_curso" class="java.math.BigDecimal"/>
+	<detail>
+		<band height="156" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="1688e147-b06a-4b26-86ba-ac8f921fe27f" mode="Opaque" x="0" y="0" width="273" height="151" forecolor="#0064CC" backcolor="#0064CC"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement uuid="043bc873-80bc-48c2-9142-3e6ca75b549e" x="11" y="14" width="250" height="122" forecolor="#FFFFFF"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="6d47969a-6562-4cd2-92b7-176c9f972282" x="27" y="137" width="219" height="14" forecolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Educación de Excelencia y Calidad, desde 1942]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="49a47af4-26ad-4ab6-a18f-fefb3b1928d7" x="43" y="0" width="171" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Biblioteca Colegio Adventista Copiapó]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="fbd81bd2-afe4-4a96-bb73-bf9e4f77bfef" x="21" y="117" width="153" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curso_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6fbf2d16-debf-4b0f-8da7-0cce82f58de9" x="27" y="52" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{foto}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="5f51efd5-2cab-4dde-baad-c56ffa5448bb" mode="Opaque" x="278" y="0" width="273" height="151" forecolor="#0064CC" backcolor="#0064CC"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement uuid="b056d120-0fed-4392-b40e-caac2b437f5c" x="289" y="14" width="250" height="122" forecolor="#FFFFFF"/>
+			</rectangle>
+			<componentElement>
+				<reportElement uuid="5eac71b3-4ef3-4f3e-922d-022c17a8ec05" mode="Opaque" x="325" y="82" width="185" height="37"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Codabar" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{nro_rut}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<staticText>
+				<reportElement uuid="a22a03cf-478b-450c-87bc-5d8cf7c8e54c" x="325" y="0" width="171" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Carné de uso personal e intransferible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="74454158-6c87-450c-ba54-505aa3ebd663" x="325" y="24" width="185" height="16"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Encargada CRA: Rebeca Curin.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="438455fd-a5e3-44ad-9b1a-2d2328dd1f11" x="325" y="40" width="185" height="16"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Bibliotecaria: Maria Godoy.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6b6ebb23-e2b4-41bb-9839-77d5c5e9c26a" x="325" y="56" width="185" height="16"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[vence : 31 de Diciembre, 2012]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="6889c860-b003-4328-ad24-9c32fff232d0" x="21" y="96" width="234" height="21"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombres}.split(" ")[0].concat(" "+$F{apellidos} )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6d3217c7-fb25-4a85-bd0f-5da5ded26ed5" x="325" y="119" width="185" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nro_rut}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="da4beeca-2ef4-45d8-a148-da746d3391b7" x="155" y="24" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cod_curso}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
