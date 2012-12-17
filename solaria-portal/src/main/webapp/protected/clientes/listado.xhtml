@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:p="http://primefaces.org/ui"
+	template="/template/tmpl_alpha.xhtml">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Catalogo de Libros</small>
+			</h1>
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+	
+	<style>
+		.ui-paginator-top{
+			display: none !important;
+		}
+		
+		.ui-widget-header a { color: #333333 !important; }
+		
+		
+	</style>
+	
+	
+	
+
+		<div class="container">
+		
+			 <h:form id="formCatalogo">
+		
+	        <div class="control-group">
+				<label class="control-label">Buscar Cliente</label>
+				<div class="controls">
+					<div class="input-append">
+						<h:inputText value="" styleClass="span4" required="true" />
+						<p:commandButton  
+							 styleClass="btn btn-primary" value="Buscar" update="tablaLibros"/>
+					</div>
+				</div>
+			</div>
+			
+			<p:selectOneRadio value="#{clientesBean.buscarLibroPor}" >
+	        	<f:selectItem itemLabel="Autor" itemValue="1" />  
+	            <f:selectItem itemLabel="Titulo" itemValue="2" />  
+	            <f:selectItem itemLabel="Código" itemValue="3" /> 
+	        </p:selectOneRadio>
+			
+			<p:messages id="msgCliente" showDetail="true" autoUpdate="true"  closable="true" />
+			
+			
+			
+		 
+    		<p:dataTable id="tablaLibros" value="#{coleccionesBean.clientesRegistrados}" 
+    		var="item" styleClass="table" selectionMode="single"
+    		rowKey="#{item.clienteCodCliente}" selection="#{clientesBean.clienteSeleccionado}"
+    		paginator="true" rows="10"	>
+    		
+    		<p:column>
+    			<f:facet name="header">
+    				Código
+    			</f:facet>
+    			#{item.clienteCodCliente}
+    		</p:column>
+ 
+    		<p:column>
+    			<f:facet name="header">Nombre</f:facet>
+    			#{item.nombreCompleto}
+    		</p:column> 
+  
+    	    </p:dataTable>
+    	    
+<!--     	    dialogo detalle -->
+<p:dialog id="dialog" header="Detalle del Libro" widgetVar="carDialog" resizable="false"  
+              width="600" showEffect="clip" hideEffect="fold">  
+  
+        <h:panelGrid id="display" columns="2" cellpadding="4">
+          
+  			<h:outputText value="Código" />  
+            <h:outputText value="#{clientesBean.clienteSeleccionado.clienteCodCliente}" />  
+  
+
+        </h:panelGrid>  
+    </p:dialog>  
+
+    	    
+    	    
+    	  </h:form>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,7 +1,6 @@
 package cl.jsoft.solaria.web.jsf;
 
 import javax.faces.application.NavigationHandler;
-import javax.faces.application.ViewExpiredException;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;

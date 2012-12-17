@@ -38,6 +38,7 @@ public class ColeccionesBean implements java.io.Serializable {
 	private void cargarClientes() {
 		try {
 			clientesRegistrados = clienteServicesEJB.buscarTodosLosClientes();
+			gruposClienteRegistrados = clienteServicesEJB.buscarTodosGruposCliente();
 		} catch (RegistrosNoEncontradosException e) {
 			e.printStackTrace();
 		} catch (ErrorDelSistemaException e) {
@@ -51,5 +52,13 @@ public class ColeccionesBean implements java.io.Serializable {
 
 	public void setClientesRegistrados(List<VoCliente> clientesRegistrados) {
 		this.clientesRegistrados = clientesRegistrados;
+	}
+
+	public List<VoGrupocliente> getGruposClienteRegistrados() {
+		return gruposClienteRegistrados;
+	}
+
+	public void setGruposClienteRegistrados(List<VoGrupocliente> gruposClienteRegistrados) {
+		this.gruposClienteRegistrados = gruposClienteRegistrados;
 	}
 }

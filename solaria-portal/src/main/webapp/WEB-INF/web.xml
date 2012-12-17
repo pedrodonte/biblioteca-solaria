@@ -37,4 +37,15 @@
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
+  
+  <!-- Atmosphere Servlet -->
+	<servlet>
+		<servlet-name>Push Servlet</servlet-name>
+		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Push Servlet</servlet-name>
+		<url-pattern>/primepush/*</url-pattern>
+	</servlet-mapping>
+  
 </web-app>

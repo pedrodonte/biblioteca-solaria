@@ -6,9 +6,7 @@ import java.io.IOException;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.imageio.stream.FileImageOutputStream;
-import javax.servlet.ServletContext;
 
 import org.primefaces.model.CroppedImage;
 

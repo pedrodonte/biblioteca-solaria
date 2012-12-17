@@ -11,20 +11,21 @@ import org.apache.log4j.Logger;
 
 import cl.jsoft.solaria.daos.SolaTabClienteDAO;
 import cl.jsoft.solaria.daos.SolaTabGrupoclienteDAO;
-import cl.jsoft.solaria.dominio.vos.HelperVoEntity;
+import cl.jsoft.solaria.dominio.vos.TransformadorDominio;
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoGrupocliente;
 import cl.jsoft.solaria.entities.SolaTabCliente;
 import cl.jsoft.solaria.entities.SolaTabGrupocliente;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
+import cl.jsoft.solaria.jasper.GeneradorReporteEJB;
 
 @Stateless
 public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 	
 	Logger logger = Logger.getLogger(getClass());
 	
-	HelperVoEntity helperVoEntity = new HelperVoEntity();
+	TransformadorDominio helperVoEntity = new TransformadorDominio();
 
 	@EJB SolaTabClienteDAO clienteDAO;
 	
@@ -126,10 +127,17 @@ public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 	}
 
 	@Override
-	public List<VoCliente> buscarClientesPorGrupo(VoGrupocliente grupo)
-			throws RegistrosNoEncontradosException, ErrorDelSistemaException {
-		// TODO Auto-generated method stub
+	public List<VoCliente> buscarClientesPorGrupo(VoGrupocliente grupo)	throws RegistrosNoEncontradosException, ErrorDelSistemaException {
+		
 		return null;
+	}
+	
+	@EJB GeneradorReporteEJB reporteEJB;
+	@Override
+	public String generarCredenciales(long codigoGrupoCliente) throws RegistrosNoEncontradosException, ErrorDelSistemaException {
+		String nombreArchivo = reporteEJB.generarCredencialesBiblioteca(codigoGrupoCliente);
+		logger.debug("Reporte Generado: "+nombreArchivo);
+		return nombreArchivo;
 	}
 
 	

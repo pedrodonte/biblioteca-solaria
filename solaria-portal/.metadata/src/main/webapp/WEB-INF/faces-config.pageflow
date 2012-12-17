@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13518901514550" configfile="/solaria-portal/src/main/webapp/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="template/login.xhtml" id="pf13528976425740" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13528976425751" path="/template/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="protected/dashboard.xhtml" x="456" y="156" id="pf13528976425752" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" outlinks="pf13528976425753 pf13536342214060 pf13538146226040" inlinks="pf13528976425751 pf13535484074130 pf13536342214061 pf13538146226041" path="/protected/dashboard.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="protected/prestamos/form_prestamo.xhtml" x="792" y="36" id="pf13528976425754" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf13535484074130" inlinks="pf13528976425753" path="/protected/prestamos/form_prestamo.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="protected/fotografia/form_fotografia.xhtml" x="840" y="276" id="pf13536342214072" referenceLink="//@navigationRule.4/@fromViewId|" outlinks="pf13536342214061" inlinks="pf13536342214060" path="/protected/fotografia/form_fotografia.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="protected/catalogo/libros.xhtml" x="228" y="312" id="pf13538146226052" outlinks="pf13538146226041" inlinks="pf13538146226040" path="/protected/catalogo/libros.xhtml"/>
-  <links id="pf13528976425751" target="pf13528976425752" source="pf13528976425740" outcome="dashboard" redirect="true"/>
-  <links id="pf13528976425753" target="pf13528976425754" source="pf13528976425752" outcome="pres_form_prestamo" redirect="true">
-    <bendPoints d1Width="-39" d1Height="160" d2Width="-154" d2Height="-32"/>
-  </links>
-  <links id="pf13535484074130" target="pf13528976425752" source="pf13528976425754" outcome="dashboard" redirect="true">
-    <bendPoints d1Width="32" d1Height="-129" d2Width="147" d2Height="63"/>
-  </links>
-  <links id="pf13536342214060" target="pf13536342214072" source="pf13528976425752" outcome="form_foto" redirect="true">
-    <bendPoints d1Width="256" d1Height="97" d2Width="-158" d2Height="-113"/>
-  </links>
-  <links id="pf13536342214061" target="pf13528976425752" source="pf13536342214072" outcome="dashboard" redirect="true">
-    <bendPoints d1Width="-292" d1Height="-27" d2Width="122" d2Height="183"/>
-  </links>
-  <links id="pf13538146226040" target="pf13538146226052" source="pf13528976425752" outcome="catalogo" redirect="true">
-    <bendPoints d1Width="-72" d1Height="115" d2Width="144" d2Height="-41"/>
-  </links>
-  <links id="pf13538146226041" target="pf13528976425752" source="pf13538146226052" outcome="dashboard" redirect="true">
-    <bendPoints d1Width="25" d1Height="-131" d2Width="-191" d2Height="25"/>
-  </links>
+  <nodes xsi:type="pageflow:PFPage" name="protected/dashboard.xhtml" x="12" y="324" id="pf13528976425752" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf13556951188385" path="/protected/dashboard.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="24" y="204" id="pf13556951188396" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13556951188385" path="/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="protected/*" x="468" y="132" id="pf135569946487221" referenceLink="//@navigationRule.5/@fromViewId|" outlinks="pf135569946487222 pf135569946487223 pf135569946487224 pf135569946487225 pf135570124853930" path="/protected/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="protected/clientes/listado.xhtml" x="816" id="pf135569946487226" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" inlinks="pf135569946487222" path="/protected/clientes/listado.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="protected/fotografia/form_fotografia.xhtml" x="816" y="312" id="pf135569946487227" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf135569946487223" path="/protected/fotografia/form_fotografia.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="protected/prestamos/form_prestamo.xhtml" x="816" y="192" id="pf135569946487228" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf135569946487224" path="/protected/prestamos/form_prestamo.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="protected/catalogo/libros.xhtml" x="816" y="96" id="pf135569946487329" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" inlinks="pf135569946487225" path="/protected/catalogo/libros.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" id="pf135570124854031" referenceLink="//@navigationRule.5/@fromViewId|"/>
+  <nodes xsi:type="pageflow:PFPage" name="protected/credenciales/credenciales.xhtml" id="pf135570124854032" referenceLink="//@navigationRule.5/@navigationCase.0/@toViewId|" inlinks="pf135570124853930" path="/protected/credenciales/credenciales.xhtml"/>
+  <links id="pf13556951188385" target="pf13528976425752" source="pf13556951188396" outcome="dashboard" redirect="true"/>
+  <links id="pf135569946487222" target="pf135569946487226" source="pf135569946487221" outcome="clientes"/>
+  <links id="pf135569946487223" target="pf135569946487227" source="pf135569946487221" outcome="form_foto" redirect="true"/>
+  <links id="pf135569946487224" target="pf135569946487228" source="pf135569946487221" outcome="pres_form_prestamo" redirect="true"/>
+  <links id="pf135569946487225" target="pf135569946487329" source="pf135569946487221" outcome="catalogo" redirect="true"/>
+  <links id="pf135570124853930" target="pf135570124854032" source="pf135569946487221" outcome="credenciales"/>
 </pageflow:Pageflow>

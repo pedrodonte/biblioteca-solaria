@@ -1,12 +1,7 @@
 package cl.jsoft.solaria.web.backend.fotografia;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -14,15 +9,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.model.CroppedImage;
 
 import cl.jsoft.solaria.util.HelperFechas;
-import cl.jsoft.solaria.web.backend.prestamos.PrestamoSessionBean;
 import cl.jsoft.solaria.web.controllers.MensajesBean;
 
 @ManagedBean(name="fotoBean")

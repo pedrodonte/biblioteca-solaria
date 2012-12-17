@@ -65,6 +65,11 @@
         	<version>1.9.5</version>
         	<scope>test</scope>
         </dependency>
+        <dependency>
+        	<groupId>cl.jsoft.solaria</groupId>
+        	<artifactId>solaria-reportes</artifactId>
+        	<version>1.0</version>
+        </dependency>
     </dependencies>
 
     <pluginRepositories>
