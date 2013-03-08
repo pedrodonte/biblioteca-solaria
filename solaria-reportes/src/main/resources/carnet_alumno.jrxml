@@ -49,18 +49,11 @@ sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
 				<text><![CDATA[Biblioteca Colegio Adventista Copiapó]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="fbd81bd2-afe4-4a96-bb73-bf9e4f77bfef" x="21" y="117" width="153" height="13"/>
+				<reportElement uuid="fbd81bd2-afe4-4a96-bb73-bf9e4f77bfef" x="21" y="117" width="193" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{curso_nombre}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="6fbf2d16-debf-4b0f-8da7-0cce82f58de9" x="27" y="52" width="100" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{foto}]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement uuid="5f51efd5-2cab-4dde-baad-c56ffa5448bb" mode="Opaque" x="278" y="0" width="273" height="151" forecolor="#0064CC" backcolor="#0064CC"/>
@@ -100,10 +93,10 @@ sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[vence : 31 de Diciembre, 2012]]></text>
+				<text><![CDATA[vence : 31 de Diciembre, 2013]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="6889c860-b003-4328-ad24-9c32fff232d0" x="21" y="96" width="234" height="21"/>
+				<reportElement uuid="6889c860-b003-4328-ad24-9c32fff232d0" x="21" y="96" width="225" height="21"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -116,11 +109,10 @@ sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nro_rut}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="da4beeca-2ef4-45d8-a148-da746d3391b7" x="155" y="24" width="100" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{cod_curso}]]></textFieldExpression>
-			</textField>
+			<image>
+				<reportElement uuid="1e117128-0b82-457f-b4d1-530b7d2b561d" x="186" y="25" width="59" height="71"/>
+				<imageExpression><![CDATA["/logo.gif"]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

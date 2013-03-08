@@ -1,27 +1,51 @@
+package solaria.prestamos;
+
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
+
+import cl.jsoft.solaria.daos.SolaTabPrestamoDAO;
+import cl.jsoft.solaria.dominio.vos.HelperVoEntity;
+import cl.jsoft.solaria.dominio.vos.VoPrestamo;
+import cl.jsoft.solaria.entities.SolaTabPrestamo;
+import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
+import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
+import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 import cl.jsoft.solaria.jasper.GeneradorReporteEJB;
 import cl.jsoft.solaria.jasper.GeneradorReporteEJBImpl;
+import cl.jsoft.solaria.servicios.ClienteServicesEJB;
+import cl.jsoft.solaria.servicios.ClienteServicesEJBImpl;
+import cl.jsoft.solaria.servicios.PrestamoServicesEJBImpl;
+import cl.jsoft.solaria.util.HelperFechas;
 
-public class GenerarReporte {
+public class Credenciales {
+	
 	private static Context ctx;
 	private static EJBContainer contenedor;
 
-	
-	GeneradorReporteEJB servicio;
+	ClienteServicesEJB servicio;
 	
 	@Test
 	public void comprobarEJB(){
 		assertNotNull(servicio);
+		for (int i = 1; i <= 24; i++) {
+			try {
+				servicio.generarCredenciales((long)i);
+			} catch (RegistrosNoEncontradosException | ErrorDelSistemaException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 
@@ -48,8 +72,8 @@ public class GenerarReporte {
 	@Before
 	public void setUp() throws Exception {
 		try {
-			servicio = lookupBy(GeneradorReporteEJB.class,
-					GeneradorReporteEJBImpl.class);
+			servicio = lookupBy(ClienteServicesEJB.class,
+					ClienteServicesEJBImpl.class);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -66,4 +90,7 @@ public class GenerarReporte {
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		return (T) ctx.lookup(ejbLookUpString);
 	}
+
+	
+
 }
