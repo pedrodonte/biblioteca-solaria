@@ -24,5 +24,7 @@ public interface ClienteServicesEJB {
 	public List<VoGrupocliente> buscarTodosGruposCliente() throws RegistrosNoEncontradosException, ErrorDelSistemaException;
 	
 	public String generarCredenciales(long codigoGrupoCliente) throws RegistrosNoEncontradosException, ErrorDelSistemaException;
+	
+	public void actualizarRegistro(VoCliente cliente) throws ErrorDelSistemaException;
 
 }

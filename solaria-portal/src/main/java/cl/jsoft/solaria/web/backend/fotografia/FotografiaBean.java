@@ -2,6 +2,8 @@ package cl.jsoft.solaria.web.backend.fotografia;
 
 import java.io.File;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -14,7 +16,10 @@ import org.apache.log4j.Logger;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.model.CroppedImage;
 
-import cl.jsoft.solaria.util.HelperFechas;
+import cl.jsoft.solaria.dominio.vos.VoCliente;
+import cl.jsoft.solaria.servicios.ClienteServicesEJB;
+import cl.jsoft.solaria.web.componentes.BuscaClienteBean;
+import cl.jsoft.solaria.web.componentes.IBuscaCliente;
 import cl.jsoft.solaria.web.controllers.MensajesBean;
 
 @ManagedBean(name="fotoBean")
@@ -23,9 +28,12 @@ public class FotografiaBean {
 	
 	final String PNG=".png";
 	
+	static final String FOTO_BLANCO = "blanco.png";
+	
 	Logger logger = Logger.getLogger(getClass());
 	
-	
+	@EJB
+	private ClienteServicesEJB clienteServicesEJB;
 	
 	private String nombreFinalArchivo;
 	
@@ -35,12 +43,34 @@ public class FotografiaBean {
 	//
 	private CroppedImage croppedImage;
 	private String imgDefault = "/images/sin_foto.jpg"; //imageCropperBean.imgDefault
-	private String newImageName;
+	private String newImageName = FOTO_BLANCO;
 	
 	@ManagedProperty(value="#{mensajesBean}")
 	private MensajesBean mensajesBean;
+	
+	@ManagedProperty(value="#{buscaClienteBean}")
+	private BuscaClienteBean buscaClienteBean;
+	private IBuscaCliente iBuscaCliente = new IBuscaCliente() {
+		@Override
+		public void setClienteEncontrado(VoCliente cliente) {
+			logger.debug("Me estan pasando un cliente: "+cliente);
+			try{
+			clienteSeleccionado = cliente;
+			newImageName = clienteSeleccionado.getClienteImg();
+			setNombreFinalArchivo(cliente.getClienteIdentificador().toString());
+			}catch(Exception e){
+				newImageName  = FOTO_BLANCO;
+			}
+		}
+	};
+	private VoCliente clienteSeleccionado = new VoCliente();
 
-    
+	
+	@PostConstruct
+	public void inicializarBean(){
+		buscaClienteBean.addBuscaListener(iBuscaCliente);
+	}
+
     private String getRandomImageName() {  
         int i = (int) (Math.random() * 10000000);  
           
@@ -48,15 +78,24 @@ public class FotografiaBean {
     }
     
     public void doCambiarNombreArchivo(ActionEvent actionEvent) {
-    	logger.info(newImageName+" -> "+nombreFinalArchivo);
+    	
+
     	try {
+        	if(newImageName.endsWith(FOTO_BLANCO)){
+        		throw new Exception("No se ha sacado ninguna foto aún.");
+        	}
+        	
+        	logger.info(newImageName+" -> "+nombreFinalArchivo);
+    		
 			cambiarNombreArchivo(newImageName,nombreFinalArchivo+PNG);
 			mensajesBean.msgInfo(nombreFinalArchivo+PNG+" Cambio exitoso!");
+			
+			clienteSeleccionado.setClienteImg(nombreFinalArchivo+PNG);
+			clienteServicesEJB.actualizarRegistro(clienteSeleccionado);
+			
 		} catch (Exception e) {
-			long prefijo = HelperFechas.getInstancia().obtenerDateActual().getTime();
-			nombreFinalArchivo=nombreFinalArchivo+"_"+prefijo+PNG;
 			logger.warn(e.getMessage());
-			mensajesBean.msgError("Problemas al ejecutar la operación");
+			mensajesBean.msgWarn(e.getMessage());
 		}
     }
   
@@ -74,11 +113,13 @@ public class FotografiaBean {
 	}
    
       
-	public void oncapture(CaptureEvent captureEvent) {
+	public void onSacaFoto(CaptureEvent captureEvent) {
+		logger.debug("Sacando la foto.");
+		
 		String fotoCapturada = getRandomImageName();
 		byte[] data = captureEvent.getData();
 		nombreFoto = fotoCapturada + PNG;
-		String newFileName = FotoServlet.URL_FOTO + File.separator + nombreFoto;
+		//String newFileName = FotoServlet.URL_FOTO + File.separator + nombreFoto;
 		
 		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 		String serverFile = servletContext.getRealPath("") + File.separator + "images" + File.separator + nombreFoto;
@@ -87,7 +128,7 @@ public class FotografiaBean {
 		imgDefault = "/images/"+nombreFoto;
 		
 		crearArchivoNuevo(data, serverFile);
-		crearArchivoNuevo(data, newFileName);
+		//crearArchivoNuevo(data, newFileName);
 	}
 
     private void crearArchivoNuevo(byte[] dataFile, String nameFile){
@@ -107,6 +148,9 @@ public class FotografiaBean {
     	
     	File oldfile =new File(FotoServlet.URL_FOTO + File.separator +oldName);
 		File newfile =new File(FotoServlet.URL_FOTO + File.separator +newName);
+		
+		//se elimina la foto nueva, en caso de existir una con el mismo nombre
+		newfile.delete();
  
 		if(oldfile.renameTo(newfile)){
 			logger.info("Rename succesful");
@@ -114,8 +158,7 @@ public class FotografiaBean {
 			logger.info("Rename failed");
 			throw new Exception("No es posible ejecutar el cambio de nombre");
 		}
-    }
-   
+    }   
 
 	public String getNombreFoto() {
 		return nombreFoto;
@@ -163,6 +206,30 @@ public class FotografiaBean {
 
 	public void setMensajesBean(MensajesBean mensajesBean) {
 		this.mensajesBean = mensajesBean;
+	}
+
+	public BuscaClienteBean getBuscaClienteBean() {
+		return buscaClienteBean;
+	}
+
+	public void setBuscaClienteBean(BuscaClienteBean buscaClienteBean) {
+		this.buscaClienteBean = buscaClienteBean;
+	}
+
+	public IBuscaCliente getiBuscaCliente() {
+		return iBuscaCliente;
+	}
+
+	public void setiBuscaCliente(IBuscaCliente iBuscaCliente) {
+		this.iBuscaCliente = iBuscaCliente;
+	}
+
+	public VoCliente getClienteSeleccionado() {
+		return clienteSeleccionado;
+	}
+
+	public void setClienteSeleccionado(VoCliente clienteSeleccionado) {
+		this.clienteSeleccionado = clienteSeleccionado;
 	}
 
 	

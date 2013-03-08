@@ -19,6 +19,7 @@ import cl.jsoft.solaria.entities.SolaTabGrupocliente;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 import cl.jsoft.solaria.jasper.GeneradorReporteEJB;
+import cl.jsoft.solaria.util.HelperFechas;
 
 @Stateless
 public class ClienteServicesEJBImpl implements ClienteServicesEJB {
@@ -30,6 +31,8 @@ public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 	@EJB SolaTabClienteDAO clienteDAO;
 	
 	@EJB SolaTabGrupoclienteDAO grupoclienteDAO;
+	
+	@EJB GeneradorReporteEJB reporteEJB;
 
 	@Override
 	public VoCliente buscarClientePorIdentificador(String nroRun)
@@ -132,12 +135,23 @@ public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 		return null;
 	}
 	
-	@EJB GeneradorReporteEJB reporteEJB;
 	@Override
 	public String generarCredenciales(long codigoGrupoCliente) throws RegistrosNoEncontradosException, ErrorDelSistemaException {
 		String nombreArchivo = reporteEJB.generarCredencialesBiblioteca(codigoGrupoCliente);
 		logger.debug("Reporte Generado: "+nombreArchivo);
 		return nombreArchivo;
+	}
+
+	@Override
+	public void actualizarRegistro(VoCliente cliente)	throws ErrorDelSistemaException {
+		try {
+			SolaTabCliente solaTabCliente = helperVoEntity.toEntity(cliente);
+			solaTabCliente.setClienteFecUpdate(HelperFechas.getInstancia().obtenerDateActual());
+			clienteDAO.update(solaTabCliente);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ErrorDelSistemaException("Error al actualizar el registro.");
+		}
 	}
 
 	

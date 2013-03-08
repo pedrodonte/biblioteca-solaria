@@ -63,7 +63,6 @@ public class FormPrestamoBean {
 		mensajesBean.msgInfo("nombre: "+nombres+", apellido: "+apellidos);
 		try {
 			setClientesEncontrados(clienteServicesEJB.buscarClientesPorNombresApellidos(nombres, apellidos));
-			
 		} catch (RegistrosNoEncontradosException e) {
 			logger.error(e.getMessage());
 		} catch (ErrorDelSistemaException e) {

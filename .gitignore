@@ -5,20 +5,8 @@
 *.war
 *.ear
 
-solaria-reportes/.classpath
-solaria-reportes/.project
-solaria-reportes/.settings/*
 solaria-reportes/target/*
-solaria-dao/.classpath
-solaria-dao/.project
-solaria-dao/.settings/*
 solaria-dao/target/*
-solaria-servicios/.classpath
-solaria-servicios/.project
-solaria-servicios/.settings/*
 solaria-servicios/target/*
-solaria-portal/.classpath
-solaria-portal/.project
-solaria-portal/.settings/*
 solaria-portal/target/*
 */target/*
