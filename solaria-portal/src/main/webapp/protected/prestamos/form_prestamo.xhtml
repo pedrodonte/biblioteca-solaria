@@ -166,41 +166,36 @@
 					 header="Buscador por Nombre y Apellido" modal="true" closable="true" showEffect="slide">
 					 
 				 	<p:messages autoUpdate="true" showDetail="true" closable="true" />
-					
-					<div class="control-group">
-					    <label class="control-label" >Nombres</label>
-					    <div class="controls">
-					      <p:inputText value="#{prestamoBean.nombres}" />
-					    </div>
+				 	
+				 	<div class="control-group">
+						<div class="controls">
+							<p:selectOneMenu id="comboGrupoCliente" style="width:100%;"
+						    	value="#{buscaUsuarioBean.grupoclienteSeleccionado}" 
+						    	valueChangeListener="#{buscaUsuarioBean.doSeleccionaGrupo}"
+						    	converter="grupoClienteConverter" >
+						    		
+	 					    		<f:ajax render=":form_prestamo:comboClientesEncontrados" />
+						    	
+						            <f:selectItem itemLabel="Seleccione un Registro" itemValue="" />  
+						            <f:selectItems value="#{buscaUsuarioBean.gruposCliente}"
+						            var="item" itemLabel="#{item.grupoclienteNombre}" itemValue="#{item}"/>  
+						            
+							</p:selectOneMenu>
+						</div>
 					</div>
 					
 					<div class="control-group">
-					    <label class="control-label" >Apellidos</label>
-					    <div class="controls">
-					      <p:inputText value="#{prestamoBean.apellidos}" />
-					    </div>
-					</div>
-					
-					<div class="control-group">
-					    <div class="controls">
-					      <p:commandLink 
-					      		actionListener="#{prestamoBean.doBuscaXNombreApellido}" styleClass="btn"
-						    	update="comboClientesEncontrados"><i class="icon-search"></i> Buscar</p:commandLink>
-					    </div>
-					</div>
-					
-					<div class="control-group">
-					    <label class="control-label" >Coinsidencias de Búsquedas</label>
+					    <label class="control-label" >Alumnos</label>
 					    <div class="controls">
 					       <p:selectOneMenu id="comboClientesEncontrados" style="width:100%;"
 						    	value="#{prestamoSessionBean.clienteEncontrado}" 
-						    	valueChangeListener="#{prestamoBean.doSeleccionaCliente}"
+						    	valueChangeListener="#{buscaUsuarioBean.doSeleccionaCliente}"
 						    	converter="clienteConverter" >
 						    		
 	 					    		<f:ajax render=":form_prestamo:cpoNombreCliente :form_prestamo:cpoIdentCliente" />
 						    	
 						            <f:selectItem itemLabel="Seleccione un Registro" itemValue="" />  
-						            <f:selectItems value="#{prestamoBean.clientesEncontrados}" var="item" itemLabel="#{item.selectOneMenu}" itemValue="#{item}"/>  
+						            <f:selectItems value="#{buscaUsuarioBean.clientesEncontrados}" var="item" itemLabel="#{item.selectOneMenu}" itemValue="#{item}"/>  
 						            
 							</p:selectOneMenu>
 					    </div>

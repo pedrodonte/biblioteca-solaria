@@ -132,7 +132,24 @@ public class ClienteServicesEJBImpl implements ClienteServicesEJB {
 	@Override
 	public List<VoCliente> buscarClientesPorGrupo(VoGrupocliente grupo)	throws RegistrosNoEncontradosException, ErrorDelSistemaException {
 		
-		return null;
+		List<VoCliente> voItems = new ArrayList<VoCliente>();
+		 
+		try {
+			List<SolaTabCliente> resultadoBusqueda = clienteDAO.buscaRegistroPorGrupoCliente(grupo.getGrupoclienteCodGrupocliente());
+			
+			if(resultadoBusqueda.size() <= 0){
+				throw new RegistrosNoEncontradosException("Sin resultados para los parametros [ "+grupo+" ]");
+			}
+			
+			for(SolaTabCliente solaTabCliente : resultadoBusqueda){
+				voItems.add(helperVoEntity.toVO(solaTabCliente));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ErrorDelSistemaException("Ocurrio un error al ejecutar el servicio buscarClientesPorGC[ "+grupo+" ]" );
+		}
+		return voItems;	
 	}
 	
 	@Override

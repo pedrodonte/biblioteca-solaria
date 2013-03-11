@@ -29,6 +29,10 @@ public class SolaTabClienteDAO extends GenericDAO<SolaTabCliente, Long> {
 	private static final String SQL_FILTRAR_POR_NOMBRE_APELLIDO = "select m from SolaTabCliente as m " +
 			" where lower( concat(m.clienteNombres,' ',m.clienteApellidos) ) like :nombre_apellido order by m.clienteNombres";
 	
+	private static final String SQL_FILTRAR_POR_GRUPOCLIENTE = "select model from SolaTabCliente model " +
+			" where model.solaTabGrupocliente.grupoclienteCodGrupocliente = :grupoclienteCodGrupocliente " +
+			"order by model.clienteNombres";
+	
 	public SolaTabClienteDAO() {
 		super(SolaTabCliente.class);
 	}
@@ -43,6 +47,12 @@ public class SolaTabClienteDAO extends GenericDAO<SolaTabCliente, Long> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("nombre_apellido", "%"+nombres+"%"+apellidos+"%");
 		return super.findManyResult(SQL_FILTRAR_POR_NOMBRE_APELLIDO, parameters);
+	}
+	
+	public List<SolaTabCliente> buscaRegistroPorGrupoCliente(long codGrupocliente) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("grupoclienteCodGrupocliente", codGrupocliente);
+		return super.findManyResult(SQL_FILTRAR_POR_GRUPOCLIENTE, parameters);
 	}
 
 	@Override
