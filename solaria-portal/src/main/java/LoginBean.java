@@ -17,7 +17,7 @@ import org.primefaces.context.RequestContext;
 public class LoginBean {
 
 	private String username = "admin";
-	private String password = "admin";
+	private String password = "";
 	
 	private FacesContext facesContext;
 	private RequestContext requestContext;
@@ -36,7 +36,7 @@ public class LoginBean {
 		
 		boolean isUsuarioValido = false;
 		
-		boolean loginValido = true;//username.equals("admin") && password.equals("admin");
+		boolean loginValido = username.equals("admin") && password.equals("cppo2013");
 		
 		if(loginValido){
 			isUsuarioValido  = true;

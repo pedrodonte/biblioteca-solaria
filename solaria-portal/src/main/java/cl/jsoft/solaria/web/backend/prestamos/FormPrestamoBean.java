@@ -88,7 +88,6 @@ public class FormPrestamoBean {
 		VoCliente voCliente;
 		try {
 			voCliente = clienteServicesEJB.buscarClientePorIdentificador(cpoIdentificadorCliente);
-			voCliente.setNombreCompleto(voCliente.getClienteNombres()+" "+voCliente.getClienteApellidos());
 			prestamoSessionBean.setClienteEncontrado(voCliente);
 		} catch (RegistrosNoEncontradosException e) {
 			voCliente = new VoCliente();
@@ -101,6 +100,7 @@ public class FormPrestamoBean {
 	
 	public void doSeleccionaCliente(ValueChangeEvent changeEvent){
 		 prestamoSessionBean.setClienteEncontrado((VoCliente) changeEvent.getNewValue());
+		 logger.debug("doSeleccionaCliente "+prestamoSessionBean.getClienteEncontrado());
 	}
 	
 	public void doGuardarNuevoPrestamo(ActionEvent actionEvent) {

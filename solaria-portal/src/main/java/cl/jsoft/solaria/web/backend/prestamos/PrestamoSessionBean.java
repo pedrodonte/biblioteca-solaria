@@ -22,14 +22,15 @@ public class PrestamoSessionBean {
 		return clienteEncontrado;
 	}
 	public void setClienteEncontrado(VoCliente clienteEncontrado) {
-		logger.debug("set: "+clienteEncontrado);
+		clienteEncontrado.setNombreCompleto(clienteEncontrado.getClienteNombres()+" "+clienteEncontrado.getClienteApellidos());
+		logger.debug("setCli: "+clienteEncontrado);
 		this.clienteEncontrado = clienteEncontrado;
 	}
 	public VoLibro getLibroEncontrado() {
 		return libroEncontrado;
 	}
 	public void setLibroEncontrado(VoLibro libroEncontrado) {
-		logger.debug("set: "+libroEncontrado);
+		logger.debug("setLib: "+libroEncontrado);
 		this.libroEncontrado = libroEncontrado;
 	}
 	

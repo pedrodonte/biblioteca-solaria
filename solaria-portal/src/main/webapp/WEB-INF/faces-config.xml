@@ -22,7 +22,7 @@
 	</application>
 
 	<navigation-rule>
-		<from-view-id>/*</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>dashboard</from-outcome>
 			<to-view-id>/protected/dashboard.xhtml</to-view-id>
@@ -79,6 +79,15 @@
 		<navigation-case>
 			<from-outcome>descargaCredencial</from-outcome>
 			<to-view-id>/CredencialesServlet</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>protected/*</display-name>
+		<from-view-id>/protected/*</from-view-id>
+		<navigation-case>
+			<from-outcome>prestamos</from-outcome>
+			<to-view-id>/protected/prestamos/ver_prestamos.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 

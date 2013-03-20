@@ -50,11 +50,6 @@
         </dependency>
 
         <dependency>
-        	<groupId>info.pedrodonte.vos</groupId>
-        	<artifactId>generador-vos</artifactId>
-        	<version>1.0</version>
-        </dependency>
-        <dependency>
         	<groupId>cl.jsoft.solaria</groupId>
         	<artifactId>solaria-dao</artifactId>
         	<version>1.0</version>

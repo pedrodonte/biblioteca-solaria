@@ -1,33 +1,18 @@
 package solaria.prestamos;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertNotNull;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
-
-import cl.jsoft.solaria.daos.SolaTabPrestamoDAO;
-import cl.jsoft.solaria.dominio.vos.HelperVoEntity;
-import cl.jsoft.solaria.dominio.vos.VoPrestamo;
-import cl.jsoft.solaria.entities.SolaTabPrestamo;
-import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
-import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
-import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
-import cl.jsoft.solaria.jasper.GeneradorReporteEJB;
-import cl.jsoft.solaria.jasper.GeneradorReporteEJBImpl;
 import cl.jsoft.solaria.servicios.ClienteServicesEJB;
 import cl.jsoft.solaria.servicios.ClienteServicesEJBImpl;
-import cl.jsoft.solaria.servicios.PrestamoServicesEJBImpl;
-import cl.jsoft.solaria.util.HelperFechas;
 
 public class Credenciales {
 	
@@ -42,7 +27,7 @@ public class Credenciales {
 		for (int i = 1; i <= 24; i++) {
 			try {
 				servicio.generarCredenciales((long)i);
-			} catch (RegistrosNoEncontradosException | ErrorDelSistemaException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

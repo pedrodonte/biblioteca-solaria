@@ -13,6 +13,7 @@ public class SolariaController {
 	public static final String CREDENCIALES = "credenciales";
 	
 	public static final String PRES_FORM_PRESTAMO= "pres_form_prestamo";
+	public static final String PRESTAMOS = "prestamos";
 	
 	
 	public String forwardDashboard(){
@@ -37,6 +38,10 @@ public class SolariaController {
 	
 	public String fwdCredenciales(){
 		return CREDENCIALES;
+	}
+	
+	public String fwdPrestamos(){
+		return PRESTAMOS;
 	}
 
 }

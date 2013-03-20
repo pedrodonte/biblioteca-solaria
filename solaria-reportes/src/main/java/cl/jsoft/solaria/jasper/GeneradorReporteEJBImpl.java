@@ -5,11 +5,14 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import util.PropiedadesManager;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -19,7 +22,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 @Stateless
 public class GeneradorReporteEJBImpl implements GeneradorReporteEJB {
 	
-	private static final String PATH_DESTINO= "C:\\pcarrasco\\credenciales\\";
+	//private static final String PATH_DESTINO= "C:\\pcarrasco\\credenciales\\";
 	//private static final String RECURSOS  = "src/main/resources/";
 	
 	@Override
@@ -38,6 +41,15 @@ public class GeneradorReporteEJBImpl implements GeneradorReporteEJB {
 		return null;
 	}
 	
+	public String getPathDestino(){
+		
+		PropiedadesManager pm = PropiedadesManager.get();
+		Properties p = pm.leerArchivoConfiguracion();
+		
+		return p.getProperty(PropiedadesManager.PATH_CREDENCIALES);
+		
+	}
+	
 	
 	private Connection getConexion() throws NamingException, SQLException {
 		InitialContext ctx=new InitialContext();	
@@ -50,11 +62,11 @@ public class GeneradorReporteEJBImpl implements GeneradorReporteEJB {
 	public String generarReporte(String nombreReporte, Map<String, Object> param, Connection conexion ) {
 		try {
 			
-			JasperPrint print = JasperFillManager.fillReport(PATH_DESTINO+nombreReporte+ ".jasper", param, conexion);
+			JasperPrint print = JasperFillManager.fillReport(getPathDestino()+nombreReporte+ ".jasper", param, conexion);
 			
 			String nombreFinalReporte = obtenerNombreFinal(nombreReporte, "pdf");
 
-			String newFileName = PATH_DESTINO + nombreFinalReporte;
+			String newFileName = getPathDestino() + nombreFinalReporte;
 			JasperExportManager.exportReportToPdfFile(print, newFileName);
 			
 			return nombreFinalReporte;

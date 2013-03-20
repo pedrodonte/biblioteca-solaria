@@ -1,6 +1,7 @@
 package cl.jsoft.solaria.servicios;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import cl.jsoft.solaria.daos.SolaTabPrestamoDAO;
 import cl.jsoft.solaria.dominio.vos.HelperVoEntity;
+import cl.jsoft.solaria.dominio.vos.TransformadorDominio;
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoPrestamo;
 import cl.jsoft.solaria.entities.SolaTabPrestamo;
@@ -25,12 +27,11 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB{
 	
 	@EJB private SolaTabPrestamoDAO prestamoDAO;
 	
-	private HelperVoEntity helperVoEntity = new HelperVoEntity();
+	private HelperVoEntity helperVoEntity = new TransformadorDominio();
 	private HelperFechas hFechas = new HelperFechas();
 	
 	@Override
 	public List<VoPrestamo> buscarPrestamosHistoricos(VoCliente voCliente) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -48,8 +49,15 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB{
 
 	@Override
 	public List<VoPrestamo> buscarTodosPrestamosPendientes() {
-		// TODO Auto-generated method stub
-		return null;
+		List<SolaTabPrestamo> prestamosJPA = prestamoDAO.findAll();
+		
+		List<VoPrestamo> respuesta = new ArrayList<>();
+		
+		for(SolaTabPrestamo prestamo : prestamosJPA){
+			respuesta.add(helperVoEntity.toVO(prestamo));
+		}
+		
+		return respuesta;
 	}
 
 	@Override
@@ -118,6 +126,19 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB{
 
 	public void setPrestamoDAO(SolaTabPrestamoDAO prestamoDAO) {
 		this.prestamoDAO = prestamoDAO;
+	}
+
+	@Override
+	public void devolverPrestamo(VoPrestamo voPrestamo)	throws PrestamoNoValidoException, ErrorDelSistemaException {
+
+		try {
+			voPrestamo.setPrestamoFecUpdate(getFechaActual());
+			prestamoDAO.update(helperVoEntity.toEntity(voPrestamo));
+		} catch (Exception e) {
+			throw new ErrorDelSistemaException("Error al actualizar el estado del prestamo");
+		}
+		
+		
 	}
 	
 	

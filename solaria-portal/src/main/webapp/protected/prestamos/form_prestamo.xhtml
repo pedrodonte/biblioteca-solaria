@@ -11,6 +11,7 @@
 			<h1>
 				Solaria <small>Nuevo Prestamo</small>
 			</h1>
+			<p:commandLink action="#{solariaBean.forwardDashboard}" value="Volver al Inicio"/>
 		</div>
 	</ui:define>
 
@@ -50,18 +51,6 @@
 					</div>
 					
 					
-					<div class="control-group">
-						<div class="controls">
-							<p:commandLink id="btnBuscaxNombre" oncomplete="buscadorNombreApellido.show()" value="Buscar por nombre y apellido" styleClass="btn btn-link" />
-							<p:tooltip for="btnBuscaxNombre" showEffect="slide" hideEffect="slide"
-								value="Búsqueda alternativa, busca por combinación de nombre y apellido."  /> 
-						</div>
-					</div>
-					
-					
-					
-							
-
 					<div class="control-group">
 						<label class="control-label">Nombre Alumno</label>
 						<div class="controls">
@@ -161,49 +150,6 @@
 					immediate="true" styleClass="btn btn-success " value="Aceptar" />
 				</div>
 
-
-				<p:dialog id="buscadorNombreApellido"  widgetVar="buscadorNombreApellido" width="600"
-					 header="Buscador por Nombre y Apellido" modal="true" closable="true" showEffect="slide">
-					 
-				 	<p:messages autoUpdate="true" showDetail="true" closable="true" />
-				 	
-				 	<div class="control-group">
-						<div class="controls">
-							<p:selectOneMenu id="comboGrupoCliente" style="width:100%;"
-						    	value="#{buscaUsuarioBean.grupoclienteSeleccionado}" 
-						    	valueChangeListener="#{buscaUsuarioBean.doSeleccionaGrupo}"
-						    	converter="grupoClienteConverter" >
-						    		
-	 					    		<f:ajax render=":form_prestamo:comboClientesEncontrados" />
-						    	
-						            <f:selectItem itemLabel="Seleccione un Registro" itemValue="" />  
-						            <f:selectItems value="#{buscaUsuarioBean.gruposCliente}"
-						            var="item" itemLabel="#{item.grupoclienteNombre}" itemValue="#{item}"/>  
-						            
-							</p:selectOneMenu>
-						</div>
-					</div>
-					
-					<div class="control-group">
-					    <label class="control-label" >Alumnos</label>
-					    <div class="controls">
-					       <p:selectOneMenu id="comboClientesEncontrados" style="width:100%;"
-						    	value="#{prestamoSessionBean.clienteEncontrado}" 
-						    	valueChangeListener="#{buscaUsuarioBean.doSeleccionaCliente}"
-						    	converter="clienteConverter" >
-						    		
-	 					    		<f:ajax render=":form_prestamo:cpoNombreCliente :form_prestamo:cpoIdentCliente" />
-						    	
-						            <f:selectItem itemLabel="Seleccione un Registro" itemValue="" />  
-						            <f:selectItems value="#{buscaUsuarioBean.clientesEncontrados}" var="item" itemLabel="#{item.selectOneMenu}" itemValue="#{item}"/>  
-						            
-							</p:selectOneMenu>
-					    </div>
-					</div>
-					
-					<p:commandLink oncomplete="buscadorNombreApellido.hide()" value="Cerrar Dialogo" styleClass="btn" />
-					
-				</p:dialog>
 
 			</h:form>
 
