@@ -7,6 +7,7 @@ import javax.ejb.Local;
 
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoPrestamo;
+import cl.jsoft.solaria.excepciones.ClienteMorosoException;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
 
@@ -30,5 +31,7 @@ public interface PrestamoServicesEJB {
 	public void devolverPrestamo(VoPrestamo voPrestamo) throws PrestamoNoValidoException, ErrorDelSistemaException;
 	
 	public boolean validarPrestamo(VoPrestamo voPrestamo) throws PrestamoNoValidoException;
+	
+	public boolean verificarMorosidad(VoCliente voCliente) throws ClienteMorosoException, ErrorDelSistemaException;
 
 }

@@ -127,4 +127,19 @@ public class SolaTabPrestamo implements Serializable {
 		this.solaTabLibro = solaTabLibro;
 	}
 
+	@Override
+	public String toString() {
+		return "SolaTabPrestamo [prestamoCodPrestamo=" + prestamoCodPrestamo
+				+ ", prestamoCodEstado=" + prestamoCodEstado
+				+ ", prestamoFecDevReal=" + prestamoFecDevReal
+				+ ", prestamoFecInicio=" + prestamoFecInicio
+				+ ", prestamoFecInsert=" + prestamoFecInsert
+				+ ", prestamoFecPlazoEntrega=" + prestamoFecPlazoEntrega
+				+ ", prestamoFecUpdate=" + prestamoFecUpdate
+				+ ", solaTabCliente=" + solaTabCliente + ", solaTabLibro="
+				+ solaTabLibro + "]";
+	}
+	
+	
+
 }

@@ -17,6 +17,7 @@ import org.primefaces.context.RequestContext;
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoLibro;
 import cl.jsoft.solaria.dominio.vos.VoPrestamo;
+import cl.jsoft.solaria.excepciones.ClienteMorosoException;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 import cl.jsoft.solaria.servicios.ClienteServicesEJB;
@@ -89,11 +90,17 @@ public class FormPrestamoBean {
 		try {
 			voCliente = clienteServicesEJB.buscarClientePorIdentificador(cpoIdentificadorCliente);
 			prestamoSessionBean.setClienteEncontrado(voCliente);
+			
+			prestamoServicesEJB.verificarMorosidad(voCliente);
+			
 		} catch (RegistrosNoEncontradosException e) {
 			voCliente = new VoCliente();
 			mensajesBean.msgWarn("Registro no encontrado");
 		} catch (ErrorDelSistemaException e) {
 			mensajesBean.msgError("Error al ejecutar la operación");
+		} catch (ClienteMorosoException e) {
+			logger.info("El usuario tiene prestamos atrasados!!! ");
+			mensajesBean.msgWarn(e.getMessage());
 		}
 		
 	}
