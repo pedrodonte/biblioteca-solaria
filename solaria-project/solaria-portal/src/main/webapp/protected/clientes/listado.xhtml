@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/tmpl_alpha.xhtml">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Listado de Alumnos</small>
+			</h1>
+			<p:commandLink action="#{solariaBean.forwardDashboard}" value="Volver al Inicio"/>
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.ui-paginator-top {
+	display: none !important;
+}
+
+.ui-widget-header a {
+	color: #333333 !important;
+}
+</style>
+
+
+
+
+		<div class="container">
+
+			<h:form id="form1">
+
+				<div class="control-group">
+					<div class="controls">Selecciona un curso para desplegar el listado de alumnos.</div>
+				</div>
+
+				<div class="control-group">
+					<div class="controls">
+						<p:selectOneMenu id="comboGrupoCliente" style="width : 100%;"
+							value="#{buscaUsuarioBean.grupoclienteSeleccionado}"
+							valueChangeListener="#{buscaUsuarioBean.doSeleccionaGrupo}"
+							converter="grupoClienteConverter">
+
+							<f:ajax render=":form1:tablaLibros" />
+
+							<f:selectItem itemLabel="Seleccione un Curso" itemValue="" />
+							<f:selectItems value="#{buscaUsuarioBean.gruposCliente}"
+								var="item" itemLabel="#{item.grupoclienteNombre}"
+								itemValue="#{item}" />
+
+						</p:selectOneMenu>
+					</div>
+				</div>
+
+				<p:messages id="msgCliente" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<p:dataTable id="tablaLibros"
+					value="#{buscaUsuarioBean.clientesEncontrados}" var="item"
+					styleClass="table" selectionMode="single"
+					rowKey="#{item.clienteCodCliente}"
+					selection="#{clientesBean.clienteSeleccionado}">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Identificador" />
+						</f:facet>
+						<h:outputText value="#{item.clienteIdentificador}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nombre" />
+						</f:facet>
+						<h:outputText value="#{item.nombreCompleto}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Curso" />
+						</f:facet>
+						<h:outputText value="#{item.voGrupocliente.grupoclienteNombre}" />
+					</p:column>
+
+				</p:dataTable>
+
+				<!--     	    dialogo detalle -->
+				<p:dialog id="dialog" header="Detalle del Libro"
+					widgetVar="carDialog" resizable="false" width="600"
+					showEffect="clip" hideEffect="fold">
+
+					<h:panelGrid id="display" columns="2" cellpadding="4">
+
+						<h:outputText value="Código" />
+						<h:outputText
+							value="#{clientesBean.clienteSeleccionado.clienteCodCliente}" />
+
+
+					</h:panelGrid>
+				</p:dialog>
+
+
+
+			</h:form>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

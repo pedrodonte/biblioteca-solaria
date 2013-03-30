@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cl.jsoft.solaria</groupId>
+	<artifactId>solaria-project</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<endorsed.dir>${project.build.directory}</endorsed.dir>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<glassfish.embedded-static-shell.jar>
+			C:\pcarrasco\desa_java_solaria\glassfish3.1.2.2\glassfish\lib\embedded\glassfish-embedded-static-shell.jar
+		</glassfish.embedded-static-shell.jar>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	
+	<modules>
+		<module>solaria-dao</module>
+		<module>solaria-portal</module>
+		<module>solaria-reportes</module>
+		<module>solaria-servicios</module>
+	</modules>
+
+	<name>Proyecto Biblioteca Solaria</name>
+</project>

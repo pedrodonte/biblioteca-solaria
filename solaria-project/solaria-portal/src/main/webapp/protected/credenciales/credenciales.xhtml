@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	template="/template/tmpl_alpha.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Credenciales</small>
+			</h1>
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+	
+		<script type="text/javascript">
+		
+			function handleActionRequest(xhr, status, args) {
+				if (args.isActionSuccess) {
+
+					//jQuery('fieldset, .pre-accion').fadeOut();
+					jQuery('.pos-accion').fadeIn();
+					
+				}
+			}
+			
+		</script>
+		
+		
+		<div class="container">
+
+			<h:form id="form_prestamo" styleClass="form-horizontal">
+
+				<fieldset>
+					<legend>Grupo</legend>
+					<p:messages id="msgCliente" showDetail="true"  closable="true" autoUpdate="true" />
+											
+					<div class="control-group">
+						<div class="controls">
+							<p:selectOneMenu id="comboGrupoCliente" style="width:100%;"
+						    	value="#{credencialesBean.grupoSeleccionado}" 
+						    	valueChangeListener="#{credencialesBean.doSeleccionaGrupo}"
+						    	converter="grupoClienteConverter" >
+						    		
+	 					    		<f:ajax render=":form_prestamo:cpoNombreGrupo" />
+						    	
+						            <f:selectItem itemLabel="Seleccione un Registro" itemValue="" />  
+						            <f:selectItems value="#{coleccionesBean.gruposClienteRegistrados}"
+						            var="item" itemLabel="#{item.grupoclienteNombre}" itemValue="#{item}"/>  
+						            
+							</p:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">XXXX</label>
+						<div class="controls">
+							<span class="input-xlarge uneditable-input span6"> 
+								<h:outputText id="cpoNombreGrupo" value="#{credencialesBean.grupoSeleccionado.grupoclienteNombre}" />
+							</span>
+						</div>
+					</div>
+
+				</fieldset>
+				
+				<div class="form-actions pre-accion">
+
+					<p:commandLink 
+						actionListener="#{credencialesBean.doGenerarCredenciales}"
+						styleClass="btn btn-info" value="Generar" update="form_prestamo"
+						oncomplete="handleActionRequest(xhr, status, args)" /> 
+											
+				</div>
+
+				<div class="alert alert-success pos-accion" style="display: none;">
+					<h4>Reporte Generado con Éxito</h4>
+					<p>
+						<h:outputText id="msgExitoOperacion"
+							value="Nombre del Archivo Generado : #{credencialesBean.archivoDescargar}" />
+					</p>
+
+
+					<h:link value="Descargar Credenciales" styleClass="btn btn-success"
+						outcome="descargaCredencial" target="_blank">
+						<f:param name="filename"
+							value="#{credencialesBean.archivoDescargar}" />
+					</h:link>
+
+				</div>
+
+			</h:form>
+
+		</div>
+
+		
+	</ui:define>
+
+</ui:composition>

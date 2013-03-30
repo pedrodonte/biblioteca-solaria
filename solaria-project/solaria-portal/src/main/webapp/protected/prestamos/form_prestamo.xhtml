@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	template="/template/tmpl_alpha.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Nuevo Prestamo</small>
+			</h1>
+			<p:commandLink action="#{solariaBean.forwardDashboard}" value="Volver al Inicio"/>
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+	
+		<script type="text/javascript">
+		
+			function handleActionRequest(xhr, status, args) {
+				if (args.isActionSuccess) {
+
+					jQuery('fieldset, .pre-accion').fadeOut();
+					jQuery('.pos-accion').fadeIn();
+					
+				}
+			}
+			
+		</script>
+		
+		
+		<div class="container">
+
+			<h:form id="form_prestamo" styleClass="form-horizontal">
+
+				<fieldset>
+					<legend>Paso 1 : ¿Quien Pide?</legend>
+					<p:messages id="msgCliente" showDetail="true"  closable="true" escape="false"/>
+					<div class="control-group">
+						<label class="control-label" for="inputRUN">RUN</label>
+						<div class="controls">
+							<div class="input-append">
+								<h:inputText id="inputRUN" value="#{prestamoBean.cpoIdentificadorCliente}" styleClass="span2" />
+								<p:commandLink actionListener="#{prestamoBean.doBuscarClienteIdentificador}" 
+									update="cpoIdentCliente,cpoNombreCliente,msgCliente" 
+									styleClass="btn btn-primary" ><i class="icon-search icon-white"></i> Buscar por RUN</p:commandLink>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="control-group">
+						<label class="control-label">Nombre Alumno</label>
+						<div class="controls">
+							<span class="input-xlarge uneditable-input span6"> 
+								<h:outputText value="#{prestamoSessionBean.clienteEncontrado.nombreCompleto}" id="cpoNombreCliente" />
+							</span>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">RUN Alumno</label>
+						<div class="controls">
+							<span class="input-xlarge uneditable-input span2"> 
+								<h:outputText value="#{prestamoSessionBean.clienteEncontrado.clienteIdentificador}" id="cpoIdentCliente" />
+							</span>
+						</div>
+					</div>
+					
+				</fieldset>
+				
+				<fieldset>
+					<legend>Paso 2 : ¿Cual Libro?</legend>
+					<p:messages id="msgLibro" showDetail="true"  closable="true" />
+					<div class="control-group">
+						<label class="control-label" >Código Libro</label>
+						<div class="controls">
+							<div class="input-append">
+								<h:inputText value="#{prestamoBean.cpoCodigoInterno}"  styleClass="span2" />
+								<p:commandLink actionListener="#{prestamoBean.doBuscarLibroCodigoInterno}" 
+									update="cpoTitulo,cpoCodigoLibro,msgLibro"
+									styleClass="btn btn-primary"><i class="icon-search icon-white"></i> Buscar Libro</p:commandLink>
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">Titulo</label>
+						<div class="controls">
+							<span class="input-xlarge uneditable-input span6"> 
+								<h:outputText id="cpoTitulo" value="#{prestamoSessionBean.libroEncontrado.libroTitulo}" />
+							</span>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">Código</label>
+						<div class="controls">
+							<span class="input-xlarge uneditable-input span2"> 
+								<h:outputText id="cpoCodigoLibro" value="#{prestamoSessionBean.libroEncontrado.libroIdInterno}"/>
+							</span>
+						</div>
+					</div>
+
+				</fieldset>
+				
+				<fieldset>
+					<legend>Paso 3 : ¿Por cuanto tiempo?</legend>
+
+
+					<div class="control-group">
+						<label class="control-label">Desde</label>
+						<div class="controls">
+							<p:calendar value="#{prestamoBean.cpoFechaInicio}" language="ES" pattern="dd-MM-yyyy">
+								 <p:ajax update="fecFinal" event="dateSelect" 
+                    				listener="#{prestamoBean.actualizaFechaFinal}"/>  
+							</p:calendar>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">Hasta</label>
+						<div class="controls">
+							<p:calendar id="fecFinal" value="#{prestamoBean.cpoFechaFinal}" mindate="#{prestamoBean.cpoFechaInicio}" pattern="dd-MM-yyyy" />
+						</div>
+					</div>
+
+				</fieldset>
+
+				<p:messages id="msgPrestamo" severity="warn, error" showDetail="true"  closable="true" />
+
+				<div class="form-actions pre-accion">
+
+					<p:commandButton 
+						actionListener="#{prestamoBean.doGuardarNuevoPrestamo}"
+						styleClass="btn btn-info" value="Guardar" update="msgPrestamo, msgExitoOperacion"
+						oncomplete="handleActionRequest(xhr, status, args)" /> 
+					
+					<p:commandButton action="#{solariaBean.forwardDashboard}"
+						immediate="true" styleClass="btn" value="Cancelar" />
+						
+				</div>
+						
+				<div class="alert alert-success pos-accion" style="display:none;">
+				  <h4>Acción Ejecutada con Éxito</h4>
+				  <p><h:outputText id="msgExitoOperacion" value="#{prestamoBean.msgResultadoPrestamo}" /></p>
+				  <p:commandButton action="#{solariaBean.forwardDashboard}" 
+					immediate="true" styleClass="btn btn-success " value="Aceptar" />
+				</div>
+
+
+			</h:form>
+
+		</div>
+
+		
+	</ui:define>
+
+</ui:composition>
