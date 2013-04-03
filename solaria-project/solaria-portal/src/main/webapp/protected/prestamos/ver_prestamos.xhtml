@@ -77,13 +77,6 @@
 							rendered="#{item.prestamoCodEstado == 1}" styleClass="text-error" />
 					</p:column>
 
-					<p:column sortBy="#{item.prestamoFecInicio}">
-						<f:facet name="header">Fecha Inicio</f:facet>
-						<h:outputText value="#{item.prestamoFecInicio}">
-							<f:convertDateTime pattern="dd-MM-yyyy" />
-						</h:outputText>
-					</p:column>
-
 					<p:column sortBy="#{item.prestamoFecPlazoEntrega}">
 						<f:facet name="header">Fecha Entrega</f:facet>
 						<h:outputText value="#{item.prestamoFecPlazoEntrega}">
@@ -94,6 +87,13 @@
 					<p:column sortBy="#{item.voCliente.nombreCompleto}">
 						<f:facet name="header">Alumno</f:facet>
 						<h:outputText value="#{item.voCliente.nombreCompleto}" />
+					</p:column>
+					
+					<p:column sortBy="#{item.voLibro.libroCodLibro}" 
+					 filterBy="#{item.voLibro.libroCodLibro}" 
+					 headerText="Código" footerText="startsWith">
+						<f:facet name="header">Código Libro</f:facet>
+						<h:outputText value="#{item.voLibro.libroCodLibro}" />
 					</p:column>
 					
 					<p:column sortBy="#{item.voLibro.libroTitulo}">
@@ -119,6 +119,10 @@
 						<h:outputText value="Libro" />
 						<h:outputText
 							value="#{verPrestamosBean.registroEnEdicion.voLibro.libroTitulo}" />
+							
+						<h:outputText value="Código Libro" />
+						<h:outputText style="font-weight: bold;"
+							value="#{verPrestamosBean.registroEnEdicion.voLibro.libroCodLibro}" />
 
 						<h:outputText value="Inicio Prestamo" />
 						<h:outputText

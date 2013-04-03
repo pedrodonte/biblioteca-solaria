@@ -18,8 +18,6 @@ public interface PrestamoServicesEJB {
 	public static final BigDecimal PRESTAMO_ATRASADO = new BigDecimal(10);
 	public static final BigDecimal PRESTAMO_DEVUELTO = new BigDecimal(2);
 		
-	public List<VoPrestamo> buscarPrestamosHistoricos(VoCliente voCliente) throws ErrorDelSistemaException;
-	
 	public List<VoPrestamo> buscarPrestamosPendientes(VoCliente voCliente) throws ErrorDelSistemaException;
 	
 	public List<VoPrestamo> buscarTodosPrestamosHistoricos() throws ErrorDelSistemaException;

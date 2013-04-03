@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -58,6 +59,8 @@ public class FormPrestamoBean {
 	private String apellidos = "";
 	private List<VoCliente> clientesEncontrados = new ArrayList<VoCliente>();
 	private VoCliente clienteBuscadoSeleccionado = new VoCliente();
+	private String clienteMoroso = "SIN_MORA";
+	private List<VoPrestamo> prestamosMora = new ArrayList<>();
 	
 	public void doBuscaXNombreApellido(ActionEvent actionEvent) {
 		logger.debug("nombre: "+nombres+", apellido: "+apellidos);
@@ -86,23 +89,31 @@ public class FormPrestamoBean {
 	}
 	
 	public void doBuscarClienteIdentificador(ActionEvent actionEvent) {
-		VoCliente voCliente;
+		VoCliente voCliente = new VoCliente();
+		String flagMoroso = "Sin_Mora";
 		try {
 			voCliente = clienteServicesEJB.buscarClientePorIdentificador(cpoIdentificadorCliente);
 			prestamoSessionBean.setClienteEncontrado(voCliente);
-			
 			prestamoServicesEJB.verificarMorosidad(voCliente);
-			
 		} catch (RegistrosNoEncontradosException e) {
 			voCliente = new VoCliente();
+			prestamoSessionBean.setClienteEncontrado(voCliente);
 			mensajesBean.msgWarn("Registro no encontrado");
 		} catch (ErrorDelSistemaException e) {
 			mensajesBean.msgError("Error al ejecutar la operación");
+			voCliente = new VoCliente();
+			prestamoSessionBean.setClienteEncontrado(voCliente);
 		} catch (ClienteMorosoException e) {
+			flagMoroso = "MOROSO";
+			try {
+				prestamosMora = prestamoServicesEJB.buscarPrestamosPendientes(voCliente);
+			} catch (ErrorDelSistemaException e1) {
+				logger.warn("Problemas al obtener los registros prestamos mora.");
+			}
 			logger.info("El usuario tiene prestamos atrasados!!! ");
 			mensajesBean.msgWarn(e.getMessage());
 		}
-		
+		setClienteMoroso(flagMoroso);
 	}
 	
 	public void doSeleccionaCliente(ValueChangeEvent changeEvent){
@@ -139,6 +150,12 @@ public class FormPrestamoBean {
 			logger.error(e.getMessage());
 		}
 		RequestContext.getCurrentInstance().addCallbackParam("isActionSuccess", isActionSuccess);		
+	}
+	
+	@PostConstruct
+	public void inicializar(){
+		prestamoSessionBean.setClienteEncontrado(new VoCliente());
+		prestamoSessionBean.setLibroEncontrado(new VoLibro());
 	}
 	
 	public void actualizaFechaFinal(){
@@ -250,8 +267,25 @@ public class FormPrestamoBean {
 	public void setClienteBuscadoSeleccionado(VoCliente clienteBuscadoSeleccionado) {
 		this.clienteBuscadoSeleccionado = clienteBuscadoSeleccionado;
 	}
-	
-	
 
+
+	public String getClienteMoroso() {
+		return clienteMoroso;
+	}
+
+
+	public void setClienteMoroso(String clienteMoroso) {
+		this.clienteMoroso = clienteMoroso;
+	}
+
+
+	public List<VoPrestamo> getPrestamosMora() {
+		return prestamosMora;
+	}
+
+
+	public void setPrestamosMora(List<VoPrestamo> prestamosMora) {
+		this.prestamosMora = prestamosMora;
+	}
 
 }

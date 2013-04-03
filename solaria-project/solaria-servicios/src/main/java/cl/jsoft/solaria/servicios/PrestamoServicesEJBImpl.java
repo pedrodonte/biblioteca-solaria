@@ -1,6 +1,5 @@
 package cl.jsoft.solaria.servicios;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,10 +31,6 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 	private HelperVoEntity helperVoEntity = new TransformadorDominio();
 	private HelperFechas hFechas = new HelperFechas();
 
-	@Override
-	public List<VoPrestamo> buscarPrestamosHistoricos(VoCliente voCliente) {
-		return null;
-	}
 
 	@Override
 	public List<VoPrestamo> buscarPrestamosPendientes(VoCliente voCliente) {
@@ -74,7 +69,7 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 		SolaTabPrestamo prestamo = null;
 		try {
 			if (validarPrestamo(voPrestamo)) {
-				voPrestamo.setPrestamoFecInsert(getFechaActual());
+				voPrestamo.setPrestamoFecInsert(HelperFechas.getInstancia().obtenerTimeStampActual());
 				voPrestamo.setPrestamoCodEstado(PRESTAMO_VIGENTE);
 				logger.debug("Input " + voPrestamo);
 				prestamo = prestamoDAO
@@ -91,11 +86,6 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 		}
 		logger.debug("Retornando " + prestamo);
 		return helperVoEntity.toVO(prestamo);
-	}
-
-	private Timestamp getFechaActual() {
-		Date dateActual = new Date();
-		return new Timestamp(dateActual.getTime());
 	}
 
 	@Override
@@ -149,7 +139,7 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 			throws PrestamoNoValidoException, ErrorDelSistemaException {
 
 		try {
-			voPrestamo.setPrestamoFecUpdate(getFechaActual());
+			voPrestamo.setPrestamoFecUpdate(HelperFechas.getInstancia().obtenerTimeStampActual());
 			prestamoDAO.update(helperVoEntity.toEntity(voPrestamo));
 		} catch (Exception e) {
 			throw new ErrorDelSistemaException(

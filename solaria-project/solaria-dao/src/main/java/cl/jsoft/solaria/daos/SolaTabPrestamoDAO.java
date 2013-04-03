@@ -27,6 +27,13 @@ public class SolaTabPrestamoDAO extends GenericDAO<SolaTabPrestamo, Long> {
 			" and p.solaTabCliente.clienteIdentificador = :clienteIdentificador " +
 			" order by p.prestamoFecPlazoEntrega desc";
 	
+	private static final String SQL_POR_ESTADO = "select p from SolaTabPrestamo p where " +
+			" p.prestamoCodEstado = :codEstado";
+	
+	private static final String SQL_POR_ESTADO_CLIENTE = "select p from SolaTabPrestamo p " +
+			" where p.prestamoCodEstado = :codEstado " +
+			" and p.solaTabCliente.clienteCodCliente = :codCliente ";
+	
 	public SolaTabPrestamoDAO() {
 		super(SolaTabPrestamo.class);
 	}
@@ -37,6 +44,17 @@ public class SolaTabPrestamoDAO extends GenericDAO<SolaTabPrestamo, Long> {
 		return super.findManyResult(SQL_BUSCA_ATRASADOS, parameters);
 	}
 	
+	public List<SolaTabPrestamo> buscaPorEstadoTodos(Integer codEstado) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("codEstado", codEstado);
+		return super.findManyResult(SQL_POR_ESTADO, parameters);
+	}
 	
+	public List<SolaTabPrestamo> buscaPorEstadoUsuario(Integer codEstado, BigDecimal codCliente) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("codEstado", codEstado);
+		parameters.put("codCliente", codCliente);
+		return super.findManyResult(SQL_POR_ESTADO_CLIENTE, parameters);
+	}
 	
 }
