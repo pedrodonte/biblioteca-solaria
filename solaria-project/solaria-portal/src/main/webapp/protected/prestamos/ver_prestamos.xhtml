@@ -89,11 +89,10 @@
 						<h:outputText value="#{item.voCliente.nombreCompleto}" />
 					</p:column>
 					
-					<p:column sortBy="#{item.voLibro.libroCodLibro}" 
-					 filterBy="#{item.voLibro.libroCodLibro}" 
-					 headerText="Código" footerText="startsWith">
+					<p:column sortBy="#{item.voLibro.libroIdInterno}" 
+					 filterBy="#{item.voLibro.libroIdInterno}">
 						<f:facet name="header">Código Libro</f:facet>
-						<h:outputText value="#{item.voLibro.libroCodLibro}" />
+						<h:outputText value="#{item.voLibro.libroIdInterno}" />
 					</p:column>
 					
 					<p:column sortBy="#{item.voLibro.libroTitulo}">
@@ -122,7 +121,7 @@
 							
 						<h:outputText value="Código Libro" />
 						<h:outputText style="font-weight: bold;"
-							value="#{verPrestamosBean.registroEnEdicion.voLibro.libroCodLibro}" />
+							value="#{verPrestamosBean.registroEnEdicion.voLibro.libroIdInterno}" />
 
 						<h:outputText value="Inicio Prestamo" />
 						<h:outputText
