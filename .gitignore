@@ -5,9 +5,7 @@
 *.war
 *.ear
 
-solaria-project/solaria-reportes/target/*
-solaria-project/solaria-dao/target/*
-solaria-project/solaria-servicios/target/*
-solaria-project/solaria-portal/target/*
-solaria-project/solaria-crontab/target/*
-**/target/*
+*/target/*
+*/target/**
+target
+target/
