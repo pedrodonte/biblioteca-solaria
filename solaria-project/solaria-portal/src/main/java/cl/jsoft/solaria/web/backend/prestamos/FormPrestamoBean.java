@@ -90,7 +90,7 @@ public class FormPrestamoBean {
 	
 	public void doBuscarClienteIdentificador(ActionEvent actionEvent) {
 		VoCliente voCliente = new VoCliente();
-		String flagMoroso = "Sin_Mora";
+		clienteMoroso = "Sin_Mora";
 		try {
 			voCliente = clienteServicesEJB.buscarClientePorIdentificador(cpoIdentificadorCliente);
 			prestamoSessionBean.setClienteEncontrado(voCliente);
@@ -104,7 +104,7 @@ public class FormPrestamoBean {
 			voCliente = new VoCliente();
 			prestamoSessionBean.setClienteEncontrado(voCliente);
 		} catch (ClienteMorosoException e) {
-			flagMoroso = "MOROSO";
+			clienteMoroso = "MOROSO";
 			try {
 				prestamosMora = prestamoServicesEJB.buscarPrestamosPendientes(voCliente);
 			} catch (ErrorDelSistemaException e1) {
@@ -113,7 +113,6 @@ public class FormPrestamoBean {
 			logger.info("El usuario tiene prestamos atrasados!!! ");
 			mensajesBean.msgWarn(e.getMessage());
 		}
-		setClienteMoroso(flagMoroso);
 	}
 	
 	public void doSeleccionaCliente(ValueChangeEvent changeEvent){

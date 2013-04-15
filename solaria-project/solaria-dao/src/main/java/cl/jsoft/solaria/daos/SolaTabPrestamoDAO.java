@@ -23,7 +23,7 @@ public class SolaTabPrestamoDAO extends GenericDAO<SolaTabPrestamo, Long> {
 	public static final String SOLA_TAB_LIBRO = "solaTabLibro";
 	
 	private static final String SQL_BUSCA_ATRASADOS = "select p " +
-			" from SolaTabPrestamo as p where p.prestamoFecPlazoEntrega < current_date " +
+			" from SolaTabPrestamo as p where p.prestamoCodEstado = 10" +
 			" and p.solaTabCliente.clienteIdentificador = :clienteIdentificador " +
 			" order by p.prestamoFecPlazoEntrega desc";
 	

@@ -72,9 +72,11 @@
 					<p:column sortBy="#{item.prestamoCodEstado}">
 						<f:facet name="header">Estado</f:facet>
 						<h:outputText value="Devuelto"
-							rendered="#{item.prestamoCodEstado == 2 }" styleClass="text-info" />
+							rendered="#{item.prestamoCodEstado == 2 }" styleClass="label label-success" />
 						<h:outputText value="Prestado"
-							rendered="#{item.prestamoCodEstado == 1}" styleClass="text-error" />
+							rendered="#{item.prestamoCodEstado == 1}" styleClass="label" />
+						<h:outputText value="Moroso"
+							rendered="#{item.prestamoCodEstado == 10}" styleClass="label label-important" />
 					</p:column>
 
 					<p:column sortBy="#{item.prestamoFecPlazoEntrega}">
@@ -113,7 +115,7 @@
 
 						<h:outputText value="Cliente" />
 						<h:outputText
-							value="#{verPrestamosBean.registroEnEdicion.voCliente.nombreCompleto}" />
+							value="#{verPrestamosBean.registroEnEdicion.voCliente.nombreCompleto} - #{verPrestamosBean.registroEnEdicion.voCliente.clienteIdentificador}" />
 
 						<h:outputText value="Libro" />
 						<h:outputText

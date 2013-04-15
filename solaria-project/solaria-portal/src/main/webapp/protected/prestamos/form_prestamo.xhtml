@@ -41,9 +41,12 @@
 
 					<div class="control-group">
 						<div class="controls">
-							<p:commandButton value="Ver Prestamos" id="tstMora"
+							<p:commandButton value="Ver Morosidad" id="tstMora"
 								onclick="dlgPrestamos.show()"
 								disabled="#{prestamoBean.clienteMoroso ne 'MOROSO'}" />
+							<h:outputText value="Prestamos al día" id="labelMora"
+								rendered="#{prestamoBean.clienteMoroso eq 'Sin_Mora'}"
+								styleClass="label label-success" />
 						</div>
 					</div>
 					<div class="control-group">
@@ -55,7 +58,7 @@
 									styleClass="span2" />
 								<p:commandLink
 									actionListener="#{prestamoBean.doBuscarClienteIdentificador}"
-									update="cpoIdentCliente,cpoNombreCliente,msgCliente,tstMora,tablaPendientes"
+									update="cpoIdentCliente,cpoNombreCliente,msgCliente,tstMora,tablaPendientes,labelMora"
 									styleClass="btn btn-primary">
 									<i class="icon-search icon-white"></i> Buscar por RUN</p:commandLink>
 							</div>
@@ -182,17 +185,24 @@
 
 					<p:dataTable id="tablaPendientes"
 						value="#{prestamoBean.prestamosMora}" var="item"
-						styleClass="table" selectionMode="single"
+						styleClass="table" 
 						rowKey="#{item.prestamoCodPrestamo}" paginator="true" rows="20">
 
 						<p:column sortBy="#{item.prestamoCodEstado}">
 							<f:facet name="header">Estado</f:facet>
 							<h:outputText value="Devuelto"
 								rendered="#{item.prestamoCodEstado == 2 }"
-								styleClass="text-info" />
+								styleClass="label label-success" />
 							<h:outputText value="Prestado"
-								rendered="#{item.prestamoCodEstado == 1}"
-								styleClass="text-error" />
+								rendered="#{item.prestamoCodEstado == 1}" styleClass="label" />
+							<h:outputText value="Moroso"
+								rendered="#{item.prestamoCodEstado == 10}"
+								styleClass="label label-important" />
+						</p:column>
+
+						<p:column sortBy="#{item.voLibro.libroIdInterno}">
+							<f:facet name="header">Código Libro</f:facet>
+							<h:outputText value="#{item.voLibro.libroIdInterno}" />
 						</p:column>
 
 						<p:column sortBy="#{item.prestamoFecInicio}">
