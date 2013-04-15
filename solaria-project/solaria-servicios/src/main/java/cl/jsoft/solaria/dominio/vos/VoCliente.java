@@ -7,7 +7,7 @@ import java.util.Date;
 import java.math.BigDecimal;
 import java.io.Serializable;
 
-public class VoCliente implements Serializable{
+public class VoCliente implements Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1352488193025L;
 	private long clienteCodCliente;
@@ -219,6 +219,10 @@ public class VoCliente implements Serializable{
 		} else if (!voGrupocliente.equals(other.voGrupocliente))
 			return false;
 		return true;
+	}
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 	
 	

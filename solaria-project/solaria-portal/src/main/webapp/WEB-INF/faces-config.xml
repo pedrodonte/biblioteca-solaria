@@ -62,7 +62,7 @@
 		<from-view-id>/protected/*</from-view-id>
 		<navigation-case>
 			<from-outcome>clientes</from-outcome>
-			<to-view-id>/protected/clientes/listado.xhtml</to-view-id>
+			<to-view-id>/protected/clientes/cliente-mantenedor.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
