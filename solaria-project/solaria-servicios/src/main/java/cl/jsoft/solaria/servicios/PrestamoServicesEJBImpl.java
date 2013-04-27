@@ -18,6 +18,7 @@ import cl.jsoft.solaria.entities.SolaTabPrestamo;
 import cl.jsoft.solaria.excepciones.ClienteMorosoException;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
+import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 import cl.jsoft.solaria.util.HelperFechas;
 
 @Stateless
@@ -31,11 +32,11 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 	private HelperVoEntity helperVoEntity = new TransformadorDominio();
 	private HelperFechas hFechas = new HelperFechas();
 
-
 	@Override
 	public List<VoPrestamo> buscarPrestamosPendientes(VoCliente voCliente) {
-		
-		List<SolaTabPrestamo> prestamosJPA = prestamoDAO.buscaAtrasados(voCliente.getClienteIdentificador());
+
+		List<SolaTabPrestamo> prestamosJPA = prestamoDAO
+				.buscaAtrasados(voCliente.getClienteIdentificador());
 		List<VoPrestamo> respuesta = new ArrayList<>();
 
 		for (SolaTabPrestamo prestamo : prestamosJPA) {
@@ -51,13 +52,49 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 	}
 
 	@Override
-	public List<VoPrestamo> buscarTodosPrestamosPendientes() {
-		List<SolaTabPrestamo> prestamosJPA = prestamoDAO.findAll();
+	public List<VoPrestamo> buscarTodosPrestamosPendientes()
+			throws RegistrosNoEncontradosException, ErrorDelSistemaException {
 
 		List<VoPrestamo> respuesta = new ArrayList<>();
 
-		for (SolaTabPrestamo prestamo : prestamosJPA) {
-			respuesta.add(helperVoEntity.toVO(prestamo));
+		try {
+			List<SolaTabPrestamo> prestamosJPA = prestamoDAO
+					.filtraPorCodigoEstado(PRESTAMO_ATRASADO);
+			
+			if (prestamosJPA != null) {
+				logger.debug(prestamosJPA.size()+" Prestamos Morosos");
+				for (SolaTabPrestamo prestamo : prestamosJPA) {
+					respuesta.add(helperVoEntity.toVO(prestamo));
+				}
+			}else{
+				throw new RegistrosNoEncontradosException("No se encuentran registros morosos.");
+			}
+
+		} catch (Exception e) {
+			throw new ErrorDelSistemaException("Problemas al obtener los registros morosos.");
+		}
+
+		return respuesta;
+	}
+
+	@Override
+	public List<VoPrestamo> buscarTodosPrestamos()
+			throws ErrorDelSistemaException, RegistrosNoEncontradosException {
+		List<VoPrestamo> respuesta = new ArrayList<>();
+
+		try {
+			List<SolaTabPrestamo> prestamosJPA = prestamoDAO.findAll();
+			
+			if (prestamosJPA != null) {
+				for (SolaTabPrestamo prestamo : prestamosJPA) {
+					respuesta.add(helperVoEntity.toVO(prestamo));
+				}
+			}else{
+				throw new RegistrosNoEncontradosException("No se encuentran registros morosos.");
+			}
+
+		} catch (Exception e) {
+			throw new ErrorDelSistemaException("Problemas al obtener los registros morosos.");
 		}
 
 		return respuesta;
@@ -69,7 +106,8 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 		SolaTabPrestamo prestamo = null;
 		try {
 			if (validarPrestamo(voPrestamo)) {
-				voPrestamo.setPrestamoFecInsert(HelperFechas.getInstancia().obtenerTimeStampActual());
+				voPrestamo.setPrestamoFecInsert(HelperFechas.getInstancia()
+						.obtenerTimeStampActual());
 				voPrestamo.setPrestamoCodEstado(PRESTAMO_VIGENTE);
 				logger.debug("Input " + voPrestamo);
 				prestamo = prestamoDAO
@@ -139,7 +177,8 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 			throws PrestamoNoValidoException, ErrorDelSistemaException {
 
 		try {
-			voPrestamo.setPrestamoFecUpdate(HelperFechas.getInstancia().obtenerTimeStampActual());
+			voPrestamo.setPrestamoFecUpdate(HelperFechas.getInstancia()
+					.obtenerTimeStampActual());
 			prestamoDAO.update(helperVoEntity.toEntity(voPrestamo));
 		} catch (Exception e) {
 			throw new ErrorDelSistemaException(
@@ -156,7 +195,7 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 
 		try {
 			prestamosAtrazados = this.buscarPrestamosPendientes(voCliente);
-			logger.debug("Prestamos pendientes"+prestamosAtrazados.size());
+			logger.debug("Prestamos pendientes" + prestamosAtrazados.size());
 		} catch (Exception e) {
 			throw new ErrorDelSistemaException(
 					"Problemas al buscar los prestamos pendientes del usuario "
@@ -164,12 +203,16 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 		}
 
 		if (prestamosAtrazados.size() > 0) {
-			
-			String exeMsg = prestamosAtrazados.size()+ " prestamos pendientes: <br/>";
-			for(VoPrestamo p:prestamosAtrazados){
-				String fechaInicio = HelperFechas.getInstancia().fechaFormateadaGuion(p.getPrestamoFecInicio());
-				String fechaFin = HelperFechas.getInstancia().fechaFormateadaGuion(p.getPrestamoFecPlazoEntrega());
-				exeMsg += p.getVoLibro().getLibroTitulo()+" ( "+fechaInicio+" al "+fechaFin+" ) <br/>";
+
+			String exeMsg = prestamosAtrazados.size()
+					+ " prestamos pendientes: <br/>";
+			for (VoPrestamo p : prestamosAtrazados) {
+				String fechaInicio = HelperFechas.getInstancia()
+						.fechaFormateadaGuion(p.getPrestamoFecInicio());
+				String fechaFin = HelperFechas.getInstancia()
+						.fechaFormateadaGuion(p.getPrestamoFecPlazoEntrega());
+				exeMsg += p.getVoLibro().getLibroTitulo() + " ( " + fechaInicio
+						+ " al " + fechaFin + " ) <br/>";
 			}
 			throw new ClienteMorosoException(exeMsg);
 		}

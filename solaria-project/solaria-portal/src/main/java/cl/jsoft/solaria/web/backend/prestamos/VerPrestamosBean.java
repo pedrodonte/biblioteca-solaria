@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import cl.jsoft.solaria.dominio.vos.VoPrestamo;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
+import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 import cl.jsoft.solaria.servicios.PrestamoServicesEJB;
 import cl.jsoft.solaria.util.HelperFechas;
 import cl.jsoft.solaria.web.controllers.MensajesBean;
@@ -92,9 +93,11 @@ public class VerPrestamosBean implements Serializable {
 	@PostConstruct
 	public void inicializarVariablesInstancia() {
 		try {
-			setRegistros(prestamoServicesEJB.buscarTodosPrestamosPendientes());
+			setRegistros(prestamoServicesEJB.buscarTodosPrestamos());
 			logger.debug(registros.size()+" Prestamos encontrados y mostrando.");
 		} catch (ErrorDelSistemaException e) {
+			e.printStackTrace();
+		} catch (RegistrosNoEncontradosException e) {
 			e.printStackTrace();
 		}
 	}

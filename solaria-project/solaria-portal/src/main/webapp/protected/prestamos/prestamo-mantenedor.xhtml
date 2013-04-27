@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/tmpl_alpha.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Mantenedor</small>
+			</h1>
+			<p:commandLink action="#{solariaBean.forwardDashboard}"
+				value="Volver al Inicio" />
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+
+
+		<div class="container">
+
+			<h:form id="form1" styleClass="form-horizontal">
+
+				<p:messages id="msgCliente" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<p:selectOneButton value="#{formBean.opcionesEstados}">
+					<f:selectItem itemLabel="Morosos" itemValue="MOROSOS" />
+					<f:selectItem itemLabel="Devueltos" itemValue="DEVUELTOS" />
+					<f:selectItem itemLabel="Prestados" itemValue="PRESTADOS" />
+				</p:selectOneButton>
+
+				<p:dataTable id="tablaRegistros"
+					value="#{prestamosMantenedorMB.registros}" var="item" styleClass="table"
+					selectionMode="single" rowKey="#{item.prestamoCodPrestamo}"
+					selection="#{prestamosMantenedorMB.registroSeleccionado}"
+					paginator="true" rows="20">
+
+					<p:ajax event="rowSelect"
+						update=":form1:tablaRegistros"
+						process="@this" />
+
+					<p:column sortBy="#{item.prestamoCodEstado}">
+						<f:facet name="header">Estado</f:facet>
+						<h:outputText value="Devuelto"
+							rendered="#{item.prestamoCodEstado == 2 }"
+							styleClass="label label-success" />
+						<h:outputText value="Prestado"
+							rendered="#{item.prestamoCodEstado == 1}" styleClass="label" />
+						<h:outputText value="Moroso"
+							rendered="#{item.prestamoCodEstado == 10}"
+							styleClass="label label-important" />
+					</p:column>
+
+					<p:column sortBy="#{item.prestamoFecPlazoEntrega}">
+						<f:facet name="header">Fecha Entrega</f:facet>
+						<h:outputText value="#{item.prestamoFecPlazoEntrega}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{item.voCliente.nombreCompleto}">
+						<f:facet name="header">Alumno</f:facet>
+						<h:outputText value="#{item.voCliente.nombreCompleto}" />
+					</p:column>
+
+					<p:column sortBy="#{item.voLibro.libroIdInterno}"
+						filterBy="#{item.voLibro.libroIdInterno}">
+						<f:facet name="header">Código Libro</f:facet>
+						<h:outputText value="#{item.voLibro.libroIdInterno}" />
+					</p:column>
+
+					<p:column sortBy="#{item.voLibro.libroTitulo}">
+						<f:facet name="header">Libro</f:facet>
+						<h:outputText value="#{item.voLibro.libroTitulo}" />
+					</p:column>
+
+				</p:dataTable>
+
+
+			</h:form>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

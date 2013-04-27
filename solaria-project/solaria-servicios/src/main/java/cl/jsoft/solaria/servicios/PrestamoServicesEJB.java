@@ -10,6 +10,7 @@ import cl.jsoft.solaria.dominio.vos.VoPrestamo;
 import cl.jsoft.solaria.excepciones.ClienteMorosoException;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
+import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 
 @Local
 public interface PrestamoServicesEJB {
@@ -22,7 +23,9 @@ public interface PrestamoServicesEJB {
 	
 	public List<VoPrestamo> buscarTodosPrestamosHistoricos() throws ErrorDelSistemaException;
 	
-	public List<VoPrestamo> buscarTodosPrestamosPendientes() throws ErrorDelSistemaException;
+	public List<VoPrestamo> buscarTodosPrestamos() throws ErrorDelSistemaException,RegistrosNoEncontradosException;
+	
+	public List<VoPrestamo> buscarTodosPrestamosPendientes() throws ErrorDelSistemaException, RegistrosNoEncontradosException;
 	
 	public VoPrestamo nuevoPrestamo(VoPrestamo voPrestamo) throws PrestamoNoValidoException, ErrorDelSistemaException;
 	
