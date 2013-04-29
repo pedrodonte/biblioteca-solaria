@@ -2,24 +2,29 @@
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
 
 import org.apache.log4j.Logger;
 
 import cl.jsoft.solaria.dominio.vos.VoGrupocliente;
-import cl.jsoft.solaria.web.backend.ColeccionesBean;
+import cl.jsoft.solaria.servicios.ClienteServicesEJB;
 
-@FacesConverter(value="grupoClienteConverter")
+//@FacesConverter(value="grupoClienteConverter")
+@ManagedBean
+@RequestScoped
 public class GrupoClienteConverter implements Converter {
 
-	private List<VoGrupocliente> items;
+	private List<VoGrupocliente> gruposCliente;
 	
 	Logger logger = Logger.getLogger(getClass());
+	@EJB ClienteServicesEJB clienteServicesEJB;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String textoEnviado) {
@@ -29,14 +34,10 @@ public class GrupoClienteConverter implements Converter {
         }else{
 			try {
 				
-				ColeccionesBean colecciones = (ColeccionesBean) context
-						.getApplication().evaluateExpressionGet(context,
-								"#{coleccionesBean}", ColeccionesBean.class);
-				
-				items = colecciones.getGruposClienteRegistrados();
+				gruposCliente = clienteServicesEJB.buscarTodosGruposCliente();
 				
 				logger.debug("toObject recibiendo: " + textoEnviado);
-				for (VoGrupocliente grupo : items) {
+				for (VoGrupocliente grupo : gruposCliente) {
 					if (grupo.getGrupoclienteNombre().equals(textoEnviado) ) {
 						
 						logger.debug("toObject retornando: " + grupo);

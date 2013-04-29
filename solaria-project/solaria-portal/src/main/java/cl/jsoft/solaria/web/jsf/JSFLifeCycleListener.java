@@ -22,7 +22,7 @@ public class JSFLifeCycleListener implements PhaseListener {
 	@Override
 	public void afterPhase(PhaseEvent phaseEvent) {
 		if (log.isInfoEnabled()) {
-			log.info("AFTER PHASE: " + phaseEvent.getPhaseId().toString());
+			//log.info("AFTER PHASE: " + phaseEvent.getPhaseId().toString());
 		}
 		
 		comprobarEstadoDeSession(phaseEvent);
@@ -32,14 +32,14 @@ public class JSFLifeCycleListener implements PhaseListener {
 		FacesContext facesContext = phaseEvent.getFacesContext();
 		String currentPage = facesContext.getViewRoot().getViewId();
 		
-		log.info("currentPage: "+currentPage);
+		//log.info("currentPage: "+currentPage);
 
 		boolean isLoginPage = (currentPage.lastIndexOf("login.xhtml") > -1);
 		
 		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-		log.info("isLoginPage: "+isLoginPage);
+		//log.info("isLoginPage: "+isLoginPage);
 		if(session != null){
-			log.info("session_id: "+session.getId());
+			//log.info("session_id: "+session.getId());
 			
 		}else{
 			log.info("La session ha sido anulada.");
@@ -59,7 +59,7 @@ public class JSFLifeCycleListener implements PhaseListener {
 	@Override
 	public void beforePhase(PhaseEvent phaseEvent) {
 		if (log.isInfoEnabled()) {
-			log.info("BEFORE PHASE: " + phaseEvent.getPhaseId().toString());
+			//log.info("BEFORE PHASE: " + phaseEvent.getPhaseId().toString());
 		}
 	}
 
