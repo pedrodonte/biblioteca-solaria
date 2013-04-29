@@ -2,24 +2,29 @@ package cl.jsoft.solaria.web.backend.prestamos;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
 
 import org.apache.log4j.Logger;
 
 import cl.jsoft.solaria.dominio.vos.VoCliente;
-import cl.jsoft.solaria.web.backend.ColeccionesBean;
+import cl.jsoft.solaria.servicios.ClienteServicesEJB;
 
-@FacesConverter("clienteConverter")
+//@FacesConverter("clienteConverter")
+@ManagedBean
+@RequestScoped
 public class ClienteConverter implements Converter {
 
 	private List<VoCliente> clientes;
 	
 	Logger logger = Logger.getLogger(getClass());
+	@EJB ClienteServicesEJB clienteServicesEJB;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String textoEnviado) {
@@ -34,10 +39,7 @@ public class ClienteConverter implements Converter {
 				
 				logger.debug("toObject recibiendo: " + textoEnviado);
 				
-				ColeccionesBean colecciones = (ColeccionesBean) context
-						.getApplication().evaluateExpressionGet(context,
-								"#{coleccionesBean}", ColeccionesBean.class);
-				clientes = colecciones.getClientesRegistrados();
+				clientes = clienteServicesEJB.buscarTodosLosClientes();
 				for (VoCliente cliente : clientes) {
 					if (cliente.getClienteCodCliente() == codCliente ) {
 						logger.debug("toObject retornando: "+cliente);

@@ -43,7 +43,7 @@
 							<p:selectOneMenu id="comboGrupoCliente" style="width:100%;"
 						    	value="#{credencialesBean.grupoSeleccionado}" 
 						    	valueChangeListener="#{credencialesBean.doSeleccionaGrupo}"
-						    	converter="grupoClienteConverter" >
+						    	converter="#{grupoClienteConverter}" >
 						    		
 	 					    		<f:ajax render=":form_prestamo:cpoNombreGrupo" />
 						    	
