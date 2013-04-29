@@ -39,7 +39,7 @@
 						<p:selectOneMenu style="width : 100%;"
 							value="#{mantenedorClientesMB.grupoclienteSeleccionado}"
 							valueChangeListener="#{mantenedorClientesMB.doSeleccionaGrupo}"
-							converter="grupoClienteConverter">
+							converter="#{grupoClienteConverter}">
 
 							<f:ajax render=":form1:tablaRegistros" />
 
@@ -186,7 +186,7 @@
 							<p:selectOneMenu id="comboGrupoCliente" styleClass="cpos-mantcli"
 								value="#{mantenedorClientesMB.registroEnEdicion.voGrupocliente}"
 								rendered="#{mantenedorClientesMB.modoFormulario ne 'OFF'}"
-								converter="grupoClienteConverter">
+								converter="#{grupoClienteConverter}">
 
 								<f:selectItem itemLabel="Seleccione un Curso" itemValue="" />
 								<f:selectItems value="#{mantenedorClientesMB.gruposCliente}"
