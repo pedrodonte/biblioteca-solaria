@@ -8,7 +8,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<<<<<<< HEAD
 		<jboss.bom.version>1.0.0.M10</jboss.bom.version>
+=======
+		<glassfish.embedded-static-shell.jar><!-- 			/usr/local/glassfish3/glassfish/lib/embedded/glassfish-embedded-static-shell.jar -->C:\pcarrasco\toolkit\glassfish3.1.2.2\glassfish\lib\embedded\glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
+>>>>>>> master
 	</properties>
 
 	<dependencyManagement>
