@@ -7,13 +7,29 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<endorsed.dir>${project.build.directory}</endorsed.dir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<glassfish.embedded-static-shell.jar>
-<!-- 			/usr/local/glassfish3/glassfish/lib/embedded/glassfish-embedded-static-shell.jar -->
-			C:\pcarrasco\desa_java_solaria\glassfish3.1.2.2\glassfish\lib\embedded\glassfish-embedded-static-shell.jar
-		</glassfish.embedded-static-shell.jar>
+		<jboss.bom.version>1.0.0.M10</jboss.bom.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-javaee-6.0-with-tools</artifactId>
+				<version>${jboss.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
+				<version>${jboss.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<pluginManagement>
@@ -26,10 +42,18 @@
 						<target>1.7</target>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.12.4</version>
+					<configuration>
+						<skipTests>true</skipTests>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<modules>
 		<module>solaria-dao</module>
 		<module>solaria-portal</module>

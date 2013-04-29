@@ -3,6 +3,7 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:sola="http://java.sun.com/jsf/composite/sola"
     xmlns:p="http://primefaces.org/ui">
     
 <h:head>
@@ -10,7 +11,7 @@
 
 
 <link href="#{request.contextPath}/bootstrap/css/bootstrap.css"	rel="stylesheet" />
-<!-- <link href="#{request.contextPath}/bootstrap/css/bootstrap-responsive.css"	rel="stylesheet" /> -->
+<link href="#{request.contextPath}/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
 
 
 <script type="text/javascript">
@@ -67,7 +68,7 @@
 		<div class="container">
 			
 			<div id="div-menu-header" style="margin-bottom: 55px;">
-				<ui:include src="/template/include_header.xhtml" />
+				 <sola:header-menu/>
 			</div>
 			
 			<ui:insert name="titulo-pagina">
@@ -87,7 +88,7 @@
 
 	<div id="pie-pagina">
 		<ui:insert name="footer" >
-			<ui:include src="/template/include_footer.xhtml" />
+			 <sola:footer />
 		</ui:insert>
 	</div>
 	

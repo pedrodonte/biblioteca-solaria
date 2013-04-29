@@ -79,7 +79,7 @@
 				<p:selectOneMenu id="comboClientesEncontrados" style="width:100%;"
 					value="#{buscaClienteBean.clienteBuscadoSeleccionado}"
 					valueChangeListener="#{buscaClienteBean.doSeleccionaCliente}"
-					converter="clienteConverter">
+					converter="#{clienteConverter}">
 
 					<f:ajax render="cliNombre cliGrupo localCroppedImage cpoNuevoNombreArchivo" />
 						
