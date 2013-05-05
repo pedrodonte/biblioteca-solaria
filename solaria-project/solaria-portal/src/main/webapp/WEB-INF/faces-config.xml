@@ -63,6 +63,7 @@
 		<navigation-case>
 			<from-outcome>clientes</from-outcome>
 			<to-view-id>/protected/clientes/cliente-mantenedor.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	
@@ -71,6 +72,7 @@
 		<navigation-case>
 			<from-outcome>credenciales</from-outcome>
 			<to-view-id>/protected/credenciales/credenciales.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	
@@ -90,10 +92,14 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-
-
-	<lifecycle>
-		<phase-listener>cl.jsoft.solaria.web.jsf.JSFLifeCycleListener</phase-listener>
-	</lifecycle>
+	
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>login_form</from-outcome>
+			<to-view-id>/login-formulario.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

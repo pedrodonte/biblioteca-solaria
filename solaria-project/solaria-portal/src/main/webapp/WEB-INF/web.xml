@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>/protected/dashboard.xhtml</welcome-file>
 	</welcome-file-list>
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
@@ -36,16 +36,41 @@
 		<url-pattern>/faces/*</url-pattern>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-	<error-page>
-		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
-		<location>/template/login.xhtml</location>
-	</error-page>
-	<error-page>
-		<exception-type>com.sun.faces.context.FacesFileNotFoundException</exception-type>
-		<location>/template/pagina_no_encontrada.xhtml</location>
-	</error-page>
+	
+
 	<session-config>
-		<session-timeout>30</session-timeout>
+		<session-timeout>5</session-timeout>
 	</session-config>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Administracion del Sistema</web-resource-name>
+			<url-pattern>/protected/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>ADMIN</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>SolariaRealm</realm-name>
+		<form-login-config>
+			<form-login-page>/login-formulario.xhtml</form-login-page>
+			<form-error-page>/login-error.xhtml</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<!-- System roles -->
+	<security-role>
+		<description>ADMIN</description>
+		<role-name>ADMIN</role-name>
+	</security-role>
+	<security-role>
+		<description>GUEST</description>
+		<role-name>GUEST</role-name>
+	</security-role>
 
 </web-app>

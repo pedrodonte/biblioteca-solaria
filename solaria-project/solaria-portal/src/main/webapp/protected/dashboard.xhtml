@@ -2,6 +2,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
 	template="/template/tmpl_alpha.xhtml">
 
 
@@ -49,22 +51,22 @@ a {
 				<div class="row-fluid">
 
 					<div class="span4 ">
-						<h:commandLink value="#{msgs['dashboard.btn.nue.prestamo']}"
+						<p:commandLink value="#{msgs['dashboard.btn.nue.prestamo']}"
 							action="#{solariaBean.fwdPresFormPrestamo}"
 							styleClass="actividad">
-						</h:commandLink>
+						</p:commandLink>
 					</div>
 
 					<div class="span4 actividad">
-						<h:commandLink value="#{msgs['dashboard.btn.ver.catalogo']}"
+						<p:commandLink value="#{msgs['dashboard.btn.ver.catalogo']}"
 							action="#{solariaBean.fwdCatalogo}" styleClass="actividad">
-						</h:commandLink>
+						</p:commandLink>
 					</div>
 
 					<div class="span4 actividad">
-						<h:commandLink value="Ver Prestamos"
+						<p:commandLink value="Ver Prestamos"
 							action="#{solariaBean.fwdPrestamos}" styleClass="actividad">
-						</h:commandLink>
+						</p:commandLink>
 					</div>
 
 
@@ -74,9 +76,9 @@ a {
 				<div class="row-fluid">
 
 					<div class="span4 ">
-						<h:commandLink value="#{msgs['dashboard.btn.ver.clientes']}"
+						<p:commandLink value="#{msgs['dashboard.btn.ver.clientes']}"
 							action="#{solariaBean.fwdClientes}" styleClass="actividad">
-						</h:commandLink>
+						</p:commandLink>
 					</div>
 
 				</div>

@@ -27,103 +27,97 @@
 </style>
 		<div class="container">
 
+			<script type="text/javascript">
+				function handleActionRequest(xhr, status, args) {
+					if (args.codExitoOperacion) {
+						dialogoEditor.hide();
+					}
+				}
+			</script>
+
 			<h:form id="form1">
+				<p:messages autoUpdate="true" showDetail="true" showSummary="true" />
 
-				<div class="control-group">
-					<div class="controls">Selecciona un curso para desplegar el
-						listado de alumnos.</div>
-				</div>
-
-				<div class="control-group">
-					<div class="controls">
-						<p:selectOneMenu style="width : 100%;"
+				<p:panelGrid columns="1" style="width:100%;" id="datos">
+					
+					<p:panelGrid columns="3">
+						<h:outputText value="Cursos en Registro" />
+						<p:selectOneMenu
 							value="#{mantenedorClientesMB.grupoclienteSeleccionado}"
-							valueChangeListener="#{mantenedorClientesMB.doSeleccionaGrupo}"
 							converter="#{grupoClienteConverter}">
 
-							<f:ajax render=":form1:tablaRegistros" />
-
 							<f:selectItem itemLabel="Seleccione un Curso" itemValue="" />
+
 							<f:selectItems value="#{mantenedorClientesMB.gruposCliente}"
 								var="item" itemLabel="#{item.grupoclienteNombre}"
 								itemValue="#{item}" />
 
+							<p:ajax listener="#{mantenedorClientesMB.doSeleccionaGrupo}"
+								update=":form1:datos" />
+
 						</p:selectOneMenu>
-					</div>
-				</div>
-
-				<p:messages id="msgsGlobal" autoUpdate="false" showDetail="true"
-					showSummary="true" />
-
-				<script type="text/javascript">
-					function handleActionRequest(xhr, status, args) {
-						if (args.codExitoOperacion) {
-							dialogoEditor.hide();
-						}
-					}
-				</script>
-
-				<p:dataTable id="tablaRegistros"
-					value="#{mantenedorClientesMB.registros}" var="item"
-					styleClass="tablaRegistros" rowKey="#{item.clienteCodCliente}"
-					selectionMode="single"
-					selection="#{mantenedorClientesMB.registroSeleccionado}" rows="20"
-					paginator="true">
-
-					<p:ajax event="rowSelect" update="@this" />
-
-					<f:facet name="header">
 						
+						<h:outputText 
+								value="#{mantenedorClientesMB.registrosCantidad} Registros en el Grupo Seleccionado" />
+					</p:panelGrid>
+
+					<p:dataTable id="tablaRegistros"
+						value="#{mantenedorClientesMB.registros}" var="item"
+						styleClass="tablaRegistros" rowKey="#{item.clienteCodCliente}"
+						selectionMode="single"
+						selection="#{mantenedorClientesMB.registroSeleccionado}" rows="20"
+						emptyMessage="El curso seleccionado no posee registros."
+						paginator="true">
+
+						<p:ajax event="rowSelect" update="@this" />
+
+						<f:facet name="header">
+
 							<p:commandButton value="Ver" process="@this"
 								disabled="#{mantenedorClientesMB.registroSeleccionado eq null}"
 								oncomplete="dialogoEditor.show()"
-								update=":form1:formularioEdicionRegistro, :form1:msgsGlobal"
+								update=":form1:formularioEdicionRegistro"
 								actionListener="#{mantenedorClientesMB.doVerRegistroFormulario}" />
 
 							<p:commandButton value="Editar" process="@this"
 								disabled="#{mantenedorClientesMB.registroSeleccionado eq null}"
 								oncomplete="dialogoEditor.show()"
-								update=":form1:formularioEdicionRegistro, :form1:msgsGlobal"
+								update=":form1:formularioEdicionRegistro"
 								actionListener="#{mantenedorClientesMB.doEditarRegistroFormulario}" />
 
 							<p:commandButton value="Nuevo" process="@this"
 								oncomplete="dialogoEditor.show()"
-								update=":form1:formularioEdicionRegistro, :form1:msgsGlobal"
+								update=":form1:formularioEdicionRegistro"
 								actionListener="#{mantenedorClientesMB.doNuevoRegistroFormulario}" />
 
-							<p:commandButton value="Refrescar" process="@this"
-								update="@form, :form1:msgsGlobal"
+							<p:commandButton value="Refrescar" process="@this" update="@form"
 								actionListener="#{mantenedorClientesMB.doActualizarVista}" />
-						
-					</f:facet>
 
-					<p:column sortBy="#{item.clienteIdentificador}">
-						<f:facet name="header">
-							<h:outputText value="Identificador" />
 						</f:facet>
-						<h:outputText value="#{item.clienteIdentificador}" />
-					</p:column>
 
-					<p:column sortBy="#{item.nombreCompleto}">
-						<f:facet name="header">
-							<h:outputText value="Nombre" />
-						</f:facet>
-						<h:outputText value="#{item.nombreCompleto}" />
-					</p:column>
+						<p:column sortBy="#{item.clienteIdentificador}">
+							<f:facet name="header">
+								<h:outputText value="Identificador" />
+							</f:facet>
+							<h:outputText value="#{item.clienteIdentificador}" />
+						</p:column>
 
-					<p:column sortBy="#{item.voGrupocliente.grupoclienteNombre}">
-						<f:facet name="header">
-							<h:outputText value="Curso" />
-						</f:facet>
-						<h:outputText value="#{item.voGrupocliente.grupoclienteNombre}" />
-					</p:column>
+						<p:column sortBy="#{item.nombreCompleto}">
+							<f:facet name="header">
+								<h:outputText value="Nombre" />
+							</f:facet>
+							<h:outputText value="#{item.nombreCompleto}" />
+						</p:column>
 
-					<f:facet name="footer">
-						<h:outputText
-							value="#{mantenedorClientesMB.registrosCantidad} Clientes en Registro." />
-					</f:facet>
+						<p:column sortBy="#{item.voGrupocliente.grupoclienteNombre}">
+							<f:facet name="header">
+								<h:outputText value="Curso" />
+							</f:facet>
+							<h:outputText value="#{item.voGrupocliente.grupoclienteNombre}" />
+						</p:column>
 
-				</p:dataTable>
+					</p:dataTable>
+				</p:panelGrid>
 
 				<p:dialog id="formularioEdicionRegistro"
 					header="Detalle del Registro" widgetVar="dialogoEditor"
