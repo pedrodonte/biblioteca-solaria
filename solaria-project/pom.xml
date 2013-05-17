@@ -59,7 +59,6 @@
 		<module>solaria-portal</module>
 		<module>solaria-reportes</module>
 		<module>solaria-servicios</module>
-		<module>solaria-crontab</module>
 	</modules>
 
 	<name>Proyecto Biblioteca Solaria</name>
