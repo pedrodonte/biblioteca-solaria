@@ -4,8 +4,3 @@
 *.jar
 *.war
 *.ear
-
-*/target/*
-*/target/**
-target
-target/

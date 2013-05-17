@@ -1,0 +1,183 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/tmpl_alpha.xhtml">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Prestamos</small>
+			</h1>
+			<p:commandLink action="#{solariaBean.forwardDashboard}" value="Volver al Inicio"/>
+		</div>
+
+		<style>
+.ui-paginator-top {
+	display: none !important;
+}
+
+.ui-widget-header a {
+	color: #333333 !important;
+}
+</style>
+
+		<script>
+			function handleLoginRequest(xhr, status, args) {
+				if (args.validationFailed || !args.codExitoOperacion) {
+
+					/*codigo en caso de que la operacion falle (codExitoOperacion==false)*/
+
+				} else {
+					dialogoEditor.hide();
+				}
+			}
+		</script>
+
+	</ui:define>
+
+	<ui:define name="contenido">
+
+		<div class="container">
+
+			<h:form id="form1">
+
+				<p:messages id="msgCliente" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<p:dataTable id="tablaRegistros"
+					value="#{verPrestamosBean.registros}" var="item" styleClass="table"
+					selectionMode="single" rowKey="#{item.prestamoCodPrestamo}"
+					selection="#{verPrestamosBean.registroSeleccionado}"
+					paginator="true" rows="20">
+
+					<f:facet name="header">
+						<div class="btn-group">
+
+							<p:commandLink value="Iniciar Devolución"
+								oncomplete="dialogoEditor.show();"
+								update=":form1:editorRegistro" styleClass="btn"
+								actionListener="#{verPrestamosBean.doEditarRegistroFormulario}"
+								process="@this"
+								disabled="#{verPrestamosBean.registroSeleccionado.prestamoCodPrestamo == 0}" />
+
+						</div>
+					</f:facet>
+
+					<p:ajax event="rowSelect"
+						update=":form1:tablaRegistros, :form1:editorRegistro"
+						process="@this" />
+
+					<p:column sortBy="#{item.prestamoCodEstado}">
+						<f:facet name="header">Estado</f:facet>
+						<h:outputText value="Devuelto"
+							rendered="#{item.prestamoCodEstado == 2 }" styleClass="label label-success" />
+						<h:outputText value="Prestado"
+							rendered="#{item.prestamoCodEstado == 1}" styleClass="label" />
+						<h:outputText value="Moroso"
+							rendered="#{item.prestamoCodEstado == 10}" styleClass="label label-important" />
+					</p:column>
+
+					<p:column sortBy="#{item.prestamoFecPlazoEntrega}">
+						<f:facet name="header">Fecha Entrega</f:facet>
+						<h:outputText value="#{item.prestamoFecPlazoEntrega}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{item.voCliente.nombreCompleto}">
+						<f:facet name="header">Alumno</f:facet>
+						<h:outputText value="#{item.voCliente.nombreCompleto}" />
+					</p:column>
+					
+					<p:column sortBy="#{item.voLibro.libroIdInterno}" 
+					 filterBy="#{item.voLibro.libroIdInterno}">
+						<f:facet name="header">Código Libro</f:facet>
+						<h:outputText value="#{item.voLibro.libroIdInterno}" />
+					</p:column>
+					
+					<p:column sortBy="#{item.voLibro.libroTitulo}">
+						<f:facet name="header">Libro</f:facet>
+						<h:outputText value="#{item.voLibro.libroTitulo}" />
+					</p:column>
+
+				</p:dataTable>
+
+
+				<p:dialog id="editorRegistro" header="Detalle del Prestamo "
+					width="800" widgetVar="dialogoEditor" resizable="false"
+					modal="true" showEffect="clip" hideEffect="fold">
+
+					<p>Para devolver el libro debe cambiar el estado de "Prestado" a "Devuelto" y presionar el boton "Guardar Nuevo Estado".</p>
+
+					<p:panelGrid columns="2" style="width: 100%;">
+
+						<h:outputText value="Cliente" />
+						<h:outputText
+							value="#{verPrestamosBean.registroEnEdicion.voCliente.nombreCompleto} - #{verPrestamosBean.registroEnEdicion.voCliente.clienteIdentificador}" />
+
+						<h:outputText value="Libro" />
+						<h:outputText
+							value="#{verPrestamosBean.registroEnEdicion.voLibro.libroTitulo}" />
+							
+						<h:outputText value="Código Libro" />
+						<h:outputText style="font-weight: bold;"
+							value="#{verPrestamosBean.registroEnEdicion.voLibro.libroIdInterno}" />
+
+						<h:outputText value="Inicio Prestamo" />
+						<h:outputText
+							value="#{verPrestamosBean.registroEnEdicion.prestamoFecInicio}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Fecha Entrega Acordada" />
+						<h:outputText
+							value="#{verPrestamosBean.registroEnEdicion.prestamoFecPlazoEntrega}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Fecha Entrega Real" />
+						<h:outputText
+							value="#{verPrestamosBean.registroEnEdicion.prestamoFecDevReal}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Estado" />
+						<p:selectOneMenu
+							value="#{verPrestamosBean.registroEnEdicion.prestamoCodEstado}">
+							<f:selectItem itemLabel="Prestado" itemValue="1" />
+							<f:selectItem itemLabel="Devuelto" itemValue="2" />
+						</p:selectOneMenu>
+
+
+						<f:facet name="footer">
+
+							<p:commandLink id="btnsave" value="Guardar Nuevo Estado"
+								styleClass="btn"
+								oncomplete="handleLoginRequest(xhr, status, args);"
+								update=":form1:tablaRegistros"
+								actionListener="#{verPrestamosBean.doGuardarRegistroFormulario}"
+								rendered="#{verPrestamosBean.modoEdicion ne 'OFF'}" />
+
+							<p:commandLink id="btncancel" value="Cancelar Devolución" styleClass="btn"
+								oncomplete="dialogoEditor.hide();"
+								update=":form1:tablaRegistros"
+								actionListener="#{verPrestamosBean.doCancelarRegistroFormulario}"
+								process="@none"
+								rendered="#{verPrestamosBean.modoEdicion ne 'OFF'}" />
+
+						</f:facet>
+
+					</p:panelGrid>
+
+				</p:dialog>
+
+
+			</h:form>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

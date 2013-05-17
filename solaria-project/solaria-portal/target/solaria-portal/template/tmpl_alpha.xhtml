@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:sola="http://java.sun.com/jsf/composite/sola"
+    xmlns:p="http://primefaces.org/ui">
+    
+<h:head>
+<meta charset="UTF-8" />
+
+
+<link href="#{request.contextPath}/bootstrap/css/bootstrap.css"	rel="stylesheet" />
+<link href="#{request.contextPath}/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    	$(".dropdown-toggle").dropdown();
+    	$(".btn").removeClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only");
+    	$(".btn span").removeClass("ui-button-text");
+    }); 
+</script>
+
+	<ui:insert name="elemento-head">
+		<title>#{msgs['titulo.aplicacion']}</title>
+	</ui:insert>
+
+	<style type="text/css">
+
+      /* Sticky footer styles
+      -------------------------------------------------- */
+
+      html,
+      body {
+        height: 100%;
+        /* el body usa el alto al 100% para que el footer se quede al fondo. */
+      }
+
+      /* este envoltorio empuja al footer hasta abajo */
+      #contenedor-pagina {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by it's height */
+        margin: 0 auto -60px;
+      }
+      
+      .ui-growl {
+		top: 45px !important;
+	  }
+     
+    </style>
+    
+    <ui:insert name="head-style">
+		<style type="text/css">
+      		.container {width: auto; max-width: 880px;} 
+    	</style>
+	</ui:insert>
+
+
+</h:head>
+<h:body>
+
+	<div id="contenedor-pagina">
+	
+		<!-- Begin page content -->
+		<div class="container">
+			
+			<div id="div-menu-header" style="margin-bottom: 55px;">
+				 <sola:header-menu/>
+			</div>
+			
+			<ui:insert name="titulo-pagina">
+				<div class="page-header">
+				  <h1>Example page header <small>Subtext for header</small></h1>
+				</div>
+			</ui:insert>
+				
+			<ui:insert name="contenido" >
+				<p>Insertar contenido de la pagina aquí</p>
+			</ui:insert>
+			
+		</div>
+		
+		<div id="push"></div>
+	</div>
+
+	<div id="pie-pagina">
+		<ui:insert name="footer" >
+			 <sola:footer />
+		</ui:insert>
+	</div>
+	
+	<p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">  
+	    <f:facet name="start">  
+	        <p:graphicImage value="/template/img/loading.gif" />  
+	    </f:facet>  
+	  
+	    <f:facet name="complete">  
+	        <h:outputText value="" />  
+	    </f:facet>  
+	</p:ajaxStatus>  
+
+	<script src="#{request.contextPath}/bootstrap/js/bootstrap.js"></script>
+
+</h:body>
+</html>
