@@ -9,5 +9,7 @@
 		<class>cl.jsoft.solaria.entities.SolaTabPrestamo</class>
 		<class>cl.jsoft.solaria.entities.SolaTabGenerolibro</class>
 		<class>cl.jsoft.solaria.entities.SolaTabGrupocliente</class>
+		<class>cl.jsoft.solaria.segu.daos.SeguTabPerfil</class>
+		<class>cl.jsoft.solaria.segu.daos.SeguTabUsua</class>
 	</persistence-unit>
 </persistence>

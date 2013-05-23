@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	<context-param>
-		<param-name>javax.faces.PROJECT_STAGE</param-name>
-		<param-value>Production</param-value>
+		<param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
+		<param-value>true</param-value>
 	</context-param>
+
 	<context-param>
 		<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
 		<param-value>true</param-value>
 	</context-param>
+
+	<context-param>
+		<param-name>com.sun.faces.enableMissingResourceLibraryDetection</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Production</param-value>
+	</context-param>
+
 	<context-param>
 		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
 		<param-value>0</param-value>
@@ -36,18 +46,16 @@
 		<url-pattern>/faces/*</url-pattern>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-	
+
 
 	<session-config>
-		<session-timeout>5</session-timeout>
+		<session-timeout>30</session-timeout>
 	</session-config>
 
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Administracion del Sistema</web-resource-name>
 			<url-pattern>/protected/*</url-pattern>
-			<http-method>GET</http-method>
-			<http-method>POST</http-method>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>ADMIN</role-name>
@@ -58,8 +66,8 @@
 		<auth-method>FORM</auth-method>
 		<realm-name>SolariaRealm</realm-name>
 		<form-login-config>
-			<form-login-page>/login-formulario.xhtml</form-login-page>
-			<form-error-page>/login-error.xhtml</form-error-page>
+			<form-login-page>/faces/login-formulario.xhtml</form-login-page>
+			<form-error-page>/faces/login-error.xhtml</form-error-page>
 		</form-login-config>
 	</login-config>
 

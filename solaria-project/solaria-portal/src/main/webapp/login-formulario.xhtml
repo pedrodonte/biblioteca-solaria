@@ -8,8 +8,6 @@
 <h:head>
 	<meta charset="UTF-8" />
 	<title>Login de Usuario</title>
-
-
 	<style>
 #contenedor {
 	width: 500px;
@@ -25,7 +23,8 @@
 
 		<div id="contenedor">
 
-			<p:messages id="msgLogin" showSummary="true" showDetail="true" autoUpdate="true" />
+			<p:messages id="msgLogin" showSummary="true" showDetail="true"
+				autoUpdate="true" />
 
 			<p:panelGrid styleClass="panelLogin" columns="2" style="width: 100%;">
 
@@ -42,13 +41,11 @@
 					style="width: 90%;" requiredMessage="#{msgs['empty.password']}" />
 
 				<f:facet name="footer">
-					<p:commandButton oncomplete="handleLoginRequest(xhr, status, args)"
-						actionListener="#{loginFormularioMB.doLogin}"
-						value="Acceder" />
+					<p:commandButton actionListener="#{loginFormularioMB.doLogin}" value="Acceder" />
 				</f:facet>
 
 			</p:panelGrid>
-			
+
 		</div>
 
 	</h:form>
