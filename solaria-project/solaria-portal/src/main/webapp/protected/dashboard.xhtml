@@ -82,8 +82,16 @@ a {
 					</div>
 
 				</div>
+				
+				<div class="row-fluid">
 
+					<div class="span4 ">
+						<p:commandLink value="Administrar Usuarios" rendered="#{request.isUserInRole('ADMIN')}"
+							action="mant_usua" styleClass="actividad">
+						</p:commandLink>
+					</div>
 
+				</div>
 
 			</div>
 		</h:form>

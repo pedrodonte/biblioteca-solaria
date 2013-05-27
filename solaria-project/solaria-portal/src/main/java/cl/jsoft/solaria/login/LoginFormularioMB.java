@@ -1,7 +1,5 @@
 package cl.jsoft.solaria.login;
 
-import static cl.jsoft.solaria.web.controllers.SolariaController.LOGIN_FORM;
-
 import java.io.Serializable;
 
 import javax.ejb.EJB;
@@ -80,16 +78,16 @@ public class LoginFormularioMB implements Serializable {
 				"/protected/dashboard.xhtml?faces-redirect=true");
 	}
 
-	public String doLogout() {
+	public void doLogout(ActionEvent actionEvent) {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext
 				.getCurrentInstance().getExternalContext().getRequest();
 		try {
+			logger.info("cierra session.");
 			httpServletRequest.getSession().invalidate();
 			httpServletRequest.logout();
 		} catch (ServletException e) {
 			e.printStackTrace();
 		}
-		return LOGIN_FORM;
 	}
 
 	public String getUsername() {

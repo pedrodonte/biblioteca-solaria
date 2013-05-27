@@ -27,12 +27,14 @@ public abstract class AbsMantenedorMB<TIPO_DTO> implements Serializable {
 	private TIPO_DTO registroEnEdicion;
 	private int registrosCantidad;
 
-	MensajesBean mensajesMB = new MensajesBean();
+	public MensajesBean mensajesMB = new MensajesBean();
 
 	@PostConstruct
 	public void inicializarVariablesInstancia() {
 		try {
 			registros = llenarRegistros();
+			registrosCantidad = registros.size();
+			// logger.info(registrosCantidad+"registros encontrados.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,7 +66,6 @@ public abstract class AbsMantenedorMB<TIPO_DTO> implements Serializable {
 		setMostrarFormulario(true);
 		setModoFormulario(ModosEdicion.EDIT);
 	}
-
 
 	public void doGuardarRegistroFormulario(ActionEvent event) {
 		boolean codExitoOperacion = false;

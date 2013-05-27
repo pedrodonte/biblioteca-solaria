@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.segu.daos.PerfilDAO;
-import cl.jsoft.solaria.segu.daos.SeguTabUsua;
 import cl.jsoft.solaria.segu.daos.UsuarioDAO;
+import cl.jsoft.solaria.segu.entities.SeguTabUsua;
 import cl.jsoft.solaria.seguridad.CredencialSeguridad;
 import cl.jsoft.solaria.seguridad.IValidacionCredencial;
 import cl.jsoft.solaria.seguridad.ValidacionNegativaException;
