@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import cl.jsoft.solaria.dominio.vos.VoLibro;
+import cl.jsoft.solaria.excepciones.LibroNoDisponibleException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 
 @Local
@@ -18,6 +19,7 @@ public interface LibroServicesEJB {
 	
 	public List<VoLibro> buscarLibrosPorTitulo(String srtTitulo) throws RegistrosNoEncontradosException;
 	
-	public boolean validarDisponibilidadLibro(VoLibro voLibro);
+	public boolean validarDisponibilidadLibro(VoLibro voLibro) throws LibroNoDisponibleException;
+	
 
 }

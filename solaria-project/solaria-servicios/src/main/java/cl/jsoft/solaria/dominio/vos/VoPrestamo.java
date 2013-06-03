@@ -5,11 +5,10 @@ package cl.jsoft.solaria.dominio.vos;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.io.Serializable;
 
-public class VoPrestamo implements Serializable, Cloneable {
+public class VoPrestamo extends VoPrestamoPlus{
 
-	private static final long serialVersionUID = 1352488193056L;
+	private static final long serialVersionUID = 123L;
 	private long prestamoCodPrestamo;
 	private BigDecimal prestamoCodEstado;
 	private Timestamp prestamoFecDevReal;
@@ -96,15 +95,20 @@ public class VoPrestamo implements Serializable, Cloneable {
 	}
 
 	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
+	@Override
 	public String toString() {
-		return "VoPrestamo[prestamoCodPrestamo=" + prestamoCodPrestamo
-				+ ",prestamoCodEstado=" + prestamoCodEstado
-				+ ",prestamoFecDevReal=" + prestamoFecDevReal
-				+ ",prestamoFecInicio=" + prestamoFecInicio
-				+ ",prestamoFecInsert=" + prestamoFecInsert
-				+ ",prestamoFecPlazoEntrega=" + prestamoFecPlazoEntrega
-				+ ",prestamoFecUpdate=" + prestamoFecUpdate + ",voCliente="
-				+ voCliente + ",voLibro=" + voLibro + "]";
+		return "VoPrestamo [prestamoCodPrestamo=" + prestamoCodPrestamo
+				+ ", prestamoCodEstado=" + prestamoCodEstado
+				+ ", prestamoFecDevReal=" + prestamoFecDevReal
+				+ ", prestamoFecInicio=" + prestamoFecInicio
+				+ ", prestamoFecInsert=" + prestamoFecInsert
+				+ ", prestamoFecPlazoEntrega=" + prestamoFecPlazoEntrega
+				+ ", prestamoFecUpdate=" + prestamoFecUpdate + ", voCliente="
+				+ voCliente + ", voLibro=" + voLibro + "]";
 	}
 
 	@Override
@@ -197,10 +201,7 @@ public class VoPrestamo implements Serializable, Cloneable {
 			return false;
 		return true;
 	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
+	
+	
 
 }

@@ -11,9 +11,12 @@ import javax.ejb.Stateless;
 import org.apache.log4j.Logger;
 
 import cl.jsoft.solaria.daos.SolaTabLibroDAO;
+import cl.jsoft.solaria.daos.SolaTabPrestamoDAO;
 import cl.jsoft.solaria.dominio.vos.HelperVoEntity;
 import cl.jsoft.solaria.dominio.vos.VoLibro;
 import cl.jsoft.solaria.entities.SolaTabLibro;
+import cl.jsoft.solaria.entities.SolaTabPrestamo;
+import cl.jsoft.solaria.excepciones.LibroNoDisponibleException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 
 @Stateless
@@ -25,7 +28,9 @@ public class LibroServicesEJBImpl implements LibroServicesEJB {
 	private final String FORMATO_NRO_REGISTRO = "000000";
 
 	@EJB SolaTabLibroDAO libroDAO;
-
+	
+	@EJB SolaTabPrestamoDAO prestamoDAO;
+	
 	@Override
 	public VoLibro buscarLibroCodigoInterno(String codigoInterno)
 			throws RegistrosNoEncontradosException {
@@ -121,9 +126,15 @@ public class LibroServicesEJBImpl implements LibroServicesEJB {
 	
 
 	@Override
-	public boolean validarDisponibilidadLibro(VoLibro voLibro) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean validarDisponibilidadLibro(VoLibro voLibro) throws LibroNoDisponibleException {
+		List<SolaTabPrestamo> prestamosAsociados = prestamoDAO.buscarDisponibilidadLibro(voLibro.getLibroCodLibro());
+		
+		if (prestamosAsociados.isEmpty()) {
+			return true;
+		}else{
+			throw new LibroNoDisponibleException("Libro ya esta prestado");
+		}
+		
 	}
 
 	

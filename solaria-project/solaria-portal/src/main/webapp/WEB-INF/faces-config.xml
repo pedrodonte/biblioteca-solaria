@@ -25,13 +25,13 @@
 		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>dashboard</from-outcome>
-			<to-view-id>/protected/dashboard.xhtml</to-view-id>
+			<to-view-id>/dashboard.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/protected/*</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>pres_form_prestamo</from-outcome>
 			<to-view-id>/protected/prestamos/form_prestamo.xhtml</to-view-id>
@@ -40,7 +40,7 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/protected/*</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>form_foto</from-outcome>
 			<to-view-id>/protected/fotografia/form_fotografia.xhtml</to-view-id>
@@ -49,7 +49,7 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/protected/*</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>catalogo</from-outcome>
 			<to-view-id>/protected/catalogo/libros.xhtml</to-view-id>
@@ -59,7 +59,7 @@
 
 
 	<navigation-rule>
-		<from-view-id>/protected/*</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>clientes</from-outcome>
 			<to-view-id>/protected/clientes/cliente-mantenedor.xhtml</to-view-id>
@@ -68,7 +68,7 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/protected/*</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>credenciales</from-outcome>
 			<to-view-id>/protected/credenciales/credenciales.xhtml</to-view-id>
@@ -77,7 +77,7 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/protected/*</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>descargaCredencial</from-outcome>
 			<to-view-id>/CredencialesServlet</to-view-id>
@@ -85,7 +85,7 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>protected/*</display-name>
-		<from-view-id>/protected/*</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>prestamos</from-outcome>
 			<to-view-id>/protected/prestamos/ver_prestamos.xhtml</to-view-id>
@@ -107,6 +107,15 @@
 		<navigation-case>
 			<from-outcome>mant_usua</from-outcome>
 			<to-view-id>/admin/mantenedor-usuarios.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>rep_prestamos</from-outcome>
+			<to-view-id>/reportes/reporte-prestamos.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

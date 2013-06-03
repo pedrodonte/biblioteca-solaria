@@ -92,6 +92,16 @@
 				<fieldset>
 					<legend>Paso 2 : ¿Cual Libro?</legend>
 					<p:messages id="msgLibro" showDetail="true" closable="true" />
+
+					<div class="control-group">
+						<div class="controls">
+							<p:commandButton id="btnLibroFix"
+								disabled="#{prestamoBean.libroDisponible eq 'true'}"
+								onclick="dlgPrestamos.show()"
+								value="Revisar Prestamos Pendientes" />
+						</div>
+					</div>
+
 					<div class="control-group">
 						<label class="control-label">Código Libro</label>
 						<div class="controls">
@@ -100,7 +110,7 @@
 									styleClass="span2" />
 								<p:commandLink
 									actionListener="#{prestamoBean.doBuscarLibroCodigoInterno}"
-									update="cpoTitulo,cpoCodigoLibro,msgLibro"
+									update="cpoTitulo,cpoCodigoLibro,msgLibro,btnLibroFix,tablaPendientes"
 									styleClass="btn btn-primary">
 									<i class="icon-search icon-white"></i> Buscar Libro</p:commandLink>
 							</div>
@@ -182,49 +192,128 @@
 
 				<p:dialog header="Registros de Prestamos Morosos" closable="true"
 					modal="true" widgetVar="dlgPrestamos">
+					<p:wizard widgetVar="wiz" nextLabel="Siguiente"
+						backLabel="Anterior" flowListener="#{prestamoBean.onFlowProcess}">
 
-					<p:dataTable id="tablaPendientes"
-						value="#{prestamoBean.prestamosMora}" var="item"
-						styleClass="table" 
-						rowKey="#{item.prestamoCodPrestamo}" paginator="true" rows="20">
+						<p:tab id="registros" title="1. Prestamos">
 
-						<p:column sortBy="#{item.prestamoCodEstado}">
-							<f:facet name="header">Estado</f:facet>
-							<h:outputText value="Devuelto"
-								rendered="#{item.prestamoCodEstado == 2 }"
-								styleClass="label label-success" />
-							<h:outputText value="Prestado"
-								rendered="#{item.prestamoCodEstado == 1}" styleClass="label" />
-							<h:outputText value="Moroso"
-								rendered="#{item.prestamoCodEstado == 10}"
-								styleClass="label label-important" />
-						</p:column>
+							<p:panel header="Detalle Prestamos">
+								<p>Seleccione un registro y presione siguiente para iniciar
+									la devolución.</p>
+								<p:messages id="msgDialogo" showDetail="true" showSummary="true"
+									autoUpdate="true" />
+								<p:dataTable id="tablaPendientes"
+									value="#{prestamoBean.prestamosMora}" var="item"
+									styleClass="table" rowKey="#{item.prestamoCodPrestamo}"
+									selectionMode="single"
+									selection="#{prestamoBean.prestamoSeleccionado}"
+									paginator="true" rows="20">
 
-						<p:column sortBy="#{item.voLibro.libroIdInterno}">
-							<f:facet name="header">Código Libro</f:facet>
-							<h:outputText value="#{item.voLibro.libroIdInterno}" />
-						</p:column>
+									<p:column sortBy="#{item.prestamoCodEstado}">
+										<f:facet name="header">Estado</f:facet>
+										<h:outputText value="Devuelto"
+											rendered="#{item.prestamoCodEstado == 2 }"
+											styleClass="label label-success" />
+										<h:outputText value="Prestado"
+											rendered="#{item.prestamoCodEstado == 1}" styleClass="label" />
+										<h:outputText value="Moroso"
+											rendered="#{item.prestamoCodEstado == 10}"
+											styleClass="label label-important" />
+									</p:column>
 
-						<p:column sortBy="#{item.prestamoFecInicio}">
-							<f:facet name="header">Fecha Inicio</f:facet>
-							<h:outputText value="#{item.prestamoFecInicio}">
-								<f:convertDateTime pattern="dd-MM-yyyy" />
-							</h:outputText>
-						</p:column>
+									<p:column sortBy="#{item.voLibro.libroIdInterno}">
+										<f:facet name="header">Código Libro</f:facet>
+										<h:outputText value="#{item.voLibro.libroIdInterno}" />
+									</p:column>
 
-						<p:column sortBy="#{item.prestamoFecPlazoEntrega}">
-							<f:facet name="header">Fecha Entrega</f:facet>
-							<h:outputText value="#{item.prestamoFecPlazoEntrega}">
-								<f:convertDateTime pattern="dd-MM-yyyy" />
-							</h:outputText>
-						</p:column>
+									<p:column sortBy="#{item.prestamoFecInicio}">
+										<f:facet name="header">Fecha Inicio</f:facet>
+										<h:outputText value="#{item.prestamoFecInicio}">
+											<f:convertDateTime pattern="dd-MM-yyyy" />
+										</h:outputText>
+									</p:column>
 
-						<p:column sortBy="#{item.voLibro.libroTitulo}">
-							<f:facet name="header">Libro</f:facet>
-							<h:outputText value="#{item.voLibro.libroTitulo}" />
-						</p:column>
+									<p:column sortBy="#{item.prestamoFecPlazoEntrega}">
+										<f:facet name="header">Fecha Entrega</f:facet>
+										<h:outputText value="#{item.prestamoFecPlazoEntrega}">
+											<f:convertDateTime pattern="dd-MM-yyyy" />
+										</h:outputText>
+									</p:column>
 
-					</p:dataTable>
+									<p:column sortBy="#{item.voLibro.libroTitulo}">
+										<f:facet name="header">Libro</f:facet>
+										<h:outputText value="#{item.voLibro.libroTitulo}" />
+									</p:column>
+
+									<p:column sortBy="#{item.diasAtraso}">
+										<f:facet name="header">Días de Atraso</f:facet>
+										<h:outputText value="#{item.diasAtraso}" />
+									</p:column>
+
+								</p:dataTable>
+							</p:panel>
+						</p:tab>
+
+						<p:tab id="prestamo" title="2. Confirmar Devolución">
+
+							<p:panel header="Detalle Prestamo">
+								<p:panelGrid columns="2" style="width: 100%;">
+
+									<h:outputText value="Cliente" />
+									<h:outputText
+										value="#{prestamoBean.prestamoSeleccionado.voCliente.nombreCompleto} - #{prestamoBean.prestamoSeleccionado.voCliente.clienteIdentificador}" />
+
+									<h:outputText value="Libro" />
+									<h:outputText
+										value="#{prestamoBean.prestamoSeleccionado.voLibro.libroTitulo}" />
+
+									<h:outputText value="Código Libro" />
+									<h:outputText style="font-weight: bold;"
+										value="#{prestamoBean.prestamoSeleccionado.voLibro.libroIdInterno}" />
+
+									<h:outputText value="Inicio Prestamo" />
+									<h:outputText
+										value="#{prestamoBean.prestamoSeleccionado.prestamoFecInicio}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</h:outputText>
+
+									<h:outputText value="Fecha Entrega Acordada" />
+									<h:outputText
+										value="#{prestamoBean.prestamoSeleccionado.prestamoFecPlazoEntrega}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</h:outputText>
+
+									<h:outputText value="Fecha Entrega Real" />
+									<h:outputText
+										value="#{prestamoBean.prestamoSeleccionado.prestamoFecDevReal}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</h:outputText>
+
+									<h:outputText value="Estado" />
+									<h:outputText value="Devuelto"
+										rendered="#{prestamoBean.prestamoSeleccionado.prestamoCodEstado == 2 }"
+										styleClass="label label-success" />
+									<h:outputText value="Prestado"
+										rendered="#{prestamoBean.prestamoSeleccionado.prestamoCodEstado == 1}"
+										styleClass="label" />
+									<h:outputText
+										value="Moroso, #{prestamoBean.prestamoSeleccionado.diasAtraso} días"
+										rendered="#{prestamoBean.prestamoSeleccionado.prestamoCodEstado == 10}"
+										styleClass="label label-important" />
+
+								</p:panelGrid>
+								<br />
+								<p>Sí esta seguro de marcar como devuelto el prestamo
+									presione "Marcar como devuelto"</p>
+								<p:commandButton value="Marcar como devuelto"
+									actionListener="#{prestamoBean.doMarcarComoDevuelto}"
+									update="@form"
+									oncomplete="wiz.loadStep(wiz.cfg.steps[0], true);" />
+							</p:panel>
+
+						</p:tab>
+
+					</p:wizard>
 
 				</p:dialog>
 			</h:form>

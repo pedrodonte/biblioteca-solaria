@@ -107,7 +107,6 @@ public class SolaTabLibroDAO extends GenericDAO<SolaTabLibro, Long> {
 		}
 		return null;
 	}
-	
-	
+
 
 }

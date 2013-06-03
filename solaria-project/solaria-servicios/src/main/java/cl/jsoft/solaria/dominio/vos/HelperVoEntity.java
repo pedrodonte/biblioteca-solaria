@@ -141,6 +141,7 @@ public class HelperVoEntity{
 			voPrestamo.setPrestamoFecUpdate(solaTabPrestamo.getPrestamoFecUpdate());
 			voPrestamo.setVoCliente( toVO(solaTabPrestamo.getSolaTabCliente()) );
 			voPrestamo.setVoLibro( toVO(solaTabPrestamo.getSolaTabLibro()) );
+			
 		}catch(java.lang.NullPointerException e){/*seteando valores nulos, es normal.*/} 
 		return voPrestamo;
 	}

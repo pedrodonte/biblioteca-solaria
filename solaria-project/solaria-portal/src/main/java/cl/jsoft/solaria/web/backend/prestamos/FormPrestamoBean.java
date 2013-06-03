@@ -14,59 +14,67 @@ import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FlowEvent;
 
 import cl.jsoft.solaria.dominio.vos.VoCliente;
 import cl.jsoft.solaria.dominio.vos.VoLibro;
 import cl.jsoft.solaria.dominio.vos.VoPrestamo;
 import cl.jsoft.solaria.excepciones.ClienteMorosoException;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
+import cl.jsoft.solaria.excepciones.LibroNoDisponibleException;
+import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 import cl.jsoft.solaria.servicios.ClienteServicesEJB;
 import cl.jsoft.solaria.servicios.LibroServicesEJB;
 import cl.jsoft.solaria.servicios.PrestamoServicesEJB;
+import cl.jsoft.solaria.servicios.api.FiltroPrestamos;
 import cl.jsoft.solaria.web.controllers.MensajesBean;
 
-@ManagedBean(name="prestamoBean")
+@ManagedBean(name = "prestamoBean")
 @ViewScoped
 public class FormPrestamoBean {
-	
+
 	private Logger logger = Logger.getLogger(getClass());
-	
+
 	@EJB
 	private LibroServicesEJB libroServicesEJB;
-	
+
 	@EJB
 	private ClienteServicesEJB clienteServicesEJB;
-	
+
 	@EJB
 	private PrestamoServicesEJB prestamoServicesEJB;
-	
-	@ManagedProperty(value="#{prestamoSessionBean}")
+
+	@ManagedProperty(value = "#{prestamoSessionBean}")
 	private PrestamoSessionBean prestamoSessionBean;
-	
-	@ManagedProperty(value="#{mensajesBean}")
+
+	@ManagedProperty(value = "#{mensajesBean}")
 	private MensajesBean mensajesBean;
 
 	private String cpoCodigoInterno;
 	private String cpoIdentificadorCliente;
-	
+
 	private Date cpoFechaInicio = new Date();
 	private Date cpoFechaFinal = new Date();
-	
-	private String msgResultadoPrestamo="";	
-	
+
+	private String msgResultadoPrestamo = "";
+
 	private String nombres = "";
 	private String apellidos = "";
 	private List<VoCliente> clientesEncontrados = new ArrayList<VoCliente>();
 	private VoCliente clienteBuscadoSeleccionado = new VoCliente();
 	private String clienteMoroso = "SIN_MORA";
 	private List<VoPrestamo> prestamosMora = new ArrayList<>();
-	
+
+	private boolean libroDisponible = true;
+	private VoPrestamo prestamoSeleccionado;
+
 	public void doBuscaXNombreApellido(ActionEvent actionEvent) {
-		logger.debug("nombre: "+nombres+", apellido: "+apellidos);
-		mensajesBean.msgInfo("nombre: "+nombres+", apellido: "+apellidos);
+		logger.debug("nombre: " + nombres + ", apellido: " + apellidos);
+		mensajesBean.msgInfo("nombre: " + nombres + ", apellido: " + apellidos);
 		try {
-			setClientesEncontrados(clienteServicesEJB.buscarClientesPorNombresApellidos(nombres, apellidos));
+			setClientesEncontrados(clienteServicesEJB
+					.buscarClientesPorNombresApellidos(nombres, apellidos));
 		} catch (RegistrosNoEncontradosException e) {
 			logger.error(e.getMessage());
 		} catch (ErrorDelSistemaException e) {
@@ -74,25 +82,33 @@ public class FormPrestamoBean {
 		}
 	}
 
-
 	public void doBuscarLibroCodigoInterno(ActionEvent actionEvent) {
-		VoLibro voLibroEncontrado;
+		VoLibro voLibroEncontrado = null;
 		try {
-			voLibroEncontrado = libroServicesEJB.buscarLibroCodigoInterno(cpoCodigoInterno);
+			voLibroEncontrado = libroServicesEJB
+					.buscarLibroCodigoInterno(cpoCodigoInterno);
 			prestamoSessionBean.setLibroEncontrado(voLibroEncontrado);
 			System.out.println(voLibroEncontrado);
+			libroServicesEJB.validarDisponibilidadLibro(voLibroEncontrado);
+			libroDisponible = true;
 		} catch (RegistrosNoEncontradosException e) {
 			voLibroEncontrado = new VoLibro();
 			mensajesBean.msgWarn("Registro no encontrado");
+		} catch (LibroNoDisponibleException e) {
+			mensajesBean.msgWarn(e.getMessage());
+			libroDisponible = false;
+			prestamosMora = prestamoServicesEJB
+					.buscarPendientesPorLibro(voLibroEncontrado);
 		}
-		
+
 	}
-	
+
 	public void doBuscarClienteIdentificador(ActionEvent actionEvent) {
 		VoCliente voCliente = new VoCliente();
 		clienteMoroso = "Sin_Mora";
 		try {
-			voCliente = clienteServicesEJB.buscarClientePorIdentificador(cpoIdentificadorCliente);
+			voCliente = clienteServicesEJB
+					.buscarClientePorIdentificador(cpoIdentificadorCliente);
 			prestamoSessionBean.setClienteEncontrado(voCliente);
 			prestamoServicesEJB.verificarMorosidad(voCliente);
 		} catch (RegistrosNoEncontradosException e) {
@@ -106,58 +122,79 @@ public class FormPrestamoBean {
 		} catch (ClienteMorosoException e) {
 			clienteMoroso = "MOROSO";
 			try {
-				prestamosMora = prestamoServicesEJB.buscarPrestamosPendientes(voCliente);
-			} catch (ErrorDelSistemaException e1) {
+				prestamosMora = prestamoServicesEJB.buscarPrestamosPorEstado(
+						FiltroPrestamos.ATRASADOS, voCliente);
+			} catch (ErrorDelSistemaException | RegistrosNoEncontradosException e1) {
 				logger.warn("Problemas al obtener los registros prestamos mora.");
 			}
 			logger.info("El usuario tiene prestamos atrasados!!! ");
 			mensajesBean.msgWarn(e.getMessage());
 		}
 	}
-	
-	public void doSeleccionaCliente(ValueChangeEvent changeEvent){
-		 prestamoSessionBean.setClienteEncontrado((VoCliente) changeEvent.getNewValue());
-		 logger.debug("doSeleccionaCliente "+prestamoSessionBean.getClienteEncontrado());
+
+	public void doSeleccionaCliente(ValueChangeEvent changeEvent) {
+		prestamoSessionBean.setClienteEncontrado((VoCliente) changeEvent
+				.getNewValue());
+		logger.debug("doSeleccionaCliente "
+				+ prestamoSessionBean.getClienteEncontrado());
 	}
-	
+
 	public void doGuardarNuevoPrestamo(ActionEvent actionEvent) {
 		boolean isActionSuccess = false;
 		try {
 			boolean periodoValido = cpoFechaFinal.after(cpoFechaInicio);
-			logger.info("final despues de inicial "+periodoValido);
-			
+			logger.info("final despues de inicial " + periodoValido);
+
 			VoPrestamo voPrestamo = new VoPrestamo();
 			voPrestamo.setVoCliente(prestamoSessionBean.getClienteEncontrado());
 			voPrestamo.setVoLibro(prestamoSessionBean.getLibroEncontrado());
 			voPrestamo.setPrestamoFecPlazoEntrega(cpoFechaFinal);
 			voPrestamo.setPrestamoFecInicio(cpoFechaInicio);
-			
+
 			voPrestamo = prestamoServicesEJB.nuevoPrestamo(voPrestamo);
-			
-			logger.debug("Registro guardado "+voPrestamo);
-			
+
+			logger.debug("Registro guardado " + voPrestamo);
+
 			if (voPrestamo != null) {
-				msgResultadoPrestamo = "Prestamo registrado con exito [código del nuevo prestamo "+voPrestamo.getPrestamoCodPrestamo()+"]";
+				msgResultadoPrestamo = "Prestamo registrado con exito [código del nuevo prestamo "
+						+ voPrestamo.getPrestamoCodPrestamo() + "]";
 				mensajesBean.msgInfo(msgResultadoPrestamo);
 				isActionSuccess = true;
-			}else{
+			} else {
 				mensajesBean.msgWarn("Revice los datos ingresados.");
 			}
-			
+
 		} catch (Exception e) {
 			mensajesBean.msgWarn("Revice los datos ingresados.");
 			logger.error(e.getMessage());
 		}
-		RequestContext.getCurrentInstance().addCallbackParam("isActionSuccess", isActionSuccess);		
+		RequestContext.getCurrentInstance().addCallbackParam("isActionSuccess",
+				isActionSuccess);
 	}
 	
+	public void doMarcarComoDevuelto(ActionEvent event){
+		try {
+			prestamoServicesEJB.devolverPrestamo(prestamoSeleccionado);
+			prestamoSeleccionado = null;
+			prestamosMora = new ArrayList<>();
+			clienteBuscadoSeleccionado = new VoCliente();
+			prestamoSessionBean.setLibroEncontrado(new VoLibro());
+			prestamoSessionBean.setClienteEncontrado(new VoCliente());
+			cpoCodigoInterno = new String();
+			cpoIdentificadorCliente = new String();
+			libroDisponible = true;
+		} catch (PrestamoNoValidoException | ErrorDelSistemaException e) {
+			mensajesBean.msgError(e.getMessage());
+		}
+	}
+
 	@PostConstruct
-	public void inicializar(){
+	public void inicializar() {
 		prestamoSessionBean.setClienteEncontrado(new VoCliente());
 		prestamoSessionBean.setLibroEncontrado(new VoLibro());
 	}
-	
-	public void actualizaFechaFinal(){
+
+	public void actualizaFechaFinal() {
 		cpoFechaFinal = cpoFechaInicio;
 	}
 
@@ -173,47 +210,37 @@ public class FormPrestamoBean {
 		return cpoIdentificadorCliente;
 	}
 
-
 	public void setCpoIdentificadorCliente(String cpoIdentificadorCliente) {
 		this.cpoIdentificadorCliente = cpoIdentificadorCliente;
 	}
-
-	
 
 	public Date getCpoFechaInicio() {
 		return cpoFechaInicio;
 	}
 
-
 	public void setCpoFechaInicio(Date cpoFechaInicio) {
 		this.cpoFechaInicio = cpoFechaInicio;
 	}
-
 
 	public Date getCpoFechaFinal() {
 		return cpoFechaFinal;
 	}
 
-
 	public void setCpoFechaFinal(Date cpoFechaFinal) {
 		this.cpoFechaFinal = cpoFechaFinal;
 	}
-
 
 	public PrestamoSessionBean getPrestamoSessionBean() {
 		return prestamoSessionBean;
 	}
 
-
 	public void setPrestamoSessionBean(PrestamoSessionBean prestamoSessionBean) {
 		this.prestamoSessionBean = prestamoSessionBean;
 	}
 
-
 	public String getMsgResultadoPrestamo() {
 		return msgResultadoPrestamo;
 	}
-
 
 	public void setMsgResultadoPrestamo(String msgResultadoPrestamo) {
 		this.msgResultadoPrestamo = msgResultadoPrestamo;
@@ -227,64 +254,81 @@ public class FormPrestamoBean {
 		this.mensajesBean = mensajesBean;
 	}
 
-
 	public String getNombres() {
 		return nombres;
 	}
-
 
 	public void setNombres(String nombres) {
 		this.nombres = nombres;
 	}
 
-
 	public String getApellidos() {
 		return apellidos;
 	}
-
 
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
 
-
 	public List<VoCliente> getClientesEncontrados() {
 		return clientesEncontrados;
 	}
-
 
 	public void setClientesEncontrados(List<VoCliente> clientesEncontrados) {
 		this.clientesEncontrados = clientesEncontrados;
 	}
 
-
 	public VoCliente getClienteBuscadoSeleccionado() {
 		return clienteBuscadoSeleccionado;
 	}
 
-
-	public void setClienteBuscadoSeleccionado(VoCliente clienteBuscadoSeleccionado) {
+	public void setClienteBuscadoSeleccionado(
+			VoCliente clienteBuscadoSeleccionado) {
 		this.clienteBuscadoSeleccionado = clienteBuscadoSeleccionado;
 	}
-
 
 	public String getClienteMoroso() {
 		return clienteMoroso;
 	}
 
-
 	public void setClienteMoroso(String clienteMoroso) {
 		this.clienteMoroso = clienteMoroso;
 	}
-
 
 	public List<VoPrestamo> getPrestamosMora() {
 		return prestamosMora;
 	}
 
-
 	public void setPrestamosMora(List<VoPrestamo> prestamosMora) {
 		this.prestamosMora = prestamosMora;
+	}
+
+	public boolean isLibroDisponible() {
+		return libroDisponible;
+	}
+
+	public void setLibroDisponible(boolean libroDisponible) {
+		this.libroDisponible = libroDisponible;
+	}
+
+	public String onFlowProcess(FlowEvent event) {
+		logger.info("Current wizard step:" + event.getOldStep());
+		logger.info("Next step:" + event.getNewStep());
+		if (prestamoSeleccionado != null) {
+			return event.getNewStep();
+		}else{
+			mensajesBean.msgError("Debe seleccionar un prestamo para continuar.");
+			return "registros";
+		}
+		
+	}
+
+	public VoPrestamo getPrestamoSeleccionado() {
+		return prestamoSeleccionado;
+	}
+
+	public void setPrestamoSeleccionado(VoPrestamo prestamoSeleccionado) {
+		this.prestamoSeleccionado = prestamoSeleccionado;
 	}
 
 }

@@ -75,7 +75,7 @@ public class LoginFormularioMB implements Serializable {
 		NavigationHandler nh = facesContext.getApplication()
 				.getNavigationHandler();
 		nh.handleNavigation(facesContext, null,
-				"/protected/dashboard.xhtml?faces-redirect=true");
+				"/dashboard.xhtml?faces-redirect=true");
 	}
 
 	public void doLogout(ActionEvent actionEvent) {

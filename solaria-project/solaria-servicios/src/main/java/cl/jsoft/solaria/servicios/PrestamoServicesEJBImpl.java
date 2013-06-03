@@ -13,12 +13,15 @@ import cl.jsoft.solaria.daos.SolaTabPrestamoDAO;
 import cl.jsoft.solaria.dominio.vos.HelperVoEntity;
 import cl.jsoft.solaria.dominio.vos.TransformadorDominio;
 import cl.jsoft.solaria.dominio.vos.VoCliente;
+import cl.jsoft.solaria.dominio.vos.VoEstadisticasPrestamos;
+import cl.jsoft.solaria.dominio.vos.VoLibro;
 import cl.jsoft.solaria.dominio.vos.VoPrestamo;
 import cl.jsoft.solaria.entities.SolaTabPrestamo;
 import cl.jsoft.solaria.excepciones.ClienteMorosoException;
 import cl.jsoft.solaria.excepciones.ErrorDelSistemaException;
 import cl.jsoft.solaria.excepciones.PrestamoNoValidoException;
 import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
+import cl.jsoft.solaria.servicios.api.FiltroPrestamos;
 import cl.jsoft.solaria.util.HelperFechas;
 
 @Stateless
@@ -32,73 +35,8 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 	private HelperVoEntity helperVoEntity = new TransformadorDominio();
 	private HelperFechas hFechas = new HelperFechas();
 
-	@Override
-	public List<VoPrestamo> buscarPrestamosPendientes(VoCliente voCliente) {
 
-		List<SolaTabPrestamo> prestamosJPA = prestamoDAO
-				.buscaAtrasados(voCliente.getClienteIdentificador());
-		List<VoPrestamo> respuesta = new ArrayList<>();
-
-		for (SolaTabPrestamo prestamo : prestamosJPA) {
-			respuesta.add(helperVoEntity.toVO(prestamo));
-		}
-		return respuesta;
-	}
-
-	@Override
-	public List<VoPrestamo> buscarTodosPrestamosHistoricos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<VoPrestamo> buscarTodosPrestamosPendientes()
-			throws RegistrosNoEncontradosException, ErrorDelSistemaException {
-
-		List<VoPrestamo> respuesta = new ArrayList<>();
-
-		try {
-			List<SolaTabPrestamo> prestamosJPA = prestamoDAO
-					.filtraPorCodigoEstado(PRESTAMO_ATRASADO);
-			
-			if (prestamosJPA != null) {
-				logger.debug(prestamosJPA.size()+" Prestamos Morosos");
-				for (SolaTabPrestamo prestamo : prestamosJPA) {
-					respuesta.add(helperVoEntity.toVO(prestamo));
-				}
-			}else{
-				throw new RegistrosNoEncontradosException("No se encuentran registros morosos.");
-			}
-
-		} catch (Exception e) {
-			throw new ErrorDelSistemaException("Problemas al obtener los registros morosos.");
-		}
-
-		return respuesta;
-	}
-
-	@Override
-	public List<VoPrestamo> buscarTodosPrestamos()
-			throws ErrorDelSistemaException, RegistrosNoEncontradosException {
-		List<VoPrestamo> respuesta = new ArrayList<>();
-
-		try {
-			List<SolaTabPrestamo> prestamosJPA = prestamoDAO.findAll();
-			
-			if (prestamosJPA != null) {
-				for (SolaTabPrestamo prestamo : prestamosJPA) {
-					respuesta.add(helperVoEntity.toVO(prestamo));
-				}
-			}else{
-				throw new RegistrosNoEncontradosException("No se encuentran registros morosos.");
-			}
-
-		} catch (Exception e) {
-			throw new ErrorDelSistemaException("Problemas al obtener los registros morosos.");
-		}
-
-		return respuesta;
-	}
+	
 
 	@Override
 	public VoPrestamo nuevoPrestamo(VoPrestamo voPrestamo)
@@ -177,8 +115,9 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 			throws PrestamoNoValidoException, ErrorDelSistemaException {
 
 		try {
-			voPrestamo.setPrestamoFecUpdate(HelperFechas.getInstancia()
-					.obtenerTimeStampActual());
+			voPrestamo.setPrestamoFecUpdate(hFechas.obtenerTimeStampActual());
+			voPrestamo.setPrestamoFecDevReal(hFechas.obtenerTimeStampActual());
+			voPrestamo.setPrestamoCodEstado(PRESTAMO_DEVUELTO);
 			prestamoDAO.update(helperVoEntity.toEntity(voPrestamo));
 		} catch (Exception e) {
 			throw new ErrorDelSistemaException(
@@ -194,7 +133,7 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 		List<VoPrestamo> prestamosAtrazados = null;
 
 		try {
-			prestamosAtrazados = this.buscarPrestamosPendientes(voCliente);
+			prestamosAtrazados = this.buscarPrestamosPorEstado(FiltroPrestamos.ATRASADOS, voCliente);
 			logger.debug("Prestamos pendientes" + prestamosAtrazados.size());
 		} catch (Exception e) {
 			throw new ErrorDelSistemaException(
@@ -219,5 +158,102 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 
 		return true;
 	}
+	
+	@Override
+	public List<VoPrestamo> buscarPrestamosPorEstado(
+			FiltroPrestamos filtroPrestamos, VoCliente voCliente) throws ErrorDelSistemaException,
+			RegistrosNoEncontradosException{
+		List<VoPrestamo> vos = new ArrayList<>();
+		List<SolaTabPrestamo> registros;
+		
+		switch (filtroPrestamos) {
+		case ATRASADOS:
+			registros = prestamoDAO.filtraPorCodigoEstado(PRESTAMO_ATRASADO, voCliente.getClienteCodCliente());
+			break;
+		case VIGENTES:
+			registros = prestamoDAO.filtraPorCodigoEstado(PRESTAMO_VIGENTE, voCliente.getClienteCodCliente());
+			break;
+		case DEVUELTOS:
+			registros = prestamoDAO.filtraPorCodigoEstado(PRESTAMO_DEVUELTO, voCliente.getClienteCodCliente());
+			break;
+
+		default:
+			registros = new ArrayList<>();
+			break;
+		}
+		
+		for (SolaTabPrestamo p : registros) {
+			VoPrestamo vo = helperVoEntity.toVO(p);
+			if (filtroPrestamos.equals(FiltroPrestamos.ATRASADOS) ) {
+				vo.setDiasAtraso(hFechas.diferenciaDias(vo.getPrestamoFecPlazoEntrega(), new Date()));
+			}
+			
+			vos.add(vo);
+		}
+		return vos;
+	}
+
+	@Override
+	public List<VoPrestamo> buscarPrestamosPorEstado(FiltroPrestamos filtroPrestamos)
+			throws ErrorDelSistemaException, RegistrosNoEncontradosException {
+
+		List<SolaTabPrestamo> registros;
+		
+		switch (filtroPrestamos) {
+		case ATRASADOS:
+			registros = prestamoDAO.filtraPorCodigoEstado(PRESTAMO_ATRASADO);
+			break;
+		case VIGENTES:
+			registros = prestamoDAO.filtraPorCodigoEstado(PRESTAMO_VIGENTE);
+			break;
+		case DEVUELTOS:
+			registros = prestamoDAO.filtraPorCodigoEstado(PRESTAMO_DEVUELTO);
+			break;
+
+		default:
+			registros = new ArrayList<>();
+			break;
+		}
+		
+		List<VoPrestamo> prestamos= new ArrayList<>();
+		for (SolaTabPrestamo dto : registros) {
+			VoPrestamo vo = helperVoEntity.toVO(dto);
+			if (filtroPrestamos.equals(FiltroPrestamos.ATRASADOS) ) {
+				vo.setDiasAtraso(hFechas.diferenciaDias(vo.getPrestamoFecPlazoEntrega(), new Date()));
+			}
+			prestamos.add(vo);
+		}
+		return prestamos;
+	}
+
+	@Override
+	public VoEstadisticasPrestamos obtenerEstadisticas() {
+		VoEstadisticasPrestamos estadisticas = new VoEstadisticasPrestamos();
+		try {
+			estadisticas.setNroAtrasados(prestamoDAO.filtraPorCodigoEstado(PRESTAMO_ATRASADO).size());
+			estadisticas.setNroDevueltos(prestamoDAO.filtraPorCodigoEstado(PRESTAMO_DEVUELTO).size());
+			estadisticas.setNroVigentes(prestamoDAO.filtraPorCodigoEstado(PRESTAMO_VIGENTE).size());
+			estadisticas.setNroTotal(prestamoDAO.findAll().size());
+		} catch (Exception e) {
+			estadisticas.setTieneError(true);
+		}
+		return estadisticas;
+	}
+
+	@Override
+	public List<VoPrestamo> buscarPendientesPorLibro(VoLibro voLibroEncontrado) {
+		List<VoPrestamo> prestamos= new ArrayList<>();
+		List<SolaTabPrestamo> registros = prestamoDAO.buscarDisponibilidadLibro(voLibroEncontrado.getLibroCodLibro());
+		for (SolaTabPrestamo dto : registros) {
+			VoPrestamo vo = helperVoEntity.toVO(dto);
+			if ( vo.getPrestamoCodEstado().equals(PRESTAMO_ATRASADO) ) {
+				vo.setDiasAtraso(hFechas.diferenciaDias(vo.getPrestamoFecPlazoEntrega(), new Date()));
+			}
+			prestamos.add(vo);
+		}
+		return prestamos;
+	}
+	
+	
 
 }

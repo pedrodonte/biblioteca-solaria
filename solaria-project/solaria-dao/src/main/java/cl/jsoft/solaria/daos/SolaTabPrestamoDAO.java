@@ -12,16 +12,6 @@ import cl.jsoft.solaria.entities.SolaTabPrestamo;
 @Stateless
 public class SolaTabPrestamoDAO extends GenericDAO<SolaTabPrestamo, Long> {
 	
-	public static final String PRESTAMO_COD_PRESTAMO = "prestamoCodPrestamo";
-	public static final String PRESTAMO_COD_ESTADO = "prestamoCodEstado";
-	public static final String PRESTAMO_FEC_DEV_REAL = "prestamoFecDevReal";
-	public static final String PRESTAMO_FEC_INICIO = "prestamoFecInicio";
-	public static final String PRESTAMO_FEC_INSERT = "prestamoFecInsert";
-	public static final String PRESTAMO_FEC_PLAZO_ENTREGA = "prestamoFecPlazoEntrega";
-	public static final String PRESTAMO_FEC_UPDATE = "prestamoFecUpdate";
-	public static final String SOLA_TAB_CLIENTE = "solaTabCliente";
-	public static final String SOLA_TAB_LIBRO = "solaTabLibro";
-	
 	private static final String SQL_BUSCA_ATRASADOS = "select p " +
 			" from SolaTabPrestamo as p where p.prestamoCodEstado = 10" +
 			" and p.solaTabCliente.clienteIdentificador = :clienteIdentificador " +
@@ -32,11 +22,16 @@ public class SolaTabPrestamoDAO extends GenericDAO<SolaTabPrestamo, Long> {
 			" order by p.prestamoFecPlazoEntrega desc";
 	
 	private static final String SQL_POR_ESTADO_CLIENTE = "select p from SolaTabPrestamo p " +
-			" where p.prestamoCodEstado = :codEstado " +
-			" and p.solaTabCliente.clienteCodCliente = :codCliente ";
+			" where  p.prestamoCodEstado = :prestamoCodEstado " +
+			" and p.solaTabCliente.clienteCodCliente = :clienteCodCliente";
 	
 	private static final String SQL_CANDIDATOS_MOROSOS = "select p from SolaTabPrestamo p " +
 			" where p.prestamoFecPlazoEntrega < current_date and p.prestamoCodEstado = 1 order by p.prestamoFecPlazoEntrega ASC";
+	
+	public static final String SQL_DISPONIBILIDAD = "select p from SolaTabPrestamo p " +
+			" where p.prestamoCodEstado in (1,10) " +
+			" and p.solaTabLibro.libroCodLibro = :libroCodLibro " +
+			" order by p.prestamoCodEstado";
 	
 	public SolaTabPrestamoDAO() {
 		super(SolaTabPrestamo.class);
@@ -54,16 +49,23 @@ public class SolaTabPrestamoDAO extends GenericDAO<SolaTabPrestamo, Long> {
 		return super.findManyResult(SQL_POR_ESTADO, parameters);
 	}
 	
-	public List<SolaTabPrestamo> buscaPorEstadoUsuario(Integer codEstado, BigDecimal codCliente) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("codEstado", codEstado);
-		parameters.put("codCliente", codCliente);
-		return super.findManyResult(SQL_POR_ESTADO_CLIENTE, parameters);
-	}
-	
 	public List<SolaTabPrestamo> buscaMorososCandidatos(){
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		return super.findManyResult(SQL_CANDIDATOS_MOROSOS, parameters);
+	}
+
+	public List<SolaTabPrestamo> filtraPorCodigoEstado(
+			BigDecimal prestamoCodEstado, long clienteCodCliente) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("prestamoCodEstado", prestamoCodEstado);
+		parameters.put("clienteCodCliente", clienteCodCliente);
+		return super.findManyResult(SQL_POR_ESTADO_CLIENTE, parameters);
+	}
+	
+	public List<SolaTabPrestamo> buscarDisponibilidadLibro(long libroCodLibro) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("libroCodLibro", libroCodLibro);
+		return super.findManyResult(SQL_DISPONIBILIDAD, parameters);
 	}
 
 }
