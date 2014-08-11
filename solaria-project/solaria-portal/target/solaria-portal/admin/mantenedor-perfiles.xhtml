@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="UTF-8" />
+	<title>Perfiles Mantenedor</title>
+</h:head>
+
+<h:body>
+	<h:form id="form1">
+
+		<h:panelGrid columns="2">
+
+			<h:outputText value="Asociar Perfiles" />
+
+			<p:selectOneMenu value="#{mantenedorPerfilMB.usuarioSeleccionado}"
+				converter="#{usuarioConverter}">
+
+				<f:selectItem itemLabel="Seleccione un Usuario" itemValue="" />
+
+				<f:selectItems value="#{mantenedorPerfilMB.usuarios}" var="item"
+					itemLabel="#{item.usuaEmail}" itemValue="#{item}" />
+
+				<p:ajax listener="#{mantenedorPerfilMB.seleccionaUsuario}"
+					update=":form1" />
+
+			</p:selectOneMenu>
+
+			<h:panelGrid columns="1">
+				<p:commandLink value="Seleccionar Todos" />
+				<p:commandLink value="Seleccionar Ninguno" />
+			</h:panelGrid>
+
+			<p:selectManyCheckbox
+				value="#{mantenedorPerfilMB.perfilesSeleccionados}"
+				layout="pageDirection" converter="#{perfilConverter}">
+
+				<f:selectItems value="#{mantenedorPerfilMB.registros}" var="item"
+					itemLabel="#{item.perfilNombre}" itemValue="#{item}" />
+
+			</p:selectManyCheckbox>
+
+		</h:panelGrid>
+
+		<p:commandButton value="Guardar Cambios" update="display"
+			oncomplete="dlg.show()" />
+
+
+		<p:dialog header="Perfiles Asociados al Usuario" modal="true"
+			showEffect="fade" hideEffect="fade" widgetVar="dlg">
+
+			<div class="ui-widget">
+				<div class="ui-state-highlight ui-corner-all"
+					style="margin-top: 20px; padding: 0 .7em;">
+					<p>
+						<span class="ui-icon ui-icon-info"
+							style="float: left; margin-right: .3em;"></span> <strong>Confirmación</strong>
+						Esta de acuerdo con lo siguiente.
+					</p>
+				</div>
+			</div>
+
+			<p:panelGrid id="display" columns="2">
+
+				<p:panelGrid columns="2">
+					<f:facet name="header">Usuario</f:facet>
+					<h:outputText value="Nombre" />
+					<h:outputText
+						value="#{mantenedorPerfilMB.usuarioSeleccionado.usuaNombre}" />
+					<h:outputText value="Email" />
+					<h:outputText
+						value="#{mantenedorPerfilMB.usuarioSeleccionado.usuaEmail}" />
+				</p:panelGrid>
+
+				<p:panelGrid columns="1">
+					<f:facet name="header">Perfiles Asignados</f:facet>
+					<p:dataList value="#{mantenedorPerfilMB.perfilesSeleccionados}"
+						itemType="square" var="item">
+						<h:outputText value="#{item.perfilNombre}  " />
+					</p:dataList>
+				</p:panelGrid>
+
+				<f:facet name="footer">
+					<p:commandButton value="Sí, Guardar Cambios"
+						oncomplete="dlg.hide()"
+						actionListener="#{mantenedorPerfilMB.doAsociar}" />
+					<p:commandButton value="No, Cancelar" onclick="dlg.hide()"
+						type="button" />
+				</f:facet>
+			</p:panelGrid>
+
+
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -24,7 +26,10 @@ import cl.jsoft.solaria.excepciones.RegistrosNoEncontradosException;
 import cl.jsoft.solaria.servicios.api.FiltroPrestamos;
 import cl.jsoft.solaria.util.HelperFechas;
 
+
 @Stateless
+@DeclareRoles({"ADMIN", "GESTOR"})
+@RolesAllowed({"ADMIN", "GESTOR"})
 public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 
 	Logger logger = Logger.getLogger(getClass());
@@ -226,6 +231,7 @@ public class PrestamoServicesEJBImpl implements PrestamoServicesEJB {
 		return prestamos;
 	}
 
+	@RolesAllowed("ADMIN")
 	@Override
 	public VoEstadisticasPrestamos obtenerEstadisticas() {
 		VoEstadisticasPrestamos estadisticas = new VoEstadisticasPrestamos();

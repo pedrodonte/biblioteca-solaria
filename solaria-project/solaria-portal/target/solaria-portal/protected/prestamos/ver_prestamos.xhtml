@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/tmpl_alpha.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo-pagina">
+
+		<script>
+			function handleLoginRequest(xhr, status, args) {
+				if (args.validationFailed || !args.codExitoOperacion) {
+
+					/*codigo en caso de que la operacion falle (codExitoOperacion==false)*/
+
+				} else {
+					dialogoEditor.hide();
+				}
+			}
+		</script>
+
+		<div class="page-header">
+			<h1>
+				Solaria <small>Mantenedor</small>
+			</h1>
+			<p:commandLink action="#{solariaBean.forwardDashboard}"
+				value="Volver al Inicio" />
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.ui-paginator-top {
+	display: none !important;
+}
+
+.ui-selectonebutton .ui-helper-hidden {
+	display: none;
+}
+
+.btn {
+	color: #343434 !important;
+}
+
+.btn-success {
+	color: #ffffff !important;
+}
+
+.btn-inverse {
+	color: #ffffff !important;
+}
+</style>
+
+
+		<div class="container">
+
+			<h:form id="form1" styleClass="form-horizontal">
+
+				<p:messages id="msgCliente" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+
+					<h:outputText value="Seleccionar Estado Prestamo: " />
+					<p:selectOneButton
+						value="#{prestamosMantenedorMB.estadoSeleccionado}">
+						<f:selectItem itemLabel="Atrasados" itemValue="ATRASADOS" />
+						<f:selectItem itemLabel="Devueltos" itemValue="DEVUELTOS" />
+						<f:selectItem itemLabel="Vigentes" itemValue="VIGENTES" />
+
+						<p:ajax listener="#{prestamosMantenedorMB.verTipo}"
+							update=":form1" />
+					</p:selectOneButton>
+					<h:outputText
+						value="Mostrando #{prestamosMantenedorMB.registrosCantidad} prestamos. " />
+				</h:panelGrid>
+
+				<p:dataTable id="tablaRegistros"
+					value="#{prestamosMantenedorMB.registros}" var="item"
+					styleClass="table" selectionMode="single"
+					rowKey="#{item.prestamoCodPrestamo}"
+					selection="#{prestamosMantenedorMB.registroSeleccionado}"
+					paginator="true" rows="20">
+
+					<f:facet name="header">
+						<div class="btn-group">
+
+							<p:commandLink value="Iniciar Devolución"
+								oncomplete="dialogoEditor.show();"
+								update=":form1:editorRegistro" styleClass="btn"
+								actionListener="#{prestamosMantenedorMB.doEditarRegistroFormulario}"
+								process="@this"
+								disabled="#{prestamosMantenedorMB.registroSeleccionado eq NULL}" />
+
+						</div>
+					</f:facet>
+
+					<p:ajax event="rowSelect" update=":form1:tablaRegistros"
+						process="@this" />
+
+					<p:column sortBy="#{item.prestamoCodEstado}">
+						<f:facet name="header">Estado</f:facet>
+						<h:outputText value="Devuelto"
+							rendered="#{item.prestamoCodEstado == 2 }"
+							styleClass="label label-success" />
+						<h:outputText value="Prestado"
+							rendered="#{item.prestamoCodEstado == 1}" styleClass="label" />
+						<h:outputText value="Moroso"
+							rendered="#{item.prestamoCodEstado == 10}"
+							styleClass="label label-important" />
+					</p:column>
+
+					<p:column sortBy="#{item.prestamoFecPlazoEntrega}">
+						<f:facet name="header">Fecha Entrega</f:facet>
+						<h:outputText value="#{item.prestamoFecPlazoEntrega}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{item.voCliente.nombreCompleto}"
+						filterBy="#{item.voCliente.nombreCompleto}"
+						filterMatchMode="contains">
+						<f:facet name="header">Alumno</f:facet>
+						<h:outputText value="#{item.voCliente.nombreCompleto}" />
+					</p:column>
+
+					<p:column sortBy="#{item.voLibro.libroIdInterno}"
+						filterBy="#{item.voLibro.libroIdInterno}"
+						filterMatchMode="contains">
+						<f:facet name="header">Código Libro</f:facet>
+						<h:outputText value="#{item.voLibro.libroIdInterno}" />
+					</p:column>
+
+					<p:column sortBy="#{item.voLibro.libroTitulo}">
+						<f:facet name="header">Libro</f:facet>
+						<h:outputText value="#{item.voLibro.libroTitulo}" />
+					</p:column>
+
+					<p:column sortBy="#{item.diasAtraso}"
+						rendered="#{prestamosMantenedorMB.estadoSeleccionado eq 'ATRASADOS'}">
+						<f:facet name="header">Días Atraso</f:facet>
+						<h:outputText value="#{item.diasAtraso}" />
+					</p:column>
+
+				</p:dataTable>
+
+
+				<p:dialog id="editorRegistro" header="Detalle del Prestamo "
+					width="800" widgetVar="dialogoEditor" resizable="false"
+					modal="true" showEffect="clip" hideEffect="fold">
+
+					<p>Sí esta seguro de marcar como devuelto el prestamo
+									presione "Confirmar Devolución"</p>
+
+					<p:panelGrid columns="2" style="width: 100%;">
+
+						<h:outputText value="Cliente" />
+						<h:outputText
+							value="#{prestamosMantenedorMB.registroEnEdicion.voCliente.nombreCompleto} - #{prestamosMantenedorMB.registroEnEdicion.voCliente.clienteIdentificador}" />
+
+						<h:outputText value="Libro" />
+						<h:outputText
+							value="#{prestamosMantenedorMB.registroEnEdicion.voLibro.libroTitulo}" />
+
+						<h:outputText value="Código Libro" />
+						<h:outputText style="font-weight: bold;"
+							value="#{prestamosMantenedorMB.registroEnEdicion.voLibro.libroIdInterno}" />
+
+						<h:outputText value="Inicio Prestamo" />
+						<h:outputText
+							value="#{prestamosMantenedorMB.registroEnEdicion.prestamoFecInicio}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Fecha Entrega Acordada" />
+						<h:outputText
+							value="#{prestamosMantenedorMB.registroEnEdicion.prestamoFecPlazoEntrega}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Fecha Entrega Real" />
+						<h:outputText
+							value="#{prestamosMantenedorMB.registroEnEdicion.prestamoFecDevReal}">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Estado" />
+						<h:outputText value="Devuelto"
+							rendered="#{prestamosMantenedorMB.registroEnEdicion.prestamoCodEstado == 2 }"
+							styleClass="label label-success" />
+						<h:outputText value="Prestado"
+							rendered="#{prestamosMantenedorMB.registroEnEdicion.prestamoCodEstado == 1}"
+							styleClass="label" />
+						<h:outputText value="Moroso, #{prestamosMantenedorMB.registroEnEdicion.diasAtraso} días"
+							rendered="#{prestamosMantenedorMB.registroEnEdicion.prestamoCodEstado == 10}"
+							styleClass="label label-important" />
+
+
+						<f:facet name="footer">
+							<p:commandLink id="btnsave" value="Confirmar Devolución"
+								styleClass="btn btn-success"
+								oncomplete="handleLoginRequest(xhr, status, args);"
+								update=":form1:tablaRegistros"
+								actionListener="#{prestamosMantenedorMB.doGuardarRegistroFormulario}"
+								rendered="#{prestamosMantenedorMB.modoFormulario ne 'OFF'}" />
+
+							<p:commandLink id="btncancel" value="Cancelar Devolución"
+								styleClass="btn btn-inverse" oncomplete="dialogoEditor.hide();"
+								update=":form1:tablaRegistros"
+								actionListener="#{prestamosMantenedorMB.doCancelarRegistroFormulario}"
+								process="@none"
+								rendered="#{prestamosMantenedorMB.modoFormulario ne 'OFF'}" />
+
+						</f:facet>
+
+					</p:panelGrid>
+
+				</p:dialog>
+			</h:form>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

@@ -18,7 +18,8 @@ FROM
      "sola"."sola_tab_grupocliente" sola_tab_grupocliente INNER JOIN "sola"."sola_tab_cliente" sola_tab_cliente
  ON   sola_tab_grupocliente."grupocliente_cod_grupocliente" = sola_tab_cliente."grupocliente_cod_grupocliente"
 WHERE
-sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
+sola_tab_cliente."grupocliente_cod_grupocliente" in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
+order by curso_nombre]]>
 	</queryString>
 	<field name="nombres" class="java.lang.String"/>
 	<field name="apellidos" class="java.lang.String"/>
@@ -29,7 +30,7 @@ sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
 	<detail>
 		<band height="156" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="1688e147-b06a-4b26-86ba-ac8f921fe27f" mode="Opaque" x="0" y="0" width="273" height="151" forecolor="#0064CC" backcolor="#0064CC"/>
+				<reportElement uuid="1688e147-b06a-4b26-86ba-ac8f921fe27f" mode="Opaque" x="0" y="0" width="273" height="151" forecolor="#FF6600" backcolor="#FF6600"/>
 			</rectangle>
 			<rectangle radius="10">
 				<reportElement uuid="043bc873-80bc-48c2-9142-3e6ca75b549e" x="11" y="14" width="250" height="122" forecolor="#FFFFFF"/>
@@ -56,7 +57,7 @@ sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
 				<textFieldExpression><![CDATA[$F{curso_nombre}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement uuid="5f51efd5-2cab-4dde-baad-c56ffa5448bb" mode="Opaque" x="278" y="0" width="273" height="151" forecolor="#0064CC" backcolor="#0064CC"/>
+				<reportElement uuid="5f51efd5-2cab-4dde-baad-c56ffa5448bb" mode="Opaque" x="278" y="0" width="273" height="151" forecolor="#FF6600" backcolor="#FF6600"/>
 			</rectangle>
 			<rectangle radius="10">
 				<reportElement uuid="b056d120-0fed-4392-b40e-caac2b437f5c" x="289" y="14" width="250" height="122" forecolor="#FFFFFF"/>
@@ -93,7 +94,7 @@ sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[vence : 31 de Diciembre, 2013]]></text>
+				<text><![CDATA[vence : 31 de Diciembre, 2014]]></text>
 			</staticText>
 			<textField>
 				<reportElement uuid="6889c860-b003-4328-ad24-9c32fff232d0" x="21" y="96" width="225" height="21"/>
@@ -110,7 +111,7 @@ sola_tab_cliente."grupocliente_cod_grupocliente" = $P{COD_CURSO}]]>
 				<textFieldExpression><![CDATA[$F{nro_rut}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement uuid="1e117128-0b82-457f-b4d1-530b7d2b561d" x="186" y="25" width="59" height="71"/>
+				<reportElement uuid="1e117128-0b82-457f-b4d1-530b7d2b561d" x="27" y="25" width="59" height="71"/>
 				<imageExpression><![CDATA["/logo.gif"]]></imageExpression>
 			</image>
 		</band>

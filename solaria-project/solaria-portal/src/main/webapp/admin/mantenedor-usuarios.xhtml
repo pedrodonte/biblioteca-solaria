@@ -1,0 +1,175 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/tmpl_alpha.xhtml">
+
+	<ui:define name="titulo-pagina">
+		<div class="page-header">
+			<h1>
+				Solaria <small>Mantenedor Usuarios</small>
+			</h1>
+			<p:commandLink action="#{solariaBean.forwardDashboard}"
+				value="Volver al Inicio" />
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.registro-formulario .ui-inputfield {
+	width: 300px;
+}
+</style>
+		<script type="text/javascript">
+			function handleActionRequest(xhr, status, args) {
+				if (args.codExitoOperacion) {
+					dialogoEditor.hide();
+				}
+			}
+		</script>
+
+		<div class="container">
+			<h:form id="form1">
+
+
+					<p:dataTable value="#{mantenedorUsuarioMB.registros}" var="item"
+						styleClass="tablaRegistros" rowKey="#{item.usuaCodUsua}"
+						selectionMode="single"
+						selection="#{mantenedorUsuarioMB.registroSeleccionado}">
+
+						<p:ajax event="rowSelect" update="@this" />
+
+						<f:facet name="header">
+
+							<p:commandButton value="Ver" process="@this"
+								disabled="#{mantenedorUsuarioMB.registroSeleccionado eq null}"
+								oncomplete="dialogoEditor.show()"
+								update=":form1:formularioEdicionRegistro"
+								actionListener="#{mantenedorUsuarioMB.doVerRegistroFormulario}" />
+
+							<p:commandButton value="Editar" process="@this"
+								disabled="#{mantenedorUsuarioMB.registroSeleccionado eq null}"
+								oncomplete="dialogoEditor.show()"
+								update=":form1:formularioEdicionRegistro"
+								actionListener="#{mantenedorUsuarioMB.doEditarRegistroFormulario}" />
+
+							<p:commandButton value="Nuevo" process="@this"
+								oncomplete="dialogoEditor.show()"
+								update=":form1:formularioEdicionRegistro"
+								actionListener="#{mantenedorUsuarioMB.doNuevoRegistroFormulario}" />
+
+							<p:commandButton value="Refrescar" process="@this" update="@form"
+								actionListener="#{mantenedorUsuarioMB.doActualizarVista}" />
+
+						</f:facet>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Nombre" />
+							</f:facet>
+							<h:outputText value="#{item.usuaNombre}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Email" />
+							</f:facet>
+							<h:outputText value="#{item.usuaEmail}" />
+						</p:column>
+					</p:dataTable>
+
+
+
+				<p:dialog id="formularioEdicionRegistro"
+					header="Detalle del Registro" widgetVar="dialogoEditor"
+					resizable="false" modal="true" showEffect="fade" hideEffect="fade">
+
+					<p:messages autoUpdate="true" showDetail="true" showSummary="true" />
+
+					<p:panelGrid columns="1" styleClass="registro-formulario">
+
+						<h:outputText value="(*) Campos Obligatorios"
+							rendered="#{mantenedorUsuarioMB.modoFormulario ne 'OFF'}" />
+
+						<h:outputText value="modo:#{mantenedorUsuarioMB.modoFormulario}" />
+
+						<p:panelGrid columns="2">
+
+							<f:facet name="header">Usuario</f:facet>
+
+							<h:outputText value="Nombre (*)" />
+							<p:inputText required="true"
+								requiredMessage="Debe ingresar un Texto"
+								rendered="#{mantenedorUsuarioMB.modoFormulario ne 'OFF'}"
+								value="#{mantenedorUsuarioMB.registroEnEdicion.usuaNombre}" />
+							<h:outputText
+								rendered="#{mantenedorUsuarioMB.modoFormulario eq 'OFF'}"
+								value="#{mantenedorUsuarioMB.registroEnEdicion.usuaNombre}" />
+
+							<h:outputText value="Email (*)" />
+							<p:inputText required="true"
+								requiredMessage="Debe ingresar un Texto"
+								rendered="#{mantenedorUsuarioMB.modoFormulario ne 'OFF'}"
+								value="#{mantenedorUsuarioMB.registroEnEdicion.usuaEmail}" />
+							<h:outputText
+								rendered="#{mantenedorUsuarioMB.modoFormulario eq 'OFF'}"
+								value="#{mantenedorUsuarioMB.registroEnEdicion.usuaEmail}" />
+
+							<h:outputText value="Contraseña (*)"
+								rendered="#{mantenedorUsuarioMB.modoFormulario eq 'NEW'}" />
+							<p:inputText id="clave"
+								value="#{mantenedorUsuarioMB.registroEnEdicion.usuaContrasena}"
+								required="true" requiredMessage="Debe ingresar Contraseña"
+								rendered="#{mantenedorUsuarioMB.modoFormulario eq 'NEW'}" />
+
+						</p:panelGrid>
+
+						<p:panelGrid columns="1" style="width:100%;">
+
+							<f:facet name="header">Perfiles Asociados</f:facet>
+
+							<p:selectManyCheckbox
+								disabled="#{mantenedorUsuarioMB.modoFormulario eq 'OFF'}"
+								value="#{mantenedorUsuarioMB.perfilesSeleccionados}"
+								layout="pageDirection" converter="#{perfilConverter}">
+
+								<f:selectItems value="#{mantenedorPerfilMB.registros}"
+									var="item" itemLabel="#{item.perfilNombre}" itemValue="#{item}" />
+
+							</p:selectManyCheckbox>
+
+						</p:panelGrid>
+
+						<f:facet name="footer">
+
+							<p:commandButton id="btnsave" value="Guardar"
+								update="@(.tablaRegistros, .registro-formulario)"
+								oncomplete="handleActionRequest(xhr, status, args);"
+								actionListener="#{mantenedorUsuarioMB.doGuardarRegistroFormulario}"
+								rendered="#{mantenedorUsuarioMB.modoFormulario ne 'OFF'}" />
+
+							<p:commandButton id="btnedit" value="Habilitar Edición"
+								actionListener="#{mantenedorUsuarioMB.doHabilitarEdicion}"
+								update="@(.registro-formulario)"
+								rendered="#{mantenedorUsuarioMB.modoFormulario eq 'OFF'}" />
+
+							<p:commandButton id="btncancel" value="Cancelar"
+								update="@(.tablaRegistros)" oncomplete="dialogoEditor.hide();"
+								actionListener="#{mantenedorUsuarioMB.doCancelarRegistroFormulario}"
+								process="@none"
+								rendered="#{mantenedorUsuarioMB.modoFormulario ne 'OFF'}" />
+
+						</f:facet>
+
+					</p:panelGrid>
+
+				</p:dialog>
+
+			</h:form>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

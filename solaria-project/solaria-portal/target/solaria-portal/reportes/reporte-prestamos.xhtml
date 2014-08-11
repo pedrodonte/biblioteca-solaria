@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/tmpl_alpha.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo-pagina">
+
+		<div class="page-header">
+			<h1>
+				Solaria <small>Mantenedor</small>
+			</h1>
+			<p:commandLink action="#{solariaBean.forwardDashboard}"
+				value="Volver al Inicio" />
+		</div>
+	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.ui-paginator-top {
+	display: none !important;
+}
+
+.ui-selectonebutton .ui-helper-hidden {
+	display: none;
+}
+.ui-widget-header a {
+	color: #333333 !important;
+}
+</style>
+
+
+		<div class="container">
+
+			<h:form id="form1" styleClass="form-horizontal">
+
+				<p:messages id="msgCliente" showDetail="true" autoUpdate="true"
+					closable="true" />
+					
+				<h:panelGrid columns="2">
+					<h:outputText value="Prestamos Atrasados: " />
+					<h:outputText value="#{repPrestamosMB.estadisticasPrestamos.nroAtrasados}"/>
+					
+					<h:outputText value="Prestamos Vigentes: " />
+					<h:outputText value="#{repPrestamosMB.estadisticasPrestamos.nroVigentes}"/>
+					
+					<h:outputText value="Prestamos Devueltos: " />
+					<h:outputText value="#{repPrestamosMB.estadisticasPrestamos.nroDevueltos}"/>
+					
+					<h:outputText value="Prestamos Totales: " />
+					<h:outputText value="#{repPrestamosMB.estadisticasPrestamos.nroTotal}"/>
+				</h:panelGrid>
+					
+			</h:form>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

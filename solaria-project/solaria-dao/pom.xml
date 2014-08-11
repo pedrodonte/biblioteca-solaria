@@ -48,6 +48,7 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.2-1002-jdbc4</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>

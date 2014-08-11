@@ -2,14 +2,18 @@ package cl.jsoft.solaria.login;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.NavigationHandler;
+import javax.faces.application.ViewExpiredException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -18,9 +22,10 @@ import cl.jsoft.solaria.seguridad.CredencialSeguridad;
 import cl.jsoft.solaria.seguridad.ValidacionNegativaException;
 import cl.jsoft.solaria.seguridad.api.LoginValidaCredencialEJB;
 import cl.jsoft.solaria.web.controllers.MensajesBean;
+import cl.jsoft.solaria.web.jsf.TimeOutListener;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class LoginFormularioMB implements Serializable {
 
 	private static final long serialVersionUID = 11L;
@@ -30,6 +35,22 @@ public class LoginFormularioMB implements Serializable {
 
 	private String username = "rebecacurin@hotmail.com";
 	private String password;
+	
+	TimeOutListener timeOutListener = new TimeOutListener() {
+		
+		@Override
+		public void cerrarSesion() {
+			System.out.println("Cerrando Sesion desde Listener.");
+			throw new ViewExpiredException();		
+		}
+	};
+	
+	@PostConstruct
+	public void init(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+		session.setAttribute("TO", timeOutListener);
+	}
 
 	@EJB
 	LoginValidaCredencialEJB validaCredencialEJB;

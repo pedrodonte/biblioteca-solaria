@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="UTF-8" />
+	<title>Login de Usuario</title>
+	<style>
+#contenedor {
+	width: 500px;
+	margin: 50px auto;
+}
+</style>
+
+</h:head>
+<h:body>
+
+
+	<h:form id="form_login">
+
+		<div id="contenedor">
+
+			<p:messages id="msgLogin" showSummary="true" showDetail="true"
+				autoUpdate="true" />
+
+			<p:panelGrid styleClass="panelLogin" columns="2" style="width: 100%;">
+
+				<f:facet name="header">Formulario de Acceso</f:facet>
+
+				<h:outputText value="E-Mail" />
+				<p:inputText id="cpoUserName" styleClass="input-block-level"
+					value="#{loginFormularioMB.username}" required="true"
+					style="width: 90%;" requiredMessage="#{msgs['empty.username']}" />
+
+				<h:outputText value="Contraseña" />
+				<p:password id="cpoPassword" styleClass="input-block-level"
+					value="#{loginFormularioMB.password}" required="true"
+					style="width: 90%;" requiredMessage="#{msgs['empty.password']}" />
+
+				<f:facet name="footer">
+					<p:commandButton actionListener="#{loginFormularioMB.doLogin}" value="Acceder" />
+				</f:facet>
+
+			</p:panelGrid>
+
+		</div>
+
+	</h:form>
+
+
+</h:body>
+</html>

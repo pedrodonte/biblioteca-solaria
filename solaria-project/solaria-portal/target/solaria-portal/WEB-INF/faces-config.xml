@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+	version="2.1">
+	<application>
+
+		<locale-config>
+			<default-locale>es</default-locale>
+		</locale-config>
+
+		<!-- Texto de la Aplicacion -->
+		<resource-bundle>
+			<base-name>mensajes</base-name>
+			<var>msgs</var>
+		</resource-bundle>
+
+		<!-- Texto de Validadores -->
+		<message-bundle>jsf</message-bundle>
+
+	</application>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/dashboard.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>pres_form_prestamo</from-outcome>
+			<to-view-id>/protected/prestamos/form_prestamo.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>form_foto</from-outcome>
+			<to-view-id>/protected/fotografia/form_fotografia.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>catalogo</from-outcome>
+			<to-view-id>/protected/catalogo/libros.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>clientes</from-outcome>
+			<to-view-id>/protected/clientes/cliente-mantenedor.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>credenciales</from-outcome>
+			<to-view-id>/protected/credenciales/credenciales.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>descargaCredencial</from-outcome>
+			<to-view-id>/CredencialesServlet</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>protected/*</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>prestamos</from-outcome>
+			<to-view-id>/protected/prestamos/ver_prestamos.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>login_form</from-outcome>
+			<to-view-id>/login-formulario.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>mant_usua</from-outcome>
+			<to-view-id>/admin/mantenedor-usuarios.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>rep_prestamos</from-outcome>
+			<to-view-id>/reportes/reporte-prestamos.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- <lifecycle> -->
+	<!-- <phase-listener>cl.jsoft.solaria.web.jsf.JSFLifeCycleListener</phase-listener> -->
+	<!-- </lifecycle> -->
+
+</faces-config>
