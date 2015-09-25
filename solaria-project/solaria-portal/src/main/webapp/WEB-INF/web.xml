@@ -49,7 +49,7 @@
     <location>/error-403.xhtml</location>
   </error-page>
   <session-config>
-    <session-timeout>1</session-timeout>
+    <session-timeout>0</session-timeout>
   </session-config>
   <security-constraint>
     <web-resource-collection>
